@@ -6,8 +6,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import { AntDesign } from '@expo/vector-icons';
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 import {useTogglePasswordVisibility} from '../hooks/useTogglePasswordVisibility'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-function Login() {
+const Stack = createNativeStackNavigator();
+
+function Login({navigation}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   
