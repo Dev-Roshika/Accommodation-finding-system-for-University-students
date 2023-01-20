@@ -49,8 +49,10 @@ function Login({navigation}) {
               placeholder='Username'
               onChangeText={(username) => setUsername(username)}
             />
+        </View>
+        <View style={styles.passInput}>
             <TextInput
-              style = {styles.textinput} 
+              style = {styles.textinput2} 
               secureTextEntry={passwordVisibility}
               placeholder='Password'
               autoCorrect={false}
@@ -128,6 +130,23 @@ const styles = StyleSheet.create({
       padding:5,
       paddingLeft:15,
        fontFamily:'Inter-SemiBold'
+    },
+    textinput2:{
+      flex:1,
+      fontFamily:'Inter-SemiBold',
+    },
+    passInput:{
+      flexDirection:'row',
+      margin:3,
+      borderColor:'black',
+      borderWidth:2,
+      borderRadius:10,
+      backgroundColor:'white',
+      margin:7,
+      padding:5,
+      paddingLeft:15,
+      width:'64%',
+      alignItems:'center',
     },
     flex1:{
       flexDirection:'row',
