@@ -4,7 +4,7 @@ import { StyleSheet, Text,Image,TextInput, View, Button, TouchableOpacity, Press
 function Home() {
   return (
     <View  style={{fontWeight:'bold',paddingTop:100,justifyContent:'center',alignContent:'center',alignItems:'center'}}>
-      <Text>Home </Text>
+      <Text>WELCOME </Text>
       <Text>Home </Text>
       <Text>Home </Text>
       <Text>Home </Text>
