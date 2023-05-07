@@ -4,6 +4,9 @@ const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+//const { response } = require("express");
+const salt = 10; // for bcrypt
 
 const app = express();
 app.use(
@@ -46,39 +49,48 @@ app.get("/student/home", (req, res) => {
 app.post("/student/signup", (req, res) => {
   const sql =
     "INSERT INTO `user_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`,`Email`,`Faculty`,`Dept`,`PrivateAddress`,`Password`,`Role`) VALUES(?)";
-  const values = [
-    req.body.fullname,
-    req.body.username,
-    req.body.univregno,
-    req.body.mobile,
-    req.body.email,
-    req.body.faculty,
-    req.body.dept,
-    req.body.paddress,
-    req.body.password,
-    req.body.role
-  ];
-  db.query(sql, [values], (err, result) => {
-    if (err) {
-      return res.json({ Message: "Error in Node" });
-    } else {
-      return res.json(result);
-    }
+  bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+    if (err) return res.json({ Error: "Error for hashing password" });
+    const values = [
+      req.body.fullname,
+      req.body.username,
+      req.body.univregno,
+      req.body.mobile,
+      req.body.email,
+      req.body.faculty,
+      req.body.dept,
+      req.body.paddress,
+      hash,
+      req.body.role,
+    ];
+    db.query(sql, [values], (err, result) => {
+      if (err) return res.json({ Error: "Insert data Error in server" });
+      return res.json({ Status: "Success" });
+    });
   });
 });
 
 app.post("/student/login", (req, res) => {
-  const sql =
-    "SELECT * FROM user_info WHERE `Email` = ? AND `Password` = ?";
+  const sql = "SELECT * FROM user_info WHERE `Email` = ?";
 
-  db.query(sql, [req.body.email, req.body.password], (err, result) => {
-    if (err) {
-      return res.json({ Message: "Error inside server" });
-    }
+  db.query(sql, [req.body.email], (err, result) => {
+    if (err) return res.json({ Message: "Login error in server" });
+
     if (result.length > 0) {
-      return res.json({ Login: true });
+      bcrypt.compare(
+        req.body.password.toString(),
+        result[0].Password,
+        (err, response) => {
+          if (err) return res.json({ Error: "Password compare error" });
+          if (response) {
+            return res.json({ Status: "Success" });
+          } else {
+            return res.json({ Error: "Password not matched" });
+          }
+        }
+      );
     } else {
-      return res.json({ Login: false });
+      return res.json({ Error: "No email existed" });
     }
   });
 });

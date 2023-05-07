@@ -1,41 +1,53 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-//import Validation from "./SignupValidation";
+import Validation from "../Validation/SignupValidation";
 import axios from "axios";
 import RequiredField from "../Component/RequiredField";
 
 function Signup() {
   const [values, setValues] = useState({
     fullname: "",
-    username: "", 
-    univregno: "", 
-    mobile: "", 
+    username: "",
+    univregno: "",
+    mobile: "",
     email: "",
     faculty: "",
     dept: "",
     paddress: "",
     password: "",
-    role:"student"
+    cpassword: "",
+    role: "student",
   });
+
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
-  //const [errors, setErrors] = useState({});
+
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
       [event.target.name]: [event.target.value],
     }));
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-   // setErrors(Validation(values));
-    axios
-      .post("http://localhost:8081/student/signup", values)
-      .then(res => {
-        console.log(res);
-        navigate("/student/login");
-      })
-      .catch(err => console.log(err));
+    setErrors(Validation(values));
+    console.log(errors);
+    if (errors.cpassword === "") {
+      axios
+        .post("http://localhost:8081/student/signup", values)
+        .then((res) => {
+          if (res.data.Status === "Success") {
+            navigate("/student/login");
+          } else {
+            alert("Error");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
+
   return (
     <div className="bg-Light m-3">
       <div className="d-flex justify-content-center align-items-center vh-100 mb-3">
@@ -62,6 +74,9 @@ function Signup() {
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
+              {errors.fullname && (
+                <span className="text-danger">{errors.fullname}</span>
+              )}
             </div>
             <div className="mb-3">
               <div className="row">
@@ -80,6 +95,9 @@ function Signup() {
                     className="form-control rounded-0"
                     onChange={handleInput}
                   />
+                  {errors.username && (
+                    <span className="text-danger">{errors.username}</span>
+                  )}
                 </div>
                 {/* University Registration Number */}
                 <div className="col-sm">
@@ -97,9 +115,11 @@ function Signup() {
                     className="form-control rounded-0"
                     onChange={handleInput}
                   />
+                  {errors.univregno && (
+                    <span className="text-danger">{errors.univregno}</span>
+                  )}
                 </div>
               </div>
-              
             </div>
             {/* Contact No */}
             <div className="mb-3">
@@ -116,7 +136,9 @@ function Signup() {
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
-             
+              {errors.mobile && (
+                <span className="text-danger">{errors.mobile}</span>
+              )}
             </div>
             {/* Email */}
             <div className="mb-3">
@@ -129,7 +151,9 @@ function Signup() {
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
-             
+              {errors.email && (
+                <span className="text-danger">{errors.email}</span>
+              )}
             </div>
             <div className="mb-3">
               <div className="row">
@@ -148,6 +172,9 @@ function Signup() {
                     className="form-control rounded-0"
                     onChange={handleInput}
                   />
+                  {errors.faculty && (
+                    <span className="text-danger">{errors.faculty}</span>
+                  )}
                 </div>
                 {/* Department */}
                 <div className="col-sm">
@@ -164,9 +191,11 @@ function Signup() {
                     className="form-control rounded-0"
                     onChange={handleInput}
                   />
+                  {errors.dept && (
+                    <span className="text-danger">{errors.dept}</span>
+                  )}
                 </div>
               </div>
-              
             </div>
             {/* Private address */}
             <div className="mb-3">
@@ -179,7 +208,9 @@ function Signup() {
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
-              
+              {errors.paddress && (
+                <span className="text-danger">{errors.paddress}</span>
+              )}
             </div>
             <div className="mb-3">
               <div className="row">
@@ -194,10 +225,14 @@ function Signup() {
                   <input
                     name="password"
                     type="password"
+                    title="password should be between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
                     required
                     className="form-control rounded-0"
                     onChange={handleInput}
                   />
+                  {errors.password && (
+                    <span className="text-danger">{errors.password}</span>
+                  )}
                 </div>
                 {/* Confirm password */}
                 <div className="col-sm">
@@ -214,9 +249,11 @@ function Signup() {
                     className="form-control rounded-0"
                     onChange={handleInput}
                   />
+                  {errors.cpassword && (
+                    <span className="text-danger">{errors.cpassword}</span>
+                  )}
                 </div>
               </div>
-              
             </div>
 
             <button type="submit" className="btn btn-success w-100 rounded-0">
