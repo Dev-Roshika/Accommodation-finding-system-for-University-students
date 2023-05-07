@@ -1,15 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Validation from "./LoginValidation";
+import Validation from "../Validation/SigninValidation";
+
 
 function Signin() {
   const [values, setValues] = useState({
     email: '',
     password: ''
   })
-  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
   const handleInput = (event) => {
     setValues(prev => ({
       ...prev,
@@ -23,10 +25,10 @@ function Signin() {
     setErrors(Validation(values));
     axios.post('http://localhost:8081/student/login', values)
       .then(res => {
-        if (res.data.Login) {
+        if (res.data.Status === 'Success') {
           navigate('/student/home')
         } else {
-          alert("No record")
+          alert("Error : Check email and password again")
         }
         console.log(res);
       }
@@ -49,7 +51,9 @@ function Signin() {
               className="form-control rounded-0"
               onChange={handleInput}
             />
-            {errors.email && <span className="text-danger">{errors.email}</span>}
+            {errors.email && (
+                <span className="text-danger">{errors.email}</span>
+              )}
           </div>
           <div className="mb-3">
             <label htmlFor="password">
@@ -61,7 +65,9 @@ function Signin() {
               className="form-control rounded-0"
               onChange={handleInput}
             />
-            {errors.password && <span className="text-danger">{errors.password}</span>}
+            {errors.password && (
+                <span className="text-danger">{errors.password}</span>
+              )}
           </div>
           <button type="submit" className="btn btn-success w-100 rounded-0">
             <strong>Login</strong>
