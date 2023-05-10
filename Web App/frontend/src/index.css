@@ -12,7 +12,3 @@ code {
     monospace;
 }
 
-.required-field::before {
-  content: "*";
-  color: red;
-}

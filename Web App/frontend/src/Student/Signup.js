@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Validation from "../Validation/SignupValidation";
 import axios from "axios";
-import RequiredField from "../Component/RequiredField";
+import RequiredField from "../Components/RequiredField";
 
 function Signup() {
   const [values, setValues] = useState({
