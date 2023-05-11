@@ -26,7 +26,7 @@ function Signin() {
     axios.post('http://localhost:8081/student/login', values)
       .then(res => {
         if (res.data.Status === 'Success') {
-          navigate('/student/home')
+          navigate('/home')
         } else {
           alert("Error : Check email and password again")
         }

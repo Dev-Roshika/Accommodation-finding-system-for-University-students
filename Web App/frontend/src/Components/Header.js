@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../css/header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-     faCalendarDays, faCircleInfo, faHouse, faPerson, faUser} from "@fortawesome/free-solid-svg-icons"
+     faCalendarDays, faCircleInfo, faContactBook, faHouse, faPerson, faUser} from "@fortawesome/free-solid-svg-icons"
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -47,7 +47,7 @@ function Header() {
                     <span>About us</span>
                 </div>
                 <div className="headerListItem">
-                    <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon icon={faContactBook} />
                     <span>Contact us</span>
                 </div>
             </div>

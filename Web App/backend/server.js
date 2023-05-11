@@ -38,7 +38,7 @@ const db = mysql.createConnection({
   database: "software",
 });
 
-app.get("/student/home", (req, res) => {
+app.get("/home", (req, res) => {
   if (req.session.role) {
     return res.json({ valid: true, role: req.session.role });
   } else {
