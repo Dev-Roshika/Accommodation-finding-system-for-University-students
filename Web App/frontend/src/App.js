@@ -3,6 +3,7 @@ import Signin from './Student/Signin'
 import Signup from './Student/Signup'
 import Home from './Pages/Home'
 import OnBoardPage from './OnBoardPage';
+import BoardingHouses from './Pages/BoardingHouses';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
           <Route path='/' element={<OnBoardPage />} />
           <Route path='/student/login' element={<Signin />} />
           <Route path='/student/signup' element={<Signup />} />
-          <Route path='/student/home' element={<Home />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/boarding-houses' element={<BoardingHouses />} />
         </Routes>
       </BrowserRouter>
     </div>
