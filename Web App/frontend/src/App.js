@@ -4,6 +4,7 @@ import Signup from './Student/Signup'
 import Home from './Pages/Home'
 import OnBoardPage from './OnBoardPage';
 import BoardingHouses from './Pages/BoardingHouses';
+import Footer from './Components/Footer';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='/boarding-houses' element={<BoardingHouses />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
