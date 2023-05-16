@@ -9,7 +9,7 @@ function Home() {
       <Text>Home </Text>
       <Text>Home </Text>
       <Text>Home </Text>
-      <Text>Home </Text>
+Screen/Home.js      <Text>Home </Text>
       <Text>Home </Text>
       <Text>Home </Text>
     </View>

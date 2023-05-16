@@ -45,7 +45,7 @@ function OnBoardScreen({navigation}) {
         </View>
       </View>
       <View style = {{flex:1,justifyContent:'flex-end',paddingHorizontal:10,paddingTop:20}}>
-      <Pressable onPress={() => navigation.navigate('profile')}>
+      <Pressable onPress={() => navigation.navigate('login')}>
         <View style = {styles.btn}>
             <Text style = {{color:COLORS.white}}>Get Started</Text>
         </View>
