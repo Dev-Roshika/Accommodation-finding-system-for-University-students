@@ -1,16 +1,6 @@
 # Accommodation-finding-system-for-University-students
-## Instruction for developers 
- ### **Branches**
- ##### **main** - include files without any issue
- ##### **develop** - All developers are working together with this branch
-(Working branch)
- ##### other feature branches...
- 
-#### ---------------------------------------
-
-# Assignment - CSC302S2 Computer Programming III 
-Since this repository is private the two instuctiors Miss Tharmika Kulenthiran and Miss Amutha Kunarathinam were added as collaborators.
-
- ![image](https://user-images.githubusercontent.com/81811433/215309308-d3c699d5-cdf3-433c-9051-1ddfb63d4364.png)
-
-![image](https://user-images.githubusercontent.com/81811433/215309801-3b6ba0d3-78bf-4360-bcb2-4975a178c7f9.png)
+## Web App
+### Branches
+##### **main** -  Default branch
+##### **web-develop** - Working branch ( ex: When colloborators wants to create a new branch they can copy this branch for their new branch and start form this.)
+##### **web-username** - Each colloborators own branch ( ex: web-Dev-Roshika )
