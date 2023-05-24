@@ -5,6 +5,8 @@ import Home from './Pages/Home'
 import OnBoardPage from './OnBoardPage';
 import BoardingHouses from './Pages/BoardingHouses';
 import Footer from './Components/Footer';
+import PostAd from './Owner/PostAd';
+import CompletePostAd from './Owner/CompletePostAd';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path='/student/signup' element={<Signup />} />
           <Route path='/home' element={<Home />} />
           <Route path='/boarding-houses' element={<BoardingHouses />} />
+          <Route path='/owner/post-ad' element={<PostAd />} />
+          <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
         </Routes>
       </BrowserRouter>
       <Footer />

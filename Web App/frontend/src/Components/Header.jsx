@@ -58,7 +58,7 @@ function Header({type}) {
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos maxime reiciendis nesciunt distinctio architecto. 
                     Architecto odio veniam nam tempora minus.
                 </p>
-                <button className="headerBtn">Header btn</button>
+                <button className="headerBtn">Post your Ad</button>
                 <div className="headerSearch">
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon = {faCalendarDays} onClick={()=> setOpenDate(!openDate)} className = "headerIcon" />
