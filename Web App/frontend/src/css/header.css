@@ -1,0 +1,126 @@
+.header{
+    background-color: #0d987d;
+    color: white;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.headerContainer{
+    width: 100%;
+    max-width: 1024px;
+    margin: 20px 0px 50px 0px;
+}
+
+.headerContainer.listMode{
+    margin: 20px 0px 0px 0px;
+
+}
+.headerList{
+    display: flex;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.headerListItem{
+    display: flex;
+    align-items: center;
+    gap : 10px;
+}
+
+.headerListItem.active{
+    border-bottom: 2px solid white;
+    padding: 10px;
+}
+
+.headerDesc{
+    margin: 20px 0px; 
+}
+
+.headerBtn{
+    background-color: #016551;
+    color: white;
+    font-weight: 500;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.headerSearch{
+    height: 50px;
+    background-color: white;
+    border:3px solid #febb02;
+    display: flex;
+    align-items:center;
+    justify-content: space-around;
+    padding: 10px 0px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -25px;
+    width: 100%;
+    max-width: 1024px;
+    color: #016551; /*Text color in the search component*/
+}
+
+.headerSearchItem{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.headerSearchInput{
+    border: none;
+    outline: none;
+}
+
+.headerSearchText{
+    color: lightgray;
+    cursor: pointer;
+}
+
+.date{
+    position: absolute;
+    top:50px;
+}
+
+.options{
+    position: absolute;
+    top: 50px;
+    background-color: white;
+    color: gray;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0);
+    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
+
+}
+
+.optionItem{
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.optionCounterButton{
+    width: 30px;
+    height: 30px;
+    border: 1px solid #0d987d;
+    color: #0d987d;
+    cursor: pointer;
+    background-color: white;
+}
+
+.optionCounterButton:disabled{
+    cursor: not-allowed;
+}
+
+.optionCounter{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: black;
+}
