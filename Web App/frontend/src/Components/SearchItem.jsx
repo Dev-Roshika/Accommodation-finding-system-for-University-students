@@ -2,24 +2,34 @@ import React from "react";
 import "../css/searchitem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
 
-function SearchItem() {
+
+function SearchItem({data}) {
+  const navigate = useNavigate();
   return (
-    <div className="searchItem">
-      <img
-        src="https://www.stcb.edu.lk/infrastructure/images/hostel.jpg"
-        alt=""
-        className="siImg"
-      />
-      <div className="siDesc">
-        <h1 className="siTitle">Title - boarding house</h1>
+    <div className="searchItem" >
+      <Link to ={`/boarding-houses/${data.Id}`}>
+        <img
+          src={'http://localhost:8081/images/cover_images/' + data.CoverImage}
+          alt=""
+          className="siImg"
+          />
+      </Link>
+      <div className="siDesc" onClick={()=>{navigate(`/boarding-houses/${data.Id}`)}}>
+        <h1 className="siTitle">
+            {data.Title}
+        </h1>
         <span className="siDistance">
-          500m from University of Jaffna main premises
+          {data.Distance} from University of Jaffna main premises
         </span>
         <span className="siTaxi">Bus road</span>
         <span className="siSubtitle">not Air conditioning</span>
-        <span className="siConditions">10 boys only</span>
-        <span className="siFeatures">3 bedrooms . 1 bathroom</span>
+        <span className="siConditions">
+          {(data.Boys !==0) && <>{data.Boys} boys </>}
+          {(data.Girls !==0) && <>{data.Girls} girls </>}only
+        </span>
+        <span className="siFeatures">{data.Facilities}</span>
       </div>
       <div className="siDetails">
         <div className="siDetailsIcons">
@@ -31,12 +41,14 @@ function SearchItem() {
           </div>
         </div>
         <div className="siDetailsTexts">
-            <span className="siPriceText">Negotiable</span>
-            <span className="siPrice">Rs 50,000 /month</span>
-            <button className="siCheckButton">See availability</button>
+              {(data.Negotiable === 'Yes') && <span className="siPriceText">Negotiable</span>}
+            <span className="siPrice">Rs {data.Price} /month</span>
+            
+            <button className="siCheckButton" onClick={()=>{ navigate(`/boarding-houses/${data.Id}`)}}>See availability</button>
         </div>
       </div>
     </div>
+
   );
 }
 

@@ -8,12 +8,14 @@ function PostAd() {
     description:'',
     price:'',
     address:'',
+    distance:'',
     boys:'',
     girls:'',
     facilities:'',
     rules:'',
-    contactno:'',
+    contactno:''
   });
+  const [isChecked, setIsChecked] = useState(false);
 
   const [file, setFile] = useState();
   const navigate = useNavigate();
@@ -31,12 +33,20 @@ function PostAd() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
+    var negotiable_or_not = "";
+    if(isChecked){
+      negotiable_or_not = "Yes"
+    } else{
+      negotiable_or_not = "No"
+    }
     const formData = new FormData();
     formData.append('coverimage',file);
     formData.append('title',values.title);
     formData.append('description',values.description);
     formData.append('price',values.price);
+    formData.append('negotiable',negotiable_or_not);
     formData.append('address',values.address);
+    formData.append('distance',values.distance);
     formData.append('boys',values.boys);
     formData.append('girls',values.girls);
     formData.append('facilities',values.facilities);
@@ -72,8 +82,16 @@ function PostAd() {
             <input type="text" name='price' onChange={handleInput}/>
             </div>
             <div>
+            <label htmlFor="nagotiable">Negotiable</label>
+            <input type="checkbox" name="nagotiable" checked={isChecked} onChange={() => setIsChecked((prev) => !prev)} />
+            </div>
+            <div>
             <label htmlFor="title">Address</label>
             <input type="text" name='address' onChange={handleInput}/>
+            </div>
+            <div>
+            <label htmlFor="distance">Distance</label>
+            <input type="text" name='distance' onChange={handleInput}/>
             </div>
             <div>
             <label htmlFor="title">Boys</label>
