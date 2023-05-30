@@ -125,26 +125,56 @@ app.post("/student/login", (req, res) => {
 //signup - start
 const O_signup_storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images/nidphoto");
+    if (file.fieldname === 'nidphoto') {
+      cb(null, "public/images/nidphoto");
+    } else if (file.fieldname === 'profileimage') {
+      cb(null, "public/images/profile_images/owner");
+    }
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname); // Get the file extension
-    const filenameWithoutExt = path.basename(file.originalname, ext); // Get the filename without extension
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + "-" + filenameWithoutExt + path.extname(file.originalname)
-    );
+    const ext = path.extname(file.originalname);
+    const filenameWithoutExt = path.basename(file.originalname, ext);
+    let filename;
+
+    if (file.fieldname === 'nidphoto') {
+      filename =
+        file.fieldname +
+        "-" +
+        Date.now() +
+        "-" +
+        filenameWithoutExt +
+        ext;
+    } else if (file.fieldname === 'profileimage') {
+      filename =
+        file.fieldname +
+        "-" +
+        Date.now() +
+        "-" +
+        filenameWithoutExt +
+        ext;
+    }
+
+    cb(null, filename);
   },
 });
 
 const O_signup_upload = multer({
   storage: O_signup_storage,
 });
-app.post("/owner/signup", O_signup_upload.single("nidphoto"), (req, res) => {
-  console.log(req.file) // Can retrieve image information like this
-  const img_filename = req.file.filename;
+app.post("/owner/signup", O_signup_upload.fields([
+  { name: 'nidphoto', maxCount: 1 },
+  { name: 'profileimage', maxCount: 1 }
+]), (req, res) => {
+  console.log("checking req.files")
+  console.log(req.files)
+  const profileImgFilename = req.files['profileimage'][0].filename // Retrieve the filename of the profile image
+  const nidPhotoFilename = req.files['nidphoto'][0].filename // Retrieve the filename of the nid photo
+  console.log("checking profileImgFilename")
+  console.log(profileImgFilename)
+  console.log("checking nidPhotoFilename")
+  console.log(nidPhotoFilename)
   const sql =
-    "INSERT INTO `owner_info` (`FullName`,`UserName`, `ContactNo`, `Email`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES(?)";
+    "INSERT INTO `owner_info` (`FullName`,`UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES(?)";
   bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
     if (err) return res.json({ Error: "Error for hashing password" });
     const values = [
@@ -152,8 +182,9 @@ app.post("/owner/signup", O_signup_upload.single("nidphoto"), (req, res) => {
       req.body.username,
       req.body.mobile,
       req.body.email,
+      profileImgFilename,
       req.body.nidno,
-      img_filename,
+      nidPhotoFilename,
       req.body.paddress,
       hash
     ];
