@@ -21,6 +21,7 @@
     flex-direction: column;
     gap: 10px;
     flex: 2;
+    cursor:pointer;
 }
 
 .siTitle{
