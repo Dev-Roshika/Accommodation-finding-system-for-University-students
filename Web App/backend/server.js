@@ -14,7 +14,7 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET","PUT"],
     credentials: true,
   })
 );
@@ -208,10 +208,55 @@ app.post("/images/upload/:id", (req, res) => {
 // multiple image upload - end
 
 ///Owner - end
-
+//profile start
+app.get("/student/show/:id", (req, res) => {
+  const userId = req.params.id;
+  console.log(userId)
+  const sql = "SELECT * FROM user_info WHERE Id = ?"; 
+  db.query(sql,[userId],(err,data)=>{
+    if(err) return res.json(data)
+    return res.json(data)
+})
+});
+app.put("/student/updateUser",(req,res)=>{
+  const {ContactNo,Email,Id} = req.body[0];
+ const values = [ContactNo,Email,Id];
+ const sql = "UPDATE user_info SET ContactNo = ?,Email = ? WHERE Id = ?"
+ 
+  db.query(sql,values,(err,data) => { 
+    if(err) return res.json(data)
+    return res.json(data)
+  });
+})
+//profile image upload
+const storage_profile = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images/profile_images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+const upload_profile = multer({
+  storage: storage_profile,
+});
+app.post("/profile/upload", upload_profile.single("image"), (req, res) => {
+  // Handle the uploaded image here
+  if (req.file) {
+    console.log("Image uploaded successfully");
+    // You can save the image details to the database or perform other actions
+  } else {
+    console.log("Image upload failed");
+  }
+  res.sendStatus(200);
+});
+// profile - end
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  return res.json("success");
+     return res.json("success");
 });
 
 app.listen(8081, () => {

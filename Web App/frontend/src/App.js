@@ -7,7 +7,8 @@ import BoardingHouses from './Pages/BoardingHouses';
 import Footer from './Components/Footer';
 import PostAd from './Owner/PostAd';
 import CompletePostAd from './Owner/CompletePostAd';
-
+import Profile from './Pages/Profile';
+import UpdateProfile from './Pages/UpdateProfile';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
           <Route path='/boarding-houses' element={<BoardingHouses />} />
           <Route path='/owner/post-ad' element={<PostAd />} />
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
+          <Route path='/profile' element={<Profile/>} />
+          <Route path='/UpdateProfile' element={<UpdateProfile/>} />
         </Routes>
       </BrowserRouter>
       <Footer />
