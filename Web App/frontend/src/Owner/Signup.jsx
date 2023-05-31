@@ -19,6 +19,7 @@ function Signup() {
   
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState();
+  const [profilefile, setProfilefile] = useState();
 
   const navigate = useNavigate();
 
@@ -30,8 +31,12 @@ function Signup() {
   };
 
   const handleFile = (event) => {
-    //console.log(event.target.files[0])
-      setFile(event.target.files[0])
+    const nidphoto = event.target.files[0];
+      setFile(nidphoto);
+  };
+  const handleProfileImageFile = (event) => {
+    const profileimage = event.target.files[0];
+    setProfilefile(profileimage);
   };
   useEffect(() => {
     axios.get('http://localhost:8081')
@@ -54,12 +59,16 @@ function Signup() {
     formData.append('mobile',values.mobile);
     formData.append('nidno',values.nidno);
     formData.append('nidphoto',file);
+    formData.append('profileimage',profilefile);
     formData.append('email',values.email);
     formData.append('paddress',values.paddress);
     formData.append('password',values.password);
     formData.append('cpassword',values.cpassword);
     console.log(errors);
+    
     if (errors.cpassword === "") {
+      console.log("No error");
+      console.log(formData);
       axios
         .post("http://localhost:8081/owner/signup", formData)
         .then((res) => {
@@ -160,6 +169,21 @@ function Signup() {
                 <span className="text-danger">{errors.email}</span>
               )}
             </div>
+            {/* Profile Image */}
+            <div className="mb-3">
+              <label htmlFor="profileimage">
+                <strong>Profile Image</strong>
+              </label>
+              <input
+                name="profileimage"
+                type="file"
+                className="form-control rounded-0"
+                onChange={handleProfileImageFile}
+              />
+              {errors.profileimage && (
+                <span className="text-danger">{errors.profileimage}</span>
+              )}
+            </div> 
             {/* NID */}
             <div className="mb-3">
               <label htmlFor="nidno">

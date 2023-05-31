@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2023 at 06:51 AM
+-- Generation Time: May 30, 2023 at 01:49 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -64,6 +64,7 @@ CREATE TABLE `owner_info` (
   `UserName` varchar(50) DEFAULT NULL,
   `ContactNo` varchar(20) DEFAULT NULL,
   `Email` varchar(50) DEFAULT NULL,
+  `ProfileImage` varchar(100) DEFAULT NULL,
   `NidNo` varchar(50) NOT NULL,
   `NidPhoto` varchar(100) NOT NULL,
   `PrivateAddress` text DEFAULT NULL,
@@ -74,8 +75,8 @@ CREATE TABLE `owner_info` (
 -- Dumping data for table `owner_info`
 --
 
-INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES
-(1, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0774513511', 'sinnathurayi@gmail.com', '543251380v', 'nidphoto-1685370818124-NID.PNG', '159, Manipay Road, Jaffna', '$2b$10$sW3AbipjsZaoX1SRMyJ6/.4hGs1akhiJSx0rENjhBZU9nO56HUQoi');
+INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES
+(5, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0124356987', 'sinnathurayi@gmail.com', 'profileimage-1685447304046-programming-wallpaper - Copy.jpg', '543251380v', 'nidphoto-1685447304046-NID.PNG', '159, Manipay Road, Jaffna', '$2b$10$/O8xWZSMuYnf5zupDsW.Qere14aG6B2zZh7iQj5Hyr29STuxZPy3O');
 
 -- --------------------------------------------------------
 
@@ -139,7 +140,7 @@ ALTER TABLE `boarding_house`
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `student_info`
