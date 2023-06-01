@@ -56,6 +56,12 @@
     justify-content: space-between;
 }
 
+.boardingImgWrapperMain{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
 .boardingImgWrapper{
     width: 33%;
 }

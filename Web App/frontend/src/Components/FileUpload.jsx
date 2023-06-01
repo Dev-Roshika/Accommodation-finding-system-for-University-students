@@ -10,7 +10,7 @@ const FileUpload = () => {
     console.log(e.target.files);
     setFiles(e.target.files)
   };
-  console.log(files);
+  //console.log(files);
   const onSubmit = async e => {
     e.preventDefault();
     if (files.length === 0) {

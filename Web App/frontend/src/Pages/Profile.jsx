@@ -2,21 +2,37 @@ import React, { useEffect, useState } from 'react'
 import '../css/profile.css';
 import Navbar from '../Components/Navbar';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 
 function Profile() {
     const[user,UseUser] = useState([])
     const[selectedImage,setSelectedImage] = useState(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const navigate = useNavigate();
 
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+      axios.get('http://localhost:8081')
+        .then((res) => {
+          if (res.data.Valid && (res.data.Role === 'student' || res.data.Role === 'owner')) {
+            console.log(res.data.Role)
+            console.log(res.data.Id)
+          } else{
+            console.log("Check this");
+            navigate('/')
+          }
+        })
+        .catch((err) => console.log(err))
+        // eslint-disable-next-line
+    }, [])
     const handleImageSelect = (event) => {
         setSelectedImage(event.target.files[0]);
       };
       const handleImageUpload = async () => {
         try {
           const formData = new FormData();
-          formData.append('image', selectedImage);
+          formData.append('profile_image', selectedImage);
       
           await axios.post('http://localhost:8081/profile/upload', formData, {
             headers: {
@@ -27,6 +43,7 @@ function Profile() {
           // Image upload success, perform any necessary actions
           console.log('Image uploaded successfully');
           setIsPopupOpen(false);
+          window.location.reload();
         } catch (error) {
           console.log(error);
         }
@@ -35,7 +52,7 @@ function Profile() {
         const getUser = async() =>
         {
             try{
-                const resp = await axios.get('http://localhost:8081/student/show/'+20);
+                const resp = await axios.get('http://localhost:8081/student/show');
                 console.log("test")
                 console.log(resp)
                 UseUser(resp.data);
@@ -63,7 +80,8 @@ function Profile() {
             {user.map(cuser =>(
         <div key={cuser.Id}>
                     <div className='profileimage'>
-                        <img src="./Images/k.jpg" alt="this is saman" height={100} width={100} onClick={openPopup}/>
+                    
+                        <img src={`http://localhost:8081/images/profile_images/student/${cuser.ProfileImage}`} alt="this is saman" height={100} width={100} onClick={openPopup}/>
                     </div> 
                     <div className="rows">
                       <p className='row'><label>User Name :  {cuser.UserName}</label></p>

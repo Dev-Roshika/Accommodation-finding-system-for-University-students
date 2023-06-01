@@ -8,11 +8,27 @@ import '../css/profile.css';
 function UpdateProfile() {
     const[user,UseUser] = useState([])
     //const [user, setUser] = useState([]);
+    const navigate = useNavigate();
+
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+      axios.get('http://localhost:8081')
+        .then((res) => {
+          if (res.data.Valid && (res.data.Role === 'student' || res.data.Role === 'owner')) {
+            console.log(res.data.Role)
+          } else{
+            console.log("Check this");
+            navigate('/')
+          }
+        })
+        .catch((err) => console.log(err))
+        // eslint-disable-next-line
+    }, [])
     useEffect(()=>{
         const getUser = async() =>
         {
             try{
-                const resp = await axios.get('http://localhost:8081/student/show/'+20);
+                const resp = await axios.get('http://localhost:8081/student/show');
                 UseUser(resp.data);
             }
             catch(err){
