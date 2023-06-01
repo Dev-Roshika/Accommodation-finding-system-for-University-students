@@ -409,7 +409,7 @@ app.post("/profile/upload", upload_profile.single("profile_image"), (req, res) =
   let sql;
    if(req.session.role === 'student'){
     sql = "UPDATE student_info SET ProfileImage = ? WHERE Id = ?";}
-   else  { sql = "UPDATE owner_info ProfileImage = ? WHERE Id = ?";}
+   else  { sql = "UPDATE owner_info SET ProfileImage = ? WHERE Id = ?";}
    console.log("filename"+req.file.filename)
   console.log("values"+values)
   console.log("sql"+sql)

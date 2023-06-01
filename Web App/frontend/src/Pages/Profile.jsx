@@ -8,6 +8,7 @@ import Popup from 'reactjs-popup';
 function Profile() {
     const[user,UseUser] = useState([])
     const[selectedImage,setSelectedImage] = useState(null);
+    const [role, setRole] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ function Profile() {
           if (res.data.Valid && (res.data.Role === 'student' || res.data.Role === 'owner')) {
             console.log(res.data.Role)
             console.log(res.data.Id)
+            setRole(res.data.Role);
           } else{
             console.log("Check this");
             navigate('/')
@@ -81,7 +83,7 @@ function Profile() {
         <div key={cuser.Id}>
                     <div className='profileimage'>
                     
-                        <img className="profileimg"src={`http://localhost:8081/images/profile_images/student/${cuser.ProfileImage}`} alt="this is saman" height={100} width={100} onClick={openPopup}/>
+                        <img className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt="add a Profile image" height={100} width={100} onClick={openPopup}/>
                     </div> 
                     <div className="rows">
                       <p className='row'><label>User Name :  {cuser.UserName}</label></p>
