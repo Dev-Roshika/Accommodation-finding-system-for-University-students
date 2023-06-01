@@ -77,9 +77,9 @@ function UpdateProfile() {
                     <div className="rows">                    <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
                        
-                     <p className='row'> <input  type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
+                     <p className='row'> <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
                       </p>
-                      <p className='row'><input  type="number" placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
+                      <p className='row'><input className='profileInput' type="number" placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
               </p>   
               <button className='profileupdate' onClick={handleClick}>Save</button>
                     </div>

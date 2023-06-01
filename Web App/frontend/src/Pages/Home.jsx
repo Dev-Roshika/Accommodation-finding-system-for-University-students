@@ -8,12 +8,14 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [data, setData] = useState([]);
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
       .then((res) => {
         if (res.data.Valid && (res.data.Role === 'student' || res.data.Role === 'owner')) {
+          setRole(res.data.Role);
           console.log(res.data.Role)
         } else{
           console.log("Check this");
@@ -38,7 +40,7 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <Header />
+      <Header role = {role}/>
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listResult">

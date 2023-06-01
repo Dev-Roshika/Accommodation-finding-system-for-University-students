@@ -93,7 +93,7 @@ function Profile() {
                     <Popup open={isPopupOpen} onClose={closePopup}>
                     <div className='pop'>
                         <h3>Let's add a profile picture !!!.</h3>
-                        <input type="file" accept="image/*" onChange={handleImageSelect} />
+                        <input className='profileInput' type="file" accept="image/*" onChange={handleImageSelect} />
                         <button onClick={handleImageUpload}>Upload Image</button>
                         <button onClick={closePopup}>Cancel</button>
                     </div>
