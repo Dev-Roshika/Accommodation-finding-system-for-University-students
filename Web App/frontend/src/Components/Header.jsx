@@ -7,8 +7,10 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
-function Header({type}) {
+function Header({type, role}) {
+    const navigate  = useNavigate();
     const [openDate, setOpenDate] =  useState(false);
     const [date, setDate] = useState([
         {
@@ -58,7 +60,7 @@ function Header({type}) {
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos maxime reiciendis nesciunt distinctio architecto. 
                     Architecto odio veniam nam tempora minus.
                 </p>
-                <button className="headerBtn">Post your Ad</button>
+                { role === "owner" && <button className="headerBtn" onClick={()=>{navigate('/owner/post-ad')}}>Post your Ad</button>}
                 <div className="headerSearch">
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon = {faCalendarDays} onClick={()=> setOpenDate(!openDate)} className = "headerIcon" />
