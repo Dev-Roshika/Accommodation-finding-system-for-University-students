@@ -1,7 +1,8 @@
+import React from 'react'
+import '../css/navbar.css'
+import {Link} from 'react-router-dom'
 import axios from "axios";
-import React from "react";
-import "../css/navbar.css";
- 
+
 function Navbar() {
   const handleLogout = async () => {
     try {
@@ -17,7 +18,7 @@ function Navbar() {
       <div className="navContainer">
         <span className="logo">UniAccomodations</span>
         <div className="navItems">
-          <button className="navButton">Account</button>
+        <button className='navButton'><Link to ="/profile">Account</Link></button>
           <button className="navButton" onClick={handleLogout}>Logout</button>
         </div>
       </div>

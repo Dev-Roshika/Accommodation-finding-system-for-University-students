@@ -9,6 +9,8 @@ import BoardingHouses from './Pages/BoardingHouses';
 import Footer from './Components/Footer';
 import PostAd from './Owner/PostAd';
 import CompletePostAd from './Owner/CompletePostAd';
+import Profile from './Pages/Profile';
+import UpdateProfile from './Pages/UpdateProfile';
 import NotFoundPage from './Pages/NotFoundPage';
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
           <Route path='/owner/signup' element={<OwnerSignup />} />
           <Route path='/owner/post-ad' element={<PostAd />} />
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
+          <Route path='/profile' element={<Profile/>} />
+          <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

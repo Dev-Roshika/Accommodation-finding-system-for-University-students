@@ -14,7 +14,7 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET","PUT"],
     credentials: true,
   })
 );
@@ -100,9 +100,11 @@ app.post("/student/login", (req, res) => {
 
     if (result.length > 0) {
       req.session.email = result[0].Email
+      req.session.Id = result[0].Id
       req.session.role = "student";
       console.log(req.session.email)
       console.log(req.session.role)
+      console.log(req.session.Id)
       bcrypt.compare(
         req.body.password.toString(),
         result[0].Password,
@@ -205,6 +207,8 @@ app.post("/owner/login", (req, res) => {
     if (result.length > 0) {
       req.session.email = result[0].Email
       req.session.role = "owner";
+      req.session.Id = result[0].Id
+      
       console.log(req.session.email)
       console.log(req.session.role)
       bcrypt.compare(
@@ -340,12 +344,96 @@ app.post("/images/upload/:id", (req, res) => {
 // multiple image upload - end
 
 ///Owner - end
+//profile start
+app.get("/student/show", (req, res) => {
+  const userId = req.session.Id;
+  console.log("show")
+  console.log(userId)
+  let sql;
+  if(req.session.role === 'student'){
+   sql = "SELECT * FROM student_info WHERE Id = ?";}
+  else  { sql = "SELECT * FROM owner_info WHERE Id = ?";}
 
+  console.log(sql)
+  db.query(sql,[userId],(err,data)=>{
+    if(err) return res.json(data)
+    return res.json(data)
+})
+});
+app.put("/student/updateUser",(req,res)=>{
+  const {ContactNo,Email} = req.body[0];
+ const values = [ContactNo,Email,req.session.Id];
+//const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
+ let sql;
+  if(req.session.role === 'student'){
+   sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?";}
+  else  { sql = "UPDATE owner_info SET ContactNo = ?,Email = ? WHERE Id = ?";}
+
+ console.log("profile_update")
+//console.log(req.session.Id)
+console.log("check")
+  db.query(sql,values,(err,data) => { 
+    console.log(err)
+    if(err) return res.json(data)
+    return res.json(data)
+  });
+})
+//profile image upload
+const storage_profile = multer.diskStorage({
+  destination: (req, file, cb) => {
+    console.log(" role : "+req.session.role);
+    if(req.session.role ==="student")
+    {cb(null, "public/images/profile_images/student");}
+    else{
+      cb(null, "public/images/profile_images/owner");
+    }
+    //cb(null, "public/images/profile_images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now()+"_" + path.extname(file.originalname)
+      
+    );
+  },
+});
+const upload_profile = multer({
+  storage: storage_profile,
+});
+app.post("/profile/upload", upload_profile.single("profile_image"), (req, res) => {
+  // Handle the uploaded image here
+  
+ 
+  const values = [ req.file.filename,req.session.Id];
+ //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
+  let sql;
+   if(req.session.role === 'student'){
+    sql = "UPDATE student_info SET ProfileImage = ? WHERE Id = ?";}
+   else  { sql = "UPDATE owner_info ProfileImage = ? WHERE Id = ?";}
+   console.log("filename"+req.file.filename)
+  console.log("values"+values)
+  console.log("sql"+sql)
+   db.query(sql,values,(err,data) => {  
+     if(err) return res.json(data)
+     return res.json(data)
+   });
+
+/*
+  if (req.file) {
+    console.log(req.file.filename);
+    console.log(req.file);
+    // You can save the image details to the database or perform other actions
+  } else {
+    console.log("Image upload failed");
+  }
+  res.sendStatus(200);*/
+});
+// profile - end
 
 //Fetch data for useEffect - start
 app.get('/', (req,res)=>{
 	if(req.session.role){
-		return res.json({Valid: true, Role: req.session.role })
+		return res.json({Valid: true,Id:req.session.Id, Role: req.session.role })
 	} else {
 		return res.json({Valid: false})
 	}
