@@ -5,7 +5,7 @@
     justify-content: center;
     margin: 5%;
 }
-img{
+.profileimg{
     border-radius: 50%;
     border: 2px solid rgb(2, 2, 2);
 }

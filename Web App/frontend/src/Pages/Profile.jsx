@@ -81,7 +81,7 @@ function Profile() {
         <div key={cuser.Id}>
                     <div className='profileimage'>
                     
-                        <img src={`http://localhost:8081/images/profile_images/student/${cuser.ProfileImage}`} alt="this is saman" height={100} width={100} onClick={openPopup}/>
+                        <img className="profileimg"src={`http://localhost:8081/images/profile_images/student/${cuser.ProfileImage}`} alt="this is saman" height={100} width={100} onClick={openPopup}/>
                     </div> 
                     <div className="rows">
                       <p className='row'><label>User Name :  {cuser.UserName}</label></p>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../css/home.css';
 import Navbar from '../Components/Navbar';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../css/profile.css';
 
 function UpdateProfile() {
