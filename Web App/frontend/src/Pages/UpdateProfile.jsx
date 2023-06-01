@@ -7,6 +7,7 @@ import '../css/profile.css';
 
 function UpdateProfile() {
     const[user,UseUser] = useState([])
+    const [role, setRole] = useState('');
     //const [user, setUser] = useState([]);
     const navigate = useNavigate();
 
@@ -15,6 +16,7 @@ function UpdateProfile() {
       axios.get('http://localhost:8081')
         .then((res) => {
           if (res.data.Valid && (res.data.Role === 'student' || res.data.Role === 'owner')) {
+            setRole(res.data.Role);
             console.log(res.data.Role)
           } else{
             console.log("Check this");
@@ -72,7 +74,7 @@ function UpdateProfile() {
             {user.map((cuser,index) =>(
                 <div key={cuser.Id}>
                     <div  className='profileimage'>
-                        <img src="./Images/k.jpg" alt="this is saman" height={100} width={100} />
+                        <img  className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt="add a Profile image" height={100} width={100} />
                     </div> 
                     <div className="rows">                    <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
