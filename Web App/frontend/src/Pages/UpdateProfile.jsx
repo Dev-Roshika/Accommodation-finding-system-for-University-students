@@ -76,12 +76,12 @@ function UpdateProfile() {
                     <div  className='profileimage'>
                         <img  className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100} />
                     </div> 
-                    <div className="rows">                    <p className='row'><label>User Name :  {cuser.UserName}</label></p>
-                      <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
+                    <div className="rows">                    <p className='row_'><label>User Name :  {cuser.UserName}</label></p>
+                      <p className='row_'><label>Full Name :  {cuser.FullName}</label></p>
                        
-                     <p className='row'> <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
+                     <p className='row_'> <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
                       </p>
-                      <p className='row'><input className='profileInput' type="number" placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
+                      <p className='row_'><input className='profileInput' type="number" placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
               </p>   
               <button className='profileupdate' onClick={handleClick}>Save</button>
                     </div>
