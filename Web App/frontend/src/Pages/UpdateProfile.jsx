@@ -74,7 +74,7 @@ function UpdateProfile() {
             {user.map((cuser,index) =>(
                 <div key={cuser.Id}>
                     <div  className='profileimage'>
-                        <img  className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt="add a Profile image" height={100} width={100} />
+                        <img  className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100} />
                     </div> 
                     <div className="rows">                    <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
