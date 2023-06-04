@@ -67,7 +67,7 @@ const signup_storage = multer.diskStorage({
 const signup_upload = multer({
   storage: signup_storage,
 });
-app.post("/student/signup", signup_upload.single("profile_image"), (req, res) => {
+app.post("/student/signup", signup_upload.single("profileimage"), (req, res) => {
   const img_filename = req.file.filename;
   const sql =
     "INSERT INTO `student_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Password`) VALUES(?)";
@@ -167,14 +167,13 @@ app.post("/owner/signup", O_signup_upload.fields([
   { name: 'nidphoto', maxCount: 1 },
   { name: 'profileimage', maxCount: 1 }
 ]), (req, res) => {
-  console.log("checking req.files")
   console.log(req.files)
   const profileImgFilename = req.files['profileimage'][0].filename // Retrieve the filename of the profile image
   const nidPhotoFilename = req.files['nidphoto'][0].filename // Retrieve the filename of the nid photo
-  console.log("checking profileImgFilename")
-  console.log(profileImgFilename)
-  console.log("checking nidPhotoFilename")
-  console.log(nidPhotoFilename)
+  // console.log("checking profileImgFilename")
+  // console.log(profileImgFilename)
+  // console.log("checking nidPhotoFilename")
+  // console.log(nidPhotoFilename)
   const sql =
     "INSERT INTO `owner_info` (`FullName`,`UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES(?)";
   bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
@@ -462,6 +461,42 @@ app.get("/boarding-data/:id", (req, res) => {
     }
   });
 });
+app.get("/student/check-email", (req, res) => {
+  const email = req.query.email;
+
+  const sql = "SELECT * FROM `student_info` WHERE Email = ?";
+  db.query(sql, [email], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.json({ result: "Error" });
+    }
+
+    if (result.length > 0) {
+      return res.json({ result: "EmailExists" });
+    } else {
+      return res.json({ result: "EmailDoesNotExists" });
+    }
+  });
+});
+
+app.get("/owner/check-email", (req, res) => {
+  const email = req.query.email;
+
+  const sql = "SELECT * FROM `owner_info` WHERE Email = ?";
+  db.query(sql, [email], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.json({ result: "Error" });
+    }
+
+    if (result.length > 0) {
+      return res.json({ result: "EmailExists" });
+    } else {
+      return res.json({ result: "EmailDoesNotExists" });
+    }
+  });
+});
+
 //Fetch data for useEffect - end
 
 app.get('/logout',(req,res)=>{
