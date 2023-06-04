@@ -34,10 +34,10 @@ function SearchItem({data}) {
       <div className="siDetails">
         <div className="siDetailsIcons">
           <div className="siDetailsLeft">
-            <FontAwesomeIcon icon={faThumbsUp} size="2x" color="#0071c2"/>
+            <FontAwesomeIcon icon={faThumbsUp} size="1x" color="#0071c2"/>
           </div>
           <div className="siDetailsRight">
-            <FontAwesomeIcon icon={faThumbsDown} size="2x" color="red"/>
+            <FontAwesomeIcon icon={faThumbsDown} size="1x" color="red"/>
           </div>
         </div>
         <div className="siDetailsTexts">
