@@ -86,10 +86,24 @@ function Profile() {
                         <img className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100} onClick={openPopup}/>
                     </div> 
                     <div className="rows">
-                      <p className='row'><label>User Name :  {cuser.UserName}</label></p>
+                    <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
-                      <p className='row'><label>Email :  {cuser.Email}</label></p>
+                    
+                      {role ==='student'?(<>
+                        <p className='row'><label>Unoversity RegNo :  {cuser.UnivRegNo}</label></p>
+                        <p className='row'><label>Faculty :  {cuser.Faculty}</label></p>
+                        <p className='row'><label>Department :  {cuser.Dept}</label></p>
+                      </>):role ==='owner'?(<>
+                      {/* Display owner-specific content here */}
+                      
+                      <p className='row'><label>NID :  {cuser.NidNo}</label></p>
+                      <p className='row'><label>Address :  {cuser.PrivateAddress}</label></p>
+                     
+                    </>
+                  ) : null}
+                    <p className='row'><label>Email :  {cuser.Email}</label></p>
                       <p className='row'><label >Contact No :  {cuser.ContactNo} </label></p>
+                      
                       <button className='profileupdate'><Link to= "/UpdateProfile">change</Link></button>
                    </div>
                     <Popup open={isPopupOpen} onClose={closePopup}>

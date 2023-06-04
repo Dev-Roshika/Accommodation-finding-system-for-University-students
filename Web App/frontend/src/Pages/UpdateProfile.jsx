@@ -44,10 +44,10 @@ function UpdateProfile() {
         e.preventDefault();
     try{
       await axios.put("http://localhost:8081/student/updateUser",user) 
-      console.log("work")
+      //console.log("work")
       Navigate("/profile")
     }catch(err){
-        console.log(user)
+       // console.log(user)
       console.log("error")
       console.log(err)
     }
@@ -76,9 +76,16 @@ function UpdateProfile() {
                     <div  className='profileimage'>
                         <img  className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100} />
                     </div> 
-                    <div className="rows">                    <p className='row'><label>User Name :  {cuser.UserName}</label></p>
+                    <div className="rows"> 
+                       <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
-                       
+                       {role ==='student'?(<>
+
+                       </>)
+                       :role === 'owner'?(<><p className='row'> <label>Address :<input className='profileInput' type="text" placeholder={cuser.PrivateAddress}  name="PrivateAddress" value={cuser.PrivateAddress||''} onChange={(e) => handleInputChange(e, index)}/>
+                       </label></p>
+                       </>):null}
+
                      <p className='row'> <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
                       </p>
                       <p className='row'><input className='profileInput' type="number" placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>

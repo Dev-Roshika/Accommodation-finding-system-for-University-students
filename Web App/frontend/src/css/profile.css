@@ -20,6 +20,7 @@
     border: 5px solid black;
 }
 .profileInput{
+    border-color: aquamarine;
     background-color: aquamarine;
 }
 .square{

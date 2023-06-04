@@ -361,17 +361,20 @@ app.get("/student/show", (req, res) => {
 })
 });
 app.put("/student/updateUser",(req,res)=>{
-  const {ContactNo,Email} = req.body[0];
+  const {ContactNo,Email,PrivateAddress} = req.body[0];
  const values = [ContactNo,Email,req.session.Id];
 //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
  let sql;
+ let i ;
   if(req.session.role === 'student'){
    sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?";}
-  else  { sql = "UPDATE owner_info SET ContactNo = ?,Email = ? WHERE Id = ?";}
+  else  { sql = "UPDATE owner_info SET ContactNo = ?,Email = ?,PrivateAddress=? WHERE Id = ?";
+  i = values.pop();
+  values.push(PrivateAddress);
+  values.push(i);
+  
+}
 
- console.log("profile_update")
-//console.log(req.session.Id)
-console.log("check")
   db.query(sql,values,(err,data) => { 
     console.log(err)
     if(err) return res.json(data)
