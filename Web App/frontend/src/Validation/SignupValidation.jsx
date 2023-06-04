@@ -35,7 +35,7 @@ function Validation(values) {
     values.cpassword === "" ||
     String(values.cpassword) !== String(values.password)
   ) {
-    console.log(values.password + "__" + values.cpassword);
+    //console.log(values.password + "__" + values.cpassword); //This is for testing purpose
     error.cpassword = "Password mismatch";
   } else {
     error.cpassword = "";

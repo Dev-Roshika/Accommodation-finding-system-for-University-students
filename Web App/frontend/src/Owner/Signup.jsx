@@ -16,20 +16,13 @@ function Signup() {
     password: "",
     cpassword: ""
   });
-  
+  const [email, setEmail] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState();
   const [profilefile, setProfilefile] = useState();
 
   const navigate = useNavigate();
-
-  const handleInput = (event) => {
-    setValues((prev) => ({
-      ...prev,
-      [event.target.name]: [event.target.value],
-    }));
-  };
-
   const handleFile = (event) => {
     const nidphoto = event.target.files[0];
       setFile(nidphoto);
@@ -38,6 +31,39 @@ function Signup() {
     const profileimage = event.target.files[0];
     setProfilefile(profileimage);
   };
+  const handleInput = (event) => {
+    setErrors((prev) => ({
+      ...prev,
+      [event.target.name]: "",
+    }));
+    setValues((prev) => ({
+      ...prev,
+      [event.target.name]: [event.target.value],
+    }));
+    if(event.target.name === 'email'){
+      setEmail(event.target.value);
+   }
+  };
+  useEffect(() => {
+    if (email) {
+      axios
+        .get("http://localhost:8081/owner/check-email", {
+          params: { email: email },
+        })
+        .then((res) => {
+          setEmailExists(false);
+          if (res.data.result === "EmailExists") {
+            setEmailExists(true);
+            console.log("Email exists");
+          } else if (res.data.result === "EmailDoesNotExists") {
+            console.log("Email does not exist");
+          } else {
+            console.log("Error occurred");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [email]);
   useEffect(() => {
     axios.get('http://localhost:8081')
       .then((res) => {
@@ -50,9 +76,23 @@ function Signup() {
       .catch((err) => console.log(err))
       // eslint-disable-next-line
   }, [])
+  useEffect(() => {
+    if(emailExists) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Email already exists",
+      }));
+    }
+  }, [emailExists])
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors(Validation(values));
+    if(emailExists) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Email already exists",
+      }));
+    }
     const formData = new FormData();
     formData.append('fullname',values.fullname);
     formData.append('username',values.username);
@@ -65,9 +105,12 @@ function Signup() {
     formData.append('password',values.password);
     formData.append('cpassword',values.cpassword);
     console.log(errors);
-    
-    if (errors.cpassword === "") {
+    if(emailExists) { 
+      alert("Email already exists");
+    }
+    if (errors.cpassword === "" && emailExists === false) {
       console.log("No error");
+      console.log("errors.email : "+ errors.email)
       console.log(formData);
       axios
         .post("http://localhost:8081/owner/signup", formData)
@@ -80,8 +123,7 @@ function Signup() {
         })
         .catch((err) => console.log(err));
     }
-  };
-
+  }
   return (
     <div className="bg-Light m-6">
       <div className="d-flex justify-content-center align-items-center vh-100 mb-3">
@@ -172,11 +214,12 @@ function Signup() {
             {/* Profile Image */}
             <div className="mb-3">
               <label htmlFor="profileimage">
-                <strong>Profile Image</strong>
+                <strong>Profile Image<RequiredField /></strong>
               </label>
               <input
                 name="profileimage"
                 type="file"
+                required
                 className="form-control rounded-0"
                 onChange={handleProfileImageFile}
               />
@@ -187,11 +230,12 @@ function Signup() {
             {/* NID */}
             <div className="mb-3">
               <label htmlFor="nidno">
-                <strong>NID No</strong>
+                <strong>NID No<RequiredField /></strong>
               </label>
               <input
                 name="nidno"
                 type="text"
+                required
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
