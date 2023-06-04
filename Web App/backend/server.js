@@ -478,7 +478,6 @@ app.get("/student/check-email", (req, res) => {
     }
   });
 });
-
 app.get("/owner/check-email", (req, res) => {
   const email = req.query.email;
 
@@ -493,6 +492,40 @@ app.get("/owner/check-email", (req, res) => {
       return res.json({ result: "EmailExists" });
     } else {
       return res.json({ result: "EmailDoesNotExists" });
+    }
+  });
+});
+app.get("/student/check-username", (req, res) => {
+  const username = req.query.username;
+
+  const sql = "SELECT * FROM `student_info` WHERE UserName = ?";
+  db.query(sql, [username], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.json({ result: "Error" });
+    }
+
+    if (result.length > 0) {
+      return res.json({ result: "UsernameExists" });
+    } else {
+      return res.json({ result: "UsernameDoesNotExists" });
+    }
+  });
+});
+app.get("/owner/check-username", (req, res) => {
+  const username = req.query.username;
+
+  const sql = "SELECT * FROM `owner_info` WHERE UserName = ?";
+  db.query(sql, [username], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.json({ result: "Error" });
+    }
+
+    if (result.length > 0) {
+      return res.json({ result: "UsernameExists" });
+    } else {
+      return res.json({ result: "UsernameDoesNotExists" });
     }
   });
 });

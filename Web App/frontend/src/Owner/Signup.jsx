@@ -18,6 +18,8 @@ function Signup() {
   });
   const [email, setEmail] = useState("");
   const [emailExists, setEmailExists] = useState(false);
+  const [username, setUsername] = useState("");
+  const [usernameExists, setUsernameExists] = useState(false);
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState();
   const [profilefile, setProfilefile] = useState();
@@ -43,6 +45,9 @@ function Signup() {
     if(event.target.name === 'email'){
       setEmail(event.target.value);
    }
+   if(event.target.name === 'username'){
+    setUsername(event.target.value);
+ }
   };
   useEffect(() => {
     if (email) {
@@ -65,6 +70,26 @@ function Signup() {
     }
   }, [email]);
   useEffect(() => {
+    if (username) {
+      axios
+        .get("http://localhost:8081/owner/check-username", {
+          params: { username: username },
+        })
+        .then((res) => {
+          setUsernameExists(false);
+          if (res.data.result === "UsernameExists") {
+            setUsernameExists(true);
+            console.log("Someone already has that username. Try another?");
+          } else if (res.data.result === "UsernameDoesNotExists") {
+            console.log("Username does not exist");
+          } else {
+            console.log("Error occurred");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [username]);
+  useEffect(() => {
     axios.get('http://localhost:8081')
       .then((res) => {
         if (res.data.Valid && res.data.role === 'owner') {
@@ -84,6 +109,14 @@ function Signup() {
       }));
     }
   }, [emailExists])
+  useEffect(() => {
+    if(usernameExists) {
+      setErrors((prev) => ({
+        ...prev,
+        username: "Someone already has that username. Try another?",
+      }));
+    }
+  }, [usernameExists])
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors(Validation(values));
@@ -91,6 +124,12 @@ function Signup() {
       setErrors((prev) => ({
         ...prev,
         email: "Email already exists",
+      }));
+    }
+    if(usernameExists) {
+      setErrors((prev) => ({
+        ...prev,
+        username: "Someone already has that username. Try another?",
       }));
     }
     const formData = new FormData();
@@ -108,7 +147,10 @@ function Signup() {
     if(emailExists) { 
       alert("Email already exists");
     }
-    if (errors.cpassword === "" && emailExists === false) {
+    if(usernameExists) {
+      alert("Someone already has that username. Try another?");
+    }
+    if (errors.cpassword === "" && emailExists === false && errors.username === "")  {
       console.log("No error");
       console.log("errors.email : "+ errors.email)
       console.log(formData);
