@@ -4,6 +4,8 @@ import Navbar from '../Components/Navbar';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
+import { toast,ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Profile() {
     const[user,UseUser] = useState([])
@@ -13,6 +15,7 @@ function Profile() {
     const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
+
     useEffect(() => {
       axios.get('http://localhost:8081')
         .then((res) => {
@@ -28,26 +31,26 @@ function Profile() {
         .catch((err) => console.log(err))
         // eslint-disable-next-line
     }, [])
-    const handleImageSelect = (event) => {
+      const handleImageSelect = (event) => {
         setSelectedImage(event.target.files[0]);
       };
       const handleImageUpload = async () => {
-        try {
+      try {
           const formData = new FormData();
           formData.append('profile_image', selectedImage);
       
-          await axios.post('http://localhost:8081/profile/upload', formData, {
+      await axios.post('http://localhost:8081/profile/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
-          });
-      
-          // Image upload success, perform any necessary actions
+      });
+      // Image upload success, perform any necessary actions
           console.log('Image uploaded successfully');
           setIsPopupOpen(false);
           window.location.reload();
         } catch (error) {
           console.log(error);
+          toast.error('Make sure uou are uploading a image file!!!');
         }
       };  
     useEffect(()=>{
@@ -111,7 +114,9 @@ function Profile() {
                         <h3>Let's add a profile picture !!!.</h3>
                         <input className='profileInput' type="file" accept="image/*" onChange={handleImageSelect} />
                         <button onClick={handleImageUpload}>Upload Image</button>
+                        
                         <button onClick={closePopup}>Cancel</button>
+                        
                     </div>
                     </Popup>
         </div>
@@ -120,7 +125,7 @@ function Profile() {
     </div>
   </div>
   
-  
+  <ToastContainer />
 </div>
   )
 }

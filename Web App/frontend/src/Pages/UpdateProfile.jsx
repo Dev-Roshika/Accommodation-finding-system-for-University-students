@@ -80,9 +80,13 @@ function UpdateProfile() {
                        <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
                        {role ==='student'?(<>
-
+                        <p className='row'><label>Unoversity RegNo :  {cuser.UnivRegNo}</label></p>
+                        <p className='row'><label>Faculty :  {cuser.Faculty}</label></p>
+                        <p className='row'><label>Department :  {cuser.Dept}</label></p>
                        </>)
-                       :role === 'owner'?(<><p className='row'> <label>Address :<input className='profileInput' type="text" placeholder={cuser.PrivateAddress}  name="PrivateAddress" value={cuser.PrivateAddress||''} onChange={(e) => handleInputChange(e, index)}/>
+                       :role === 'owner'?(<>
+                        <p className='row'><label>NID :  {cuser.NidNo}</label></p>
+                       <p className='row'> <label>Address :<input className='profileInput' type="text" placeholder={cuser.PrivateAddress}  name="PrivateAddress" value={cuser.PrivateAddress||''} onChange={(e) => handleInputChange(e, index)}/>
                        </label></p>
                        </>):null}
 

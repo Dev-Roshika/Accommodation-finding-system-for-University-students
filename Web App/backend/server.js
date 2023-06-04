@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
+import fs from 'fs';
 
 const salt = 10; // for bcrypt
 
@@ -399,37 +400,56 @@ const storage_profile = multer.diskStorage({
       
     );
   },
+  
 });
+const imagefileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed."), false);
+  }
+};
 const upload_profile = multer({
   storage: storage_profile,
+  fileFilter:imagefileFilter
 });
 app.post("/profile/upload", upload_profile.single("profile_image"), (req, res) => {
   // Handle the uploaded image here
   
  
   const values = [ req.file.filename,req.session.Id];
+  const valuessecond = [req.session.Id];
  //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
   let sql;
+  let sqlsecond;
+
    if(req.session.role === 'student'){
-    sql = "UPDATE student_info SET ProfileImage = ? WHERE Id = ?";}
-   else  { sql = "UPDATE owner_info SET ProfileImage = ? WHERE Id = ?";}
+    sql = "UPDATE student_info SET ProfileImage = ? WHERE Id = ?";
+    sqlsecond = "SELECT ProfileImage FROM student_info WHERE Id = ?";
+  }
+   else  { sql = "UPDATE owner_info SET ProfileImage = ? WHERE Id = ?";
+   sqlsecond = "SELECT ProfileImage FROM owner_info WHERE Id = ?";
+  }
    console.log("filename"+req.file.filename)
   console.log("values"+values)
   console.log("sql"+sql)
+  db.query(sqlsecond,valuessecond,(err,data) => {  
+    if(err) return res.json(data)
+    const previmage = data[0].ProfileImage;
+    console.log(previmage)
    db.query(sql,values,(err,data) => {  
      if(err) return res.json(data)
-     return res.json(data)
+     fs.unlink(`public/images/profile_images/${req.session.role}/${previmage}`, (err) => {
+      if (err) {
+        console.error('Error deleting previous image:', err);
+      } else {
+       console.log('Previous image deleted successfully.');
+      }
+    });
+  
+    return res.json(data);
    });
-
-/*
-  if (req.file) {
-    console.log(req.file.filename);
-    console.log(req.file);
-    // You can save the image details to the database or perform other actions
-  } else {
-    console.log("Image upload failed");
-  }
-  res.sendStatus(200);*/
+  });
 });
 // profile - end
 
@@ -476,4 +496,16 @@ app.get('/logout',(req,res)=>{
 
 app.listen(8081, () => {
   console.log("listening");
+});
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Multer error occurred during file upload
+    res.status(400).json({ error: "File upload error: " + err.message });
+  } else if (err) {
+    // Other error occurred
+    res.status(400).json({ error: err.message });
+  } else {
+    // Continue to the next middleware
+    next();
+  }
 });
