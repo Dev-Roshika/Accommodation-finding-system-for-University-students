@@ -247,6 +247,7 @@ function Signup() {
               <input
                 name="email"
                 type="email"
+                required
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
