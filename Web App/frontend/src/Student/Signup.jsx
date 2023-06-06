@@ -36,7 +36,7 @@ function Signup() {
     }));
     setValues((prev) => ({
       ...prev,
-      [event.target.name]: [event.target.value],
+      [event.target.name]: event.target.value,
     }));
     if(event.target.name === 'email'){
        setEmail(event.target.value);
@@ -86,6 +86,19 @@ function Signup() {
     }
   }, [username]);
   useEffect(() => {
+    axios
+        .get("http://localhost:8081")
+        .then((res) => {
+            if (res.data.Valid && res.data.role === "student") {
+                navigate("/home");
+            } else {
+                console.log("User is not logged in");
+            }
+        })
+        .catch((err) => console.log(err));
+    // eslint-disable-next-line
+}, []);
+  useEffect(() => {
     if(emailExists) {
       setErrors((prev) => ({
         ...prev,
@@ -103,19 +116,20 @@ function Signup() {
   }, [usernameExists])
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrors(Validation(values));
-    if(emailExists){
-      setErrors((prev) => ({
-        ...prev,
-        email: "Email already exists",
-      }));
-    }
-    if(usernameExists){
-      setErrors((prev) => ({
-        ...prev,
-        username : "Someone already has that username. Try another?",
-      }));
-    }
+    const validationErrors = Validation(values);
+        setErrors(validationErrors);
+
+        // Check if there are any validation errors
+        if (
+            validationErrors.cpassword !== "" ||
+            validationErrors.password !== "" ||
+            validationErrors.username !== "" ||
+            validationErrors.mobile !== "" ||
+            validationErrors.email !== ""
+        ) {
+            return; // Stop further execution of the handleSubmit function
+        }
+
     const formData = new FormData();
     formData.append('fullname',values.fullname);
     formData.append('username',values.username);
@@ -132,7 +146,7 @@ function Signup() {
     if(usernameExists) {
       alert("Someone already has that username. Try another?");
     }
-    if (errors.cpassword === "" && errors.email === "" && errors.username === "") {
+    if (emailExists === false && usernameExists === false) {
       console.log("No error");
       console.log(formData);
       axios
@@ -233,6 +247,7 @@ function Signup() {
                 type="text"
                 required
                 className="form-control rounded-0"
+                placeholder="01XXXXXXXX"
                 onChange={handleInput}
               />
               {errors.mobile && (

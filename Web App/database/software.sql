@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2023 at 01:49 PM
+-- Generation Time: Jun 06, 2023 at 04:33 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -49,8 +49,7 @@ CREATE TABLE `boarding_house` (
 --
 
 INSERT INTO `boarding_house` (`Id`, `Title`, `Description`, `Price`, `Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`, `OtherImages`) VALUES
-(49, 'Title1', 'Description of title one is this is 1', '35000.00', 'Yes', 'Jaffna', '500m', 12, 0, 'Air conditioner 2 Bedrooms', '', '01111111111', 'coverimage_1685363581644.jpg', '[\"uploadImages-1685363596583-image_1.jpg.jpg\",\"uploadImages-1685363596584-image_2.jpg.jpg\",\"uploadImages-1685363596584-image_3.jpg.jpg\",\"uploadImages-1685363596595-image_4.jpg.jpg\",\"uploadImages-1685363596596-image_5.jpg.jpg\",\"uploadImages-1685363596596-image_6.jpg.jpg\"]'),
-(50, 'Title 2', 'Description of title one is this is 2', '40000.00', 'No', 'Mannar', '1Km', 0, 8, 'Air conditioner', '', '0323424141', 'coverimage_1685363713360.jpg', '[\"uploadImages-1685363725353-image_7.jpg.jpg\",\"uploadImages-1685363725354-image_8.jpg.jpg\",\"uploadImages-1685363725358-image_10.jpg.jpg\",\"uploadImages-1685363725359-image_11.jpg.jpg\",\"uploadImages-1685363725360-image_12.jpg.jpg\",\"uploadImages-1685363725397-image_13.jpg.jpg\"]');
+(52, 'Title 01', 'Description of title one is this is 01', '40000.00', 'Yes', 'Jaffna', '450m', 10, 0, 'Air conditioner', 'No rules', '01111111111', 'coverimage_1686061806874_cover_image1.jpg', '[\"uploadImages-1686061859186-image_1.jpg\",\"uploadImages-1686061859186-image_2.jpg\",\"uploadImages-1686061859186-image_3.jpg\",\"uploadImages-1686061859187-image_5.jpg\",\"uploadImages-1686061859187-image_6.jpg\",\"uploadImages-1686061859188-image_12 - Copy.jpg\"]');
 
 -- --------------------------------------------------------
 
@@ -76,7 +75,7 @@ CREATE TABLE `owner_info` (
 --
 
 INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES
-(5, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0124356987', 'sinnathurayi@gmail.com', 'profileimage-1685447304046-programming-wallpaper - Copy.jpg', '543251380v', 'nidphoto-1685447304046-NID.PNG', '159, Manipay Road, Jaffna', '$2b$10$/O8xWZSMuYnf5zupDsW.Qere14aG6B2zZh7iQj5Hyr29STuxZPy3O');
+(59, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0739177233', 'sinnathurayi@gmail.com', 'profileimage-1686060763745-photo-1628563694622-5a76957fd09c.jpg', '543251380v', 'nidphoto-1686060763444-NID.PNG', 'No :42', '$2b$10$quoVeiSPnjcz7TphnKHV4uOCY6De/ebjBkIpoD7y43Y.irpLvjwSK');
 
 -- --------------------------------------------------------
 
@@ -102,7 +101,7 @@ CREATE TABLE `student_info` (
 --
 
 INSERT INTO `student_info` (`Id`, `FullName`, `UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`, `Email`, `Faculty`, `Dept`, `Password`) VALUES
-(27, 'Saman De Silva', 'saman', '2019/csc/001', '0124356987', 'profile_image_1685287602108.jpg', 'saman@gmail.com', 'Science', 'CS', '$2b$10$0ZgFh.Hv8ZVOfiodALDAhOp.2JU.iZDr3/zh4GcPk/Rah.msabfcC');
+(37, 'Saman De Silva', 'saman', '2019/csc/001', '0764972833', 'profileimage_1686059975134_fashion.jpg', 'saman@gmail.com', NULL, NULL, '$2b$10$iBYSpCfNCUoCeHPYprBVEePeYStUnWvjBpKTUMBJ5DuSwkZPKlVV6');
 
 --
 -- Indexes for dumped tables
@@ -134,19 +133,19 @@ ALTER TABLE `student_info`
 -- AUTO_INCREMENT for table `boarding_house`
 --
 ALTER TABLE `boarding_house`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -7,20 +7,30 @@ function Validation(values) {
     To check a password between 8 to 15 characters which contain at least one lowercase letter, 
     one uppercase letter, one numeric digit, and one special character
     */
-  //const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/
+  const mobile_pattern = /^[0-9]{10}$/; // Assuming a 10-digit mobile number format
 
   if (values.username === "") {
-    error.username = "Name should not be empty";
+    error.username = "Username should not be empty";
+  } else if (values.username.length < 5) {
+    error.username = "Username should be at least 5 characters";
   } else {
     error.username = "";
   }
 
   if (values.email === "") {
-    error.email = "Name should not be empty";
+    error.email = "Email should not be empty";
   } else if (!email_pattern.test(values.email)) {
     error.email = "Email Didn't match";
   } else {
     error.email = "";
+  }
+
+  if (values.mobile === "") {
+    error.mobile = "Mobile number should not be empty";
+  } else if (!mobile_pattern.test(values.mobile)) {
+    error.mobile = "Mobile number format is invalid";
+  } else {
+    error.mobile = "";
   }
 
   if (values.password === "") {
@@ -40,7 +50,7 @@ function Validation(values) {
   } else {
     error.cpassword = "";
   }
-
+  console.log("Form validation : "+ error);
   return error;
 }
 

@@ -170,10 +170,10 @@ app.post("/owner/signup", O_signup_upload.fields([
   console.log(req.files)
   const profileImgFilename = req.files['profileimage'][0].filename // Retrieve the filename of the profile image
   const nidPhotoFilename = req.files['nidphoto'][0].filename // Retrieve the filename of the nid photo
-  // console.log("checking profileImgFilename")
-  // console.log(profileImgFilename)
-  // console.log("checking nidPhotoFilename")
-  // console.log(nidPhotoFilename)
+  console.log("checking profileImgFilename")
+  console.log(profileImgFilename)
+  console.log("checking nidPhotoFilename")
+  console.log(nidPhotoFilename)
   const sql =
     "INSERT INTO `owner_info` (`FullName`,`UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES(?)";
   bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
