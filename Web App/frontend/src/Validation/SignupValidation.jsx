@@ -8,6 +8,7 @@ function Validation(values) {
     one uppercase letter, one numeric digit, and one special character
     */
   const mobile_pattern = /^[0-9]{10}$/; // Assuming a 10-digit mobile number format
+  const univregno_pattern = /^[0-9]{4}\/[A-Z]{3}\/[0-9]{3}$/; // University registration number pattern
 
   if (values.username === "") {
     error.username = "Username should not be empty";
@@ -25,6 +26,14 @@ function Validation(values) {
     error.email = "";
   }
 
+  if (values.univregno === "") {
+    error.univregno = "University registration number should not be empty";
+  } else if (!univregno_pattern.test(values.univregno)) {
+    error.univregno = "Invalid university registration number format";
+  } else {
+    error.univregno = "";
+  }
+
   if (values.mobile === "") {
     error.mobile = "Mobile number should not be empty";
   } else if (!mobile_pattern.test(values.mobile)) {
@@ -35,6 +44,8 @@ function Validation(values) {
 
   if (values.password === "") {
     error.password = "Password should not be empty";
+  } else if (values.password.length < 8) {
+    error.password = "Password should be between 8 to 15 characters";
   } else if (!password_pattern.test(values.password)) {
     error.password = "Password didn't match";
   } else {

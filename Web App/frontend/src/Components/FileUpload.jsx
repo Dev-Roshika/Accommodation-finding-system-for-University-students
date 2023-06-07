@@ -54,6 +54,7 @@ const FileUpload = () => {
             type='file'
             id='file'
             name="uploadImages"
+            accept="image/png, image/jpeg , image/jpg"
             multiple
             title='Max image count is 6'
             onChange={onChange}

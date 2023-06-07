@@ -125,6 +125,7 @@ function Signup() {
             validationErrors.password !== "" ||
             validationErrors.username !== "" ||
             validationErrors.mobile !== "" ||
+            validationErrors.univregno !== "" ||
             validationErrors.email !== ""
         ) {
             return; // Stop further execution of the handleSubmit function
@@ -280,6 +281,7 @@ function Signup() {
                 type="file"
                 required
                 className="form-control rounded-0"
+                accept="image/png, image/jpeg , image/jpg "
                 onChange={handleProfileImageFile}
               />
               {errors.profileimage && (

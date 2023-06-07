@@ -130,7 +130,7 @@ function Signup() {
         event.preventDefault();
         const validationErrors = Validation(values);
         setErrors(validationErrors);
-
+        console.log(validationErrors.password);
         // Check if there are any validation errors
         if (
             validationErrors.cpassword !== "" ||
@@ -315,6 +315,7 @@ function Signup() {
                                 type="file"
                                 required
                                 className="form-control rounded-0"
+                                accept="image/png, image/jpeg , image/jpg "
                                 onChange={handleProfileImageFile}
                             />
                             {errors.profileimage && (
@@ -357,6 +358,7 @@ function Signup() {
                                 type="file"
                                 required
                                 className="form-control rounded-0"
+                                accept="image/png, image/jpeg , image/jpg "
                                 onChange={handleFile}
                             />
                             {errors.nidphoto && (
