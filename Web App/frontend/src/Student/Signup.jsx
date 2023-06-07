@@ -19,6 +19,8 @@ function Signup() {
   });
   const [email, setEmail] = useState("");
   const [emailExists, setEmailExists] = useState(false);
+  const [username, setUsername] = useState("");
+  const [usernameExists, setUsernameExists] = useState(false);
   const [errors, setErrors] = useState({});
   const [profilefile, setProfilefile] = useState();
   const navigate = useNavigate();
@@ -34,11 +36,14 @@ function Signup() {
     }));
     setValues((prev) => ({
       ...prev,
-      [event.target.name]: [event.target.value],
+      [event.target.name]: event.target.value,
     }));
     if(event.target.name === 'email'){
        setEmail(event.target.value);
     }
+    if(event.target.name === 'username'){
+      setUsername(event.target.value);
+   }
   };
   useEffect(() => {
     if (email) {
@@ -61,6 +66,39 @@ function Signup() {
     }
   }, [email]);
   useEffect(() => {
+    if (username) {
+      axios
+        .get("http://localhost:8081/student/check-username", {
+          params: { username: username },
+        })
+        .then((res) => {
+          setUsernameExists(false);
+          if (res.data.result === "UsernameExists") {
+            setUsernameExists(true);
+            console.log("Someone already has that username. Try another?");
+          } else if (res.data.result === "UsernameDoesNotExists") {
+            console.log("Username does not exist");
+          } else {
+            console.log("Error occurred");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [username]);
+  useEffect(() => {
+    axios
+        .get("http://localhost:8081")
+        .then((res) => {
+            if (res.data.Valid && res.data.role === "student") {
+                navigate("/home");
+            } else {
+                console.log("User is not logged in");
+            }
+        })
+        .catch((err) => console.log(err));
+    // eslint-disable-next-line
+}, []);
+  useEffect(() => {
     if(emailExists) {
       setErrors((prev) => ({
         ...prev,
@@ -68,15 +106,31 @@ function Signup() {
       }));
     }
   }, [emailExists])
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setErrors(Validation(values));
-    if(emailExists){
+  useEffect(() => {
+    if(usernameExists) {
       setErrors((prev) => ({
         ...prev,
-        email: "Email already exists",
+        username : "Someone already has that username. Try another?",
       }));
     }
+  }, [usernameExists])
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const validationErrors = Validation(values);
+        setErrors(validationErrors);
+
+        // Check if there are any validation errors
+        if (
+            validationErrors.cpassword !== "" ||
+            validationErrors.password !== "" ||
+            validationErrors.username !== "" ||
+            validationErrors.mobile !== "" ||
+            validationErrors.univregno !== "" ||
+            validationErrors.email !== ""
+        ) {
+            return; // Stop further execution of the handleSubmit function
+        }
+
     const formData = new FormData();
     formData.append('fullname',values.fullname);
     formData.append('username',values.username);
@@ -90,7 +144,10 @@ function Signup() {
     if(emailExists) { 
       alert("Email already exists");
     }
-    if (errors.cpassword === "" && errors.email === "") {
+    if(usernameExists) {
+      alert("Someone already has that username. Try another?");
+    }
+    if (emailExists === false && usernameExists === false) {
       console.log("No error");
       console.log(formData);
       axios
@@ -191,6 +248,7 @@ function Signup() {
                 type="text"
                 required
                 className="form-control rounded-0"
+                placeholder="01XXXXXXXX"
                 onChange={handleInput}
               />
               {errors.mobile && (
@@ -205,6 +263,7 @@ function Signup() {
               <input
                 name="email"
                 type="email"
+                required
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
@@ -222,6 +281,7 @@ function Signup() {
                 type="file"
                 required
                 className="form-control rounded-0"
+                accept="image/png, image/jpeg , image/jpg "
                 onChange={handleProfileImageFile}
               />
               {errors.profileimage && (

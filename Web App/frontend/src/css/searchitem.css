@@ -72,6 +72,7 @@
     float: left;
     display: flex;
     justify-content: center;
+    padding-top: 10px;
 }
 
 .siDetailsRight{
@@ -79,6 +80,7 @@
     float: right;
     display: flex;
     justify-content: center;
+    padding-top: 10px;
 }
 
 .siDetailsTexts{
