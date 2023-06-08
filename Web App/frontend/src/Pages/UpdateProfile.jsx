@@ -10,8 +10,11 @@ function UpdateProfile() {
     const [role, setRole] = useState('');
     //const [user, setUser] = useState([]);
     const navigate = useNavigate();
-
+    const [emailError, setEmailError] = useState('');
+    const [contactNoError, setContactNoError] = useState('');
+   
     axios.defaults.withCredentials = true;
+
     useEffect(() => {
       axios.get('http://localhost:8081')
         .then((res) => {
@@ -40,8 +43,36 @@ function UpdateProfile() {
         getUser();
     },[])
     const Navigate = useNavigate();
+    const validateEmail = (email) => {
+    // Simple email validation using regex
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validateContactNo = (contactNo) => {
+    // Remove all non-digit characters and check if the resulting string has a length of 10
+    const strippedContactNo = contactNo.replace(/\D/g, '');
+    return strippedContactNo.length === 10;
+  };
     const handleClick = async e =>{
         e.preventDefault();
+        const updatedUser = user[0];
+        const { Email, ContactNo } = updatedUser;
+       
+        // Validate email format
+        if (!validateEmail(Email)) {
+          setEmailError('Invalid email format');
+          return;
+        }
+        else setEmailError('')
+    
+        // Validate contact number length
+        if (!validateContactNo(ContactNo)) {
+          setContactNoError('Contact number should contain exactly 10 numbers');
+          return;
+        }
+        else setContactNoError('')
+
     try{
       await axios.put("http://localhost:8081/student/updateUser",user) 
       //console.log("work")
@@ -91,10 +122,10 @@ function UpdateProfile() {
                        </>):null}
 
                      <p className='row'> <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
-                      </p>
-                      <p className='row'><input className='profileInput' type="number" placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
-              </p>   
-              <button className='profileupdate' onClick={handleClick}>Save</button>
+                      {emailError && <span className="error">{emailError}</span>}</p>
+                      <p className='row'><input className='profileInput' type='tel' maxLength={10} placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
+                      {contactNoError && <span className="error">{contactNoError}</span>}</p>   
+                      <button className='profileupdate' onClick={handleClick}>Save</button>
                     </div>
                 </div>
             ))}
