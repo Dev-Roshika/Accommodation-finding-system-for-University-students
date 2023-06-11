@@ -6,7 +6,6 @@ import OwnerSignup from './Owner/Signup'
 import Home from './Pages/Home'
 import OnBoardPage from './OnBoardPage';
 import BoardingHouses from './Pages/BoardingHouses';
-import Footer from './Components/Footer';
 import PostAd from './Owner/PostAd';
 import CompletePostAd from './Owner/CompletePostAd';
 import Profile from './Pages/Profile';
@@ -32,7 +31,6 @@ function App() {
           <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
-      <Footer />
     </div>
   );
 }

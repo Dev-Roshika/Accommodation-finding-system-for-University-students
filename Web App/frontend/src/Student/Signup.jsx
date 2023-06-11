@@ -163,11 +163,10 @@ function Signup() {
     }
   }
   return (
-    <div className="bg-Light m-3">
-      <div className="d-flex justify-content-center align-items-center vh-100 mb-3">
-        <div className="bg-light bg-gradient w-50 p-5 rounded shadow-inner">
+      <div className="d-flex justify-content-center align-items-center mb-3 mt-3">
+        <div className="bg-light bg-gradient w-50 p-5 rounded shadow-sm">
           <form action="" onSubmit={handleSubmit}>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+            <div className="d-flex flex-column justify-content-center align-items-center">
               <div>
                 <h1>Sign up</h1>
               </div>
@@ -384,12 +383,11 @@ function Signup() {
               to="/student/login"
               className="btn btn-default border w-100 bg-light rounded-0"
             >
-              Signin
+              <strong>Signin</strong>
             </Link>
           </form>
         </div>
       </div>
-    </div>
   );
 }
 
