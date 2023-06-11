@@ -48,7 +48,6 @@ function SearchItem({data}) {
         </div>
       </div>
     </div>
-
   );
 }
 

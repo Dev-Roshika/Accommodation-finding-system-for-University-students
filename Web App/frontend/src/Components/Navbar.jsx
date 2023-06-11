@@ -17,7 +17,11 @@ function Navbar() {
   return (
     <div className="navbar">
       <div className="navContainer">
-        <span className="logo">UniAccomodations</span>
+        <span className="logo"
+         onClick={() => (window.location.href = "/")}
+         title = "Go to Home Page"
+         style={{ cursor: "pointer"}}
+        >UniAccomodations</span>
         <div className="navItems">
         {/* <button className='navButton'><Link to ="/profile">Account</Link></button> */}
         <button className='navButton' onClick={handleAccount}>Account</button>
