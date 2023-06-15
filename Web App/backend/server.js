@@ -227,7 +227,7 @@ app.post("/owner/login", (req, res) => {
             req.session.email = result[0].Email;
             req.session.role = "owner";
             req.session.Id = result[0].Id;
-
+            console.log(req.session.Id);
             console.log(req.session.email);
             console.log(req.session.role);
             bcrypt.compare(
@@ -241,6 +241,7 @@ app.post("/owner/login", (req, res) => {
                             Status: "Success",
                             Email: req.session.Email,
                             Role: req.session.role,
+                            Id: req.session.Id,
                         });
                     } else {
                         return res.json({ Error: "Password not matched" });
@@ -283,10 +284,12 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
     // console.log(req.body.title) // Can retrieve title information like this
     // console.log(req.body.image) //Cannot retrieve image information like this
     const img_filename = req.file.filename;
+    const owner_id = req.session.Id;
     const sql =
-        "INSERT INTO `boarding_house` (`Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
+        "INSERT INTO `boarding_house` (`OwnerId`, `Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
     console.log(img_filename + "___" + req.body.address);
     const values = [
+        owner_id,
         req.body.title,
         req.body.description,
         req.body.price,
@@ -584,12 +587,26 @@ app.get("/owner/check-username", (req, res) => {
         }
     });
 });
-
+app.get("/owner/boarding-data", (req, res) => {
+    const owner_id = req.session.Id;
+    console.log("OwnerId : "+owner_id);
+    const sql = "SELECT * FROM boarding_house where `OwnerId` = ?";
+    db.query(sql,[owner_id] ,(err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            console.log("result is here")
+            res.json(result);
+        }
+    });
+});
 //Fetch data for useEffect - end
 
 app.get("/logout", (req, res) => {
     req.session.destroy(function (err) {
         res.clearCookie("connect.sid");
+        console.log("User logout...");
         res.redirect("/"); //Inside a callback… bulletproof!
     });
 });
