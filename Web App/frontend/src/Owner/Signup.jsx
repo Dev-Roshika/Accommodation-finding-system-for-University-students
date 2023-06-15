@@ -6,300 +6,458 @@ import RequiredField from "../Components/RequiredField";
 import { useEffect } from "react";
 
 function Signup() {
-  const [values, setValues] = useState({
-    fullname: "",
-    username: "",
-    mobile: "",
-    email: "",
-    nidno: "",
-    paddress: "",
-    password: "",
-    cpassword: ""
-  });
-  
-  const [errors, setErrors] = useState({});
-  const [file, setFile] = useState();
-  const [profilefile, setProfilefile] = useState();
+    const [values, setValues] = useState({
+        fullname: "",
+        username: "",
+        mobile: "",
+        email: "",
+        nidno: "",
+        paddress: "",
+        password: "",
+        cpassword: "",
+    });
+    const [email, setEmail] = useState("");
+    const [emailExists, setEmailExists] = useState(false);
+    const [username, setUsername] = useState("");
+    const [usernameExists, setUsernameExists] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [file, setFile] = useState();
+    const [profilefile, setProfilefile] = useState();
 
-  const navigate = useNavigate();
-
-  const handleInput = (event) => {
-    setValues((prev) => ({
-      ...prev,
-      [event.target.name]: [event.target.value],
-    }));
-  };
-
-  const handleFile = (event) => {
-    const nidphoto = event.target.files[0];
-      setFile(nidphoto);
-  };
-  const handleProfileImageFile = (event) => {
-    const profileimage = event.target.files[0];
-    setProfilefile(profileimage);
-  };
-  useEffect(() => {
-    axios.get('http://localhost:8081')
-      .then((res) => {
-        if (res.data.Valid && res.data.role === 'owner') {
-          navigate('/home')
-        } else{
-          console.log("User is not logged in")
+    const navigate = useNavigate();
+    const handleFile = (event) => {
+        const nidphoto = event.target.files[0];
+        setFile(nidphoto);
+    };
+    const handleProfileImageFile = (event) => {
+        const profileimage = event.target.files[0];
+        setProfilefile(profileimage);
+    };
+    const handleInput = (event) => {
+        setErrors((prev) => ({
+            ...prev,
+            [event.target.name]: "",
+        }));
+        setValues((prev) => ({
+            ...prev,
+            [event.target.name]: event.target.value,
+        }));
+        if (event.target.name === "email") {
+            setEmail(event.target.value);
         }
-      })
-      .catch((err) => console.log(err))
-      // eslint-disable-next-line
-  }, [])
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setErrors(Validation(values));
-    const formData = new FormData();
-    formData.append('fullname',values.fullname);
-    formData.append('username',values.username);
-    formData.append('mobile',values.mobile);
-    formData.append('nidno',values.nidno);
-    formData.append('nidphoto',file);
-    formData.append('profileimage',profilefile);
-    formData.append('email',values.email);
-    formData.append('paddress',values.paddress);
-    formData.append('password',values.password);
-    formData.append('cpassword',values.cpassword);
-    console.log(errors);
-    
-    if (errors.cpassword === "") {
-      console.log("No error");
-      console.log(formData);
-      axios
-        .post("http://localhost:8081/owner/signup", formData)
-        .then((res) => {
-          if (res.data.Status === "Success") {
-            navigate("/owner/login");
-          } else {
-            alert("Error and not success");
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  };
+        if (event.target.name === "username") {
+            setUsername(event.target.value);
+        }
+    };
+    useEffect(() => {
+        if (email) {
+            axios
+                .get("http://localhost:8081/owner/check-email", {
+                    params: { email: email },
+                })
+                .then((res) => {
+                    setEmailExists(false);
+                    if (res.data.result === "EmailExists") {
+                        setEmailExists(true);
+                        console.log("Email exists");
+                    } else if (res.data.result === "EmailDoesNotExists") {
+                        console.log("Email does not exist");
+                    } else {
+                        console.log("Error occurred");
+                    }
+                })
+                .catch((err) => console.log(err));
+        }
+    }, [email]);
+    useEffect(() => {
+        if (username) {
+            axios
+                .get("http://localhost:8081/owner/check-username", {
+                    params: { username: username },
+                })
+                .then((res) => {
+                    setUsernameExists(false);
+                    if (res.data.result === "UsernameExists") {
+                        setUsernameExists(true);
+                        console.log(
+                            "Someone already has that username. Try another?"
+                        );
+                    } else if (res.data.result === "UsernameDoesNotExists") {
+                        console.log("Username does not exist");
+                    } else {
+                        console.log("Error occurred");
+                    }
+                })
+                .catch((err) => console.log(err));
+        }
+    }, [username]);
+    useEffect(() => {
+        axios
+            .get("http://localhost:8081")
+            .then((res) => {
+                if (res.data.Valid && res.data.role === "owner") {
+                    navigate("/home");
+                } else {
+                    console.log("User is not logged in");
+                }
+            })
+            .catch((err) => console.log(err));
+        // eslint-disable-next-line
+    }, []);
+    useEffect(() => {
+        if (emailExists) {
+            setErrors((prev) => ({
+                ...prev,
+                email: "Email already exists",
+            }));
+        }
+    }, [emailExists]);
+    useEffect(() => {
+        if (usernameExists) {
+            setErrors((prev) => ({
+                ...prev,
+                username: "Someone already has that username. Try another?",
+            }));
+        }
+    }, [usernameExists]);
+    // const clearError = (fieldName) => {
+    //     setErrors((prev) => ({
+    //         ...prev,
+    //         [fieldName]: "",
+    //     }));
+    // };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const validationErrors = Validation(values);
+        setErrors(validationErrors);
+        console.log(validationErrors.password);
+        // Check if there are any validation errors
+        if (
+            validationErrors.cpassword !== "" ||
+            validationErrors.password !== "" ||
+            validationErrors.username !== "" ||
+            validationErrors.mobile !== "" ||
+            validationErrors.email !== ""
+        ) {
+            return; // Stop further execution of the handleSubmit function
+        }
 
-  return (
-    <div className="bg-Light m-6">
-      <div className="d-flex justify-content-center align-items-center vh-100 mb-3">
+        // if(emailExists) {
+        //   setErrors((prev) => ({
+        //     ...prev,
+        //     email: "Email already exists",
+        //   }));
+        // }
+        // if(usernameExists) {
+        //   setErrors((prev) => ({
+        //     ...prev,
+        //     username: "Someone already has that username. Try another?",
+        //   }));
+        // }
+        const formData = new FormData();
+        formData.append("fullname", values.fullname);
+        formData.append("username", values.username);
+        formData.append("mobile", values.mobile);
+        formData.append("nidno", values.nidno);
+        formData.append("nidphoto", file);
+        formData.append("profileimage", profilefile);
+        formData.append("email", values.email);
+        formData.append("paddress", values.paddress);
+        formData.append("password", values.password);
+        formData.append("cpassword", values.cpassword);
+        console.log(errors);
+        if (emailExists) {
+            alert("Email already exists");
+        }
+        if (usernameExists) {
+            alert("Someone already has that username. Try another?");
+        }
+        console.log("cheking errors");
+        console.log("errors : " + errors);
+        console.log("errors.cpassword : " + errors.cpassword);
+        console.log("emailExists : " + emailExists);
+        console.log("usernameExists : " + usernameExists);
+        console.log("errors.username : " + errors.username);
+        console.log("errors.mobile : " + errors.mobile);
+        // if (
+        //     errors.cpassword === "" &&
+        //     emailExists === false &&
+        //     usernameExists === false &&
+        //     errors.username === "" &&
+        //     errors.mobile === "" &&
+        //     errors.email === ""
+        // ) {
+        if (emailExists === false && usernameExists === false) {
+            console.log("No error");
+            console.log("errors.email : " + errors.email);
+            console.log(formData);
+            axios
+                .post("http://localhost:8081/owner/signup", formData)
+                .then((res) => {
+                    if (res.data.Status === "Success") {
+                        navigate("/owner/login");
+                    } else {
+                        alert("Error and not success");
+                    }
+                })
+                .catch((err) => console.log(err));
+        }
+    };
+    return (
+        <div className="d-flex justify-content-center align-items-center mb-3 mt-3">
         <div className="bg-light bg-gradient w-50 p-5 rounded shadow-inner">
-          <form action="" onSubmit={handleSubmit}>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3">
-              <div>
-                <h1>Sign up</h1>
-              </div>
-              <div className="text-muted">Fill out form to get started</div>
-            </div>
-            {/* FullName */}
-            <div className="mb-3">
-              <label htmlFor="fullname">
-                <strong>
-                  Full Name
-                  <RequiredField />
-                </strong>
-              </label>
-              <input
-                name="fullname"
-                type="text"
-                required
-                className="form-control rounded-0"
-                onChange={handleInput}
-              />
-              {errors.fullname && (
-                <span className="text-danger">{errors.fullname}</span>
-              )}
-            </div>
-            <div className="mb-3">
-              <div className="row">
-                {/* User Name */}
-                <div className="col-sm">
-                  <label htmlFor="username">
-                    <strong>
-                      User Name
-                      <RequiredField />
-                    </strong>
-                  </label>
-                  <input
-                    name="username"
-                    type="text"
-                    required
-                    className="form-control rounded-0"
-                    onChange={handleInput}
-                  />
-                  {errors.username && (
-                    <span className="text-danger">{errors.username}</span>
-                  )}
-                </div>
-              {/* Contact No */}
-                <div className="col-sm">
-                <label htmlFor="mobile">
-                    <strong>
-                    Contact Number
-                    <RequiredField />
-                    </strong>
-                </label>
-                <input
-                    name="mobile"
-                    type="text"
-                    required
-                    className="form-control rounded-0"
-                    onChange={handleInput}
-                />
-                {errors.mobile && (
-                    <span className="text-danger">{errors.mobile}</span>
-                )}
-                </div>
-                </div>
-            </div>
-            {/* Email */}
-            <div className="mb-3">
-              <label htmlFor="email">
-                <strong>Email</strong>
-              </label>
-              <input
-                name="email"
-                type="email"
-                className="form-control rounded-0"
-                onChange={handleInput}
-              />
-              {errors.email && (
-                <span className="text-danger">{errors.email}</span>
-              )}
-            </div>
-            {/* Profile Image */}
-            <div className="mb-3">
-              <label htmlFor="profileimage">
-                <strong>Profile Image</strong>
-              </label>
-              <input
-                name="profileimage"
-                type="file"
-                className="form-control rounded-0"
-                onChange={handleProfileImageFile}
-              />
-              {errors.profileimage && (
-                <span className="text-danger">{errors.profileimage}</span>
-              )}
-            </div> 
-            {/* NID */}
-            <div className="mb-3">
-              <label htmlFor="nidno">
-                <strong>NID No</strong>
-              </label>
-              <input
-                name="nidno"
-                type="text"
-                className="form-control rounded-0"
-                onChange={handleInput}
-              />
-              {errors.nidno && (
-                <span className="text-danger">{errors.nidno}</span>
-              )}
-            </div>
-            {/* NID Photo */}
-            <div className="mb-3">
-              <label htmlFor="nidphoto">
-                <strong>
-                NID Photo
-                  <RequiredField />
-                </strong>
-              </label>
-              <input
-                name="nidphoto"
-                type="file"
-                required
-                className="form-control rounded-0"
-                onChange={handleFile}
-              />
-              {errors.nidphoto && (
-                <span className="text-danger">{errors.nidphoto}</span>
-              )}
-            </div>
-            <div className="mb3">
-                {/* Private address */}
-                <div className="col-sm">
-                  <label htmlFor="paddress">
-                    <strong>
-                    Private address 
-                      <RequiredField />
-                    </strong>
-                  </label>
-                  <input
-                    name="paddress"
-                    type="text"
-                    required
-                    className="form-control rounded-0"
-                    onChange={handleInput}
-                  />
-                  {errors.paddress && (
-                    <span className="text-danger">{errors.paddress}</span>
-                  )}
-                </div>
-              </div>
-            <div className="mb-3">
-              <div className="row">
-                {/* Password */}
-                <div className="col-sm">
-                  <label htmlFor="password">
-                    <strong>
-                      Password
-                      <RequiredField />
-                    </strong>
-                  </label>
-                  <input
-                    name="password"
-                    type="password"
-                    title="password should be between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
-                    required
-                    className="form-control rounded-0"
-                    onChange={handleInput}
-                  />
-                  {errors.password && (
-                    <span className="text-danger">{errors.password}</span>
-                  )}
-                </div>
-                {/* Confirm password */}
-                <div className="col-sm">
-                  <label htmlFor="cpassword">
-                    <strong>
-                      Confirm password
-                      <RequiredField />
-                    </strong>
-                  </label>
-                  <input
-                    name="cpassword"
-                    type="password"
-                    required
-                    className="form-control rounded-0"
-                    onChange={handleInput}
-                  />
-                  {errors.cpassword && (
-                    <span className="text-danger">{errors.cpassword}</span>
-                  )}
-                </div>
-              </div>
-            </div>
+                    <form action="" onSubmit={handleSubmit}>
+                        <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+                            <div>
+                                <h1>Sign up</h1>
+                            </div>
+                            <div className="text-muted">
+                                Fill out form to get started
+                            </div>
+                        </div>
+                        {/* FullName */}
+                        <div className="mb-3">
+                            <label htmlFor="fullname">
+                                <strong>
+                                    Full Name
+                                    <RequiredField />
+                                </strong>
+                            </label>
+                            <input
+                                name="fullname"
+                                type="text"
+                                required
+                                className="form-control rounded-0"
+                                onChange={handleInput}
+                            />
+                            {errors.fullname && (
+                                <span className="text-danger">
+                                    {errors.fullname}
+                                </span>
+                            )}
+                        </div>
+                        <div className="mb-3">
+                            <div className="row">
+                                {/* User Name */}
+                                <div className="col-sm">
+                                    <label htmlFor="username">
+                                        <strong>
+                                            User Name
+                                            <RequiredField />
+                                        </strong>
+                                    </label>
+                                    <input
+                                        name="username"
+                                        type="text"
+                                        required
+                                        className="form-control rounded-0"
+                                        onChange={handleInput}
+                                    />
+                                    {errors.username && (
+                                        <span className="text-danger">
+                                            {errors.username}
+                                        </span>
+                                    )}
+                                </div>
+                                {/* Contact No */}
+                                <div className="col-sm">
+                                    <label htmlFor="mobile">
+                                        <strong>
+                                            Contact Number
+                                            <RequiredField />
+                                        </strong>
+                                    </label>
+                                    <input
+                                        name="mobile"
+                                        type="text"
+                                        required
+                                        className="form-control rounded-0"
+                                        placeholder="01XXXXXXXX"
+                                        onChange={handleInput}
+                                    />
+                                    {errors.mobile && (
+                                        <span className="text-danger">
+                                            {errors.mobile}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        {/* Email */}
+                        <div className="mb-3">
+                            <label htmlFor="email">
+                                <strong>Email</strong>
+                            </label>
+                            <input
+                                name="email"
+                                type="email"
+                                className="form-control rounded-0"
+                                required
+                                onChange={handleInput}
+                            />
+                            {errors.email && (
+                                <span className="text-danger">
+                                    {errors.email}
+                                </span>
+                            )}
+                        </div>
+                        {/* Profile Image */}
+                        <div className="mb-3">
+                            <label htmlFor="profileimage">
+                                <strong>
+                                    Profile Image
+                                    <RequiredField />
+                                </strong>
+                            </label>
+                            <input
+                                name="profileimage"
+                                type="file"
+                                required
+                                className="form-control rounded-0"
+                                accept="image/png, image/jpeg , image/jpg "
+                                onChange={handleProfileImageFile}
+                            />
+                            {errors.profileimage && (
+                                <span className="text-danger">
+                                    {errors.profileimage}
+                                </span>
+                            )}
+                        </div>
+                        {/* NID */}
+                        <div className="mb-3">
+                            <label htmlFor="nidno">
+                                <strong>
+                                    NID No
+                                    <RequiredField />
+                                </strong>
+                            </label>
+                            <input
+                                name="nidno"
+                                type="text"
+                                required
+                                className="form-control rounded-0"
+                                onChange={handleInput}
+                            />
+                            {errors.nidno && (
+                                <span className="text-danger">
+                                    {errors.nidno}
+                                </span>
+                            )}
+                        </div>
+                        {/* NID Photo */}
+                        <div className="mb-3">
+                            <label htmlFor="nidphoto">
+                                <strong>
+                                    NID Photo
+                                    <RequiredField />
+                                </strong>
+                            </label>
+                            <input
+                                name="nidphoto"
+                                type="file"
+                                required
+                                className="form-control rounded-0"
+                                accept="image/png, image/jpeg , image/jpg "
+                                onChange={handleFile}
+                            />
+                            {errors.nidphoto && (
+                                <span className="text-danger">
+                                    {errors.nidphoto}
+                                </span>
+                            )}
+                        </div>
+                        <div className="mb3">
+                            {/* Private address */}
+                            <div className="col-sm">
+                                <label htmlFor="paddress">
+                                    <strong>
+                                        Private address
+                                        <RequiredField />
+                                    </strong>
+                                </label>
+                                <input
+                                    name="paddress"
+                                    type="text"
+                                    required
+                                    className="form-control rounded-0"
+                                    onChange={handleInput}
+                                />
+                                {errors.paddress && (
+                                    <span className="text-danger">
+                                        {errors.paddress}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                        <div className="mb-3">
+                            <div className="row">
+                                {/* Password */}
+                                <div className="col-sm">
+                                    <label htmlFor="password">
+                                        <strong>
+                                            Password
+                                            <RequiredField />
+                                        </strong>
+                                    </label>
+                                    <input
+                                        name="password"
+                                        type="password"
+                                        title="password should be between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
+                                        required
+                                        className="form-control rounded-0"
+                                        onChange={handleInput}
+                                    />
+                                    {errors.password && (
+                                        <span className="text-danger">
+                                            {errors.password}
+                                        </span>
+                                    )}
+                                </div>
+                                {/* Confirm password */}
+                                <div className="col-sm">
+                                    <label htmlFor="cpassword">
+                                        <strong>
+                                            Confirm password
+                                            <RequiredField />
+                                        </strong>
+                                    </label>
+                                    <input
+                                        name="cpassword"
+                                        type="password"
+                                        required
+                                        className="form-control rounded-0"
+                                        onChange={handleInput}
+                                    />
+                                    {errors.cpassword && (
+                                        <span className="text-danger">
+                                            {errors.cpassword}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
 
-            <button type="submit" className="btn btn-success w-100 rounded-0">
-              <strong>Signup</strong>
-            </button>
-            <div className="d-flex justify-content-center align-item-center mt-3">
-              <p className="text-secondary">Allready have an account?</p>
+                        <button
+                            type="submit"
+                            className="btn btn-success w-100 rounded-0"
+                        >
+                            <strong>Signup</strong>
+                        </button>
+                        <div className="d-flex justify-content-center align-item-center mt-3">
+                            <p className="text-secondary">
+                                Allready have an account?
+                            </p>
+                        </div>
+                        <Link
+                            to="/owner/login"
+                            className="btn btn-default border w-100 bg-light rounded-0"
+                        >
+                            Signin
+                        </Link>
+                    </form>
+                </div>
             </div>
-            <Link
-              to="/owner/login"
-              className="btn btn-default border w-100 bg-light rounded-0"
-            >
-              Signin
-            </Link>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Signup;

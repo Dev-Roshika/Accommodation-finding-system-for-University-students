@@ -25,7 +25,7 @@ function Validation(values) {
       error.password = "";
     }
   
-  
+    console.log("Form validation : "+ error);
     return error;
   }
   

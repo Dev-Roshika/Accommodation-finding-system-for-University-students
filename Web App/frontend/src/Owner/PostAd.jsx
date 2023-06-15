@@ -115,7 +115,7 @@ function PostAd() {
             </div>
             <div>
             <label htmlFor="title">Cover Image</label>
-            <input type="file" name='coverimage'  onChange={handleFile}/>
+            <input type="file" name='coverimage'  onChange={handleFile} accept="image/png, image/jpeg , image/jpg" />
             </div>
             <div>
             <button type="submit">Post</button>

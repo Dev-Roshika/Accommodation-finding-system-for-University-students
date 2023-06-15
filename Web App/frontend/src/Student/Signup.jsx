@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Validation from "../Validation/SignupValidation";
 import axios from "axios";
@@ -13,30 +13,145 @@ function Signup() {
     email: "",
     faculty: "",
     dept: "",
-    paddress: "",
     password: "",
     cpassword: "",
     role: "student",
   });
-
+  const [email, setEmail] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
+  const [username, setUsername] = useState("");
+  const [usernameExists, setUsernameExists] = useState(false);
   const [errors, setErrors] = useState({});
-
+  const [profilefile, setProfilefile] = useState();
   const navigate = useNavigate();
-
+  
+  const handleProfileImageFile = (event) => {
+    const profileimage = event.target.files[0];
+    setProfilefile(profileimage);
+  };
   const handleInput = (event) => {
+    setErrors((prev) => ({
+      ...prev,
+      [event.target.name]: "",
+    }));
     setValues((prev) => ({
       ...prev,
-      [event.target.name]: [event.target.value],
+      [event.target.name]: event.target.value,
     }));
+    if(event.target.name === 'email'){
+       setEmail(event.target.value);
+    }
+    if(event.target.name === 'username'){
+      setUsername(event.target.value);
+   }
   };
-
+  useEffect(() => {
+    if (email) {
+      axios
+        .get("http://localhost:8081/student/check-email", {
+          params: { email: email },
+        })
+        .then((res) => {
+          setEmailExists(false);
+          if (res.data.result === "EmailExists") {
+            setEmailExists(true);
+            console.log("Email exists");
+          } else if (res.data.result === "EmailDoesNotExists") {
+            console.log("Email does not exist");
+          } else {
+            console.log("Error occurred");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [email]);
+  useEffect(() => {
+    if (username) {
+      axios
+        .get("http://localhost:8081/student/check-username", {
+          params: { username: username },
+        })
+        .then((res) => {
+          setUsernameExists(false);
+          if (res.data.result === "UsernameExists") {
+            setUsernameExists(true);
+            console.log("Someone already has that username. Try another?");
+          } else if (res.data.result === "UsernameDoesNotExists") {
+            console.log("Username does not exist");
+          } else {
+            console.log("Error occurred");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [username]);
+  useEffect(() => {
+    axios
+        .get("http://localhost:8081")
+        .then((res) => {
+            if (res.data.Valid && res.data.role === "student") {
+                navigate("/home");
+            } else {
+                console.log("User is not logged in");
+            }
+        })
+        .catch((err) => console.log(err));
+    // eslint-disable-next-line
+}, []);
+  useEffect(() => {
+    if(emailExists) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Email already exists",
+      }));
+    }
+  }, [emailExists])
+  useEffect(() => {
+    if(usernameExists) {
+      setErrors((prev) => ({
+        ...prev,
+        username : "Someone already has that username. Try another?",
+      }));
+    }
+  }, [usernameExists])
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrors(Validation(values));
+    const validationErrors = Validation(values);
+        setErrors(validationErrors);
+
+        // Check if there are any validation errors
+        if (
+            validationErrors.cpassword !== "" ||
+            validationErrors.password !== "" ||
+            validationErrors.username !== "" ||
+            validationErrors.mobile !== "" ||
+            validationErrors.univregno !== "" ||
+            validationErrors.email !== ""
+        ) {
+            return; // Stop further execution of the handleSubmit function
+        }
+
+    const formData = new FormData();
+    formData.append('fullname',values.fullname);
+    formData.append('username',values.username);
+    formData.append('univregno',values.univregno);
+    formData.append('mobile',values.mobile);
+    formData.append('email',values.email);
+    formData.append('profileimage',profilefile);
+    formData.append('password',values.password);
+    formData.append('cpassword',values.cpassword);
     console.log(errors);
-    if (errors.cpassword === "") {
+    if(emailExists) { 
+      alert("Email already exists");
+    }
+    if(usernameExists) {
+      alert("Someone already has that username. Try another?");
+    }
+    if (emailExists === false && usernameExists === false) {
+      console.log("No error");
+      console.log(formData);
       axios
-        .post("http://localhost:8081/student/signup", values)
+        .post("http://localhost:8081/student/signup", formData)
         .then((res) => {
           if (res.data.Status === "Success") {
             navigate("/student/login");
@@ -46,14 +161,12 @@ function Signup() {
         })
         .catch((err) => console.log(err));
     }
-  };
-
+  }
   return (
-    <div className="bg-Light m-3">
-      <div className="d-flex justify-content-center align-items-center vh-100 mb-3">
-        <div className="bg-light bg-gradient w-50 p-5 rounded shadow-inner">
+      <div className="d-flex justify-content-center align-items-center mb-3 mt-3">
+        <div className="bg-light bg-gradient w-50 p-5 rounded shadow-sm">
           <form action="" onSubmit={handleSubmit}>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+            <div className="d-flex flex-column justify-content-center align-items-center">
               <div>
                 <h1>Sign up</h1>
               </div>
@@ -134,6 +247,7 @@ function Signup() {
                 type="text"
                 required
                 className="form-control rounded-0"
+                placeholder="01XXXXXXXX"
                 onChange={handleInput}
               />
               {errors.mobile && (
@@ -148,6 +262,7 @@ function Signup() {
               <input
                 name="email"
                 type="email"
+                required
                 className="form-control rounded-0"
                 onChange={handleInput}
               />
@@ -155,6 +270,23 @@ function Signup() {
                 <span className="text-danger">{errors.email}</span>
               )}
             </div>
+            {/* Profile Image */}
+            <div className="mb-3">
+              <label htmlFor="profileimage">
+                <strong>Profile Image<RequiredField /></strong>
+              </label>
+              <input
+                name="profileimage"
+                type="file"
+                required
+                className="form-control rounded-0"
+                accept="image/png, image/jpeg , image/jpg "
+                onChange={handleProfileImageFile}
+              />
+              {errors.profileimage && (
+                <span className="text-danger">{errors.profileimage}</span>
+              )}
+            </div> 
             <div className="mb-3">
               <div className="row">
                 {/* Faculty */}
@@ -196,21 +328,6 @@ function Signup() {
                   )}
                 </div>
               </div>
-            </div>
-            {/* Private address */}
-            <div className="mb-3">
-              <label htmlFor="paddress">
-                <strong>Private Address</strong>
-              </label>
-              <input
-                name="paddress"
-                type="text"
-                className="form-control rounded-0"
-                onChange={handleInput}
-              />
-              {errors.paddress && (
-                <span className="text-danger">{errors.paddress}</span>
-              )}
             </div>
             <div className="mb-3">
               <div className="row">
@@ -266,12 +383,11 @@ function Signup() {
               to="/student/login"
               className="btn btn-default border w-100 bg-light rounded-0"
             >
-              Signin
+              <strong>Signin</strong>
             </Link>
           </form>
         </div>
       </div>
-    </div>
   );
 }
 

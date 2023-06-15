@@ -55,10 +55,10 @@ function Header({type, role}) {
             </div>
             { type !== 'list' &&
                 <> 
-                <h1 className="headerTitle">This is the header title</h1>
+                <h1 className="headerTitle">Find Your Perfect Boarding House</h1>
                 <p className="headerDesc">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos maxime reiciendis nesciunt distinctio architecto. 
-                    Architecto odio veniam nam tempora minus.
+                UniAccomodations is a dedicated platform designed to simplify the
+                 process of finding comfortable and convenient boarding houses for students at the University of Jaffna. 
                 </p>
                 { role === "owner" && <button className="headerBtn" onClick={()=>{navigate('/owner/post-ad')}}>Post your Ad</button>}
                 <div className="headerSearch">
