@@ -54,6 +54,7 @@ function Home() {
                             <SearchItem key={item.id} data={item} />
                         ))}
                     </div>
+                    <p>this is a test.</p>
                 </div>
             </div>
             <div className="mt-auto">

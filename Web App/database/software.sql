@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2023 at 06:35 PM
+-- Generation Time: Jun 15, 2023 at 05:09 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `boarding_house` (
   `Id` int(11) NOT NULL,
+  `OwnerId` int(11) DEFAULT NULL,
   `Title` text NOT NULL,
   `Description` text NOT NULL,
   `Price` varchar(100) NOT NULL,
@@ -48,8 +49,13 @@ CREATE TABLE `boarding_house` (
 -- Dumping data for table `boarding_house`
 --
 
-INSERT INTO `boarding_house` (`Id`, `Title`, `Description`, `Price`, `Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`, `OtherImages`) VALUES
-(52, 'Title 01', 'Description of title one is this is 01', '40000.00', 'Yes', 'Jaffna', '450m', 10, 0, 'Air conditioner', 'No rules', '01111111111', 'coverimage_1686061806874_cover_image1.jpg', '[\"uploadImages-1686061859186-image_1.jpg\",\"uploadImages-1686061859186-image_2.jpg\",\"uploadImages-1686061859186-image_3.jpg\",\"uploadImages-1686061859187-image_5.jpg\",\"uploadImages-1686061859187-image_6.jpg\",\"uploadImages-1686061859188-image_12 - Copy.jpg\"]');
+INSERT INTO `boarding_house` (`Id`, `OwnerId`, `Title`, `Description`, `Price`, `Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`, `OtherImages`) VALUES
+(52, 1, 'Title 01', 'Description of title one is this is 01', '40000.00', 'Yes', 'Jaffna', '450m', 10, 0, 'Air conditioner', 'No rules', '01111111111', 'coverimage_1686061806874_cover_image1.jpg', '[\"uploadImages-1686061859186-image_1.jpg\",\"uploadImages-1686061859186-image_2.jpg\",\"uploadImages-1686061859186-image_3.jpg\",\"uploadImages-1686061859187-image_5.jpg\",\"uploadImages-1686061859187-image_6.jpg\",\"uploadImages-1686061859188-image_12 - Copy.jpg\"]'),
+(54, 1, 'fefe', 'efewef', 'fwef', 'Yes', 'fefw', 'fwef', 0, 0, '', 'efef', 'fef', 'coverimage_1686566049568_cover_image3.jpg', NULL),
+(55, 1, 'fef', 'efef', 'fef', 'No', 'fefe', '', 13, 0, '', '', '', 'coverimage_1686566183160_cover_image3.jpg', NULL),
+(56, 1, 'final', 'fewf', 'fewf', 'No', '', '', 0, 0, '', '', '', 'coverimage_1686566397448_cover_image2.jpg', NULL),
+(57, 1, 'fefw', '', '', 'No', '', '', 0, 0, '', '', '', 'coverimage_1686566495764_cover_image2.jpg', '[\"uploadImages-1686566507601-image_4.jpg\",\"uploadImages-1686566507601-image_5.jpg\",\"uploadImages-1686566507602-image_6.jpg\",\"uploadImages-1686566507622-image_7.jpg\",\"uploadImages-1686566507622-image_8.jpg\",\"uploadImages-1686566507622-image_10.jpg\"]'),
+(58, 2, 'Owner2 title1', 'Owner2 description', '35000.00', 'No', 'Jaffna', '1Km', 10, 0, 'Air conditioner', 'No rules', '0222222222', 'coverimage_1686578337666_cover_image1.jpg', '[\"uploadImages-1686578354585-image_2.jpg\",\"uploadImages-1686578354585-image_3.jpg\",\"uploadImages-1686578354586-image_4.jpg\",\"uploadImages-1686578354586-image_5.jpg\",\"uploadImages-1686578354586-image_6.jpg\",\"uploadImages-1686578354587-image_7.jpg\"]');
 
 -- --------------------------------------------------------
 
@@ -75,7 +81,8 @@ CREATE TABLE `owner_info` (
 --
 
 INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES
-(59, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0739177233', 'sinnathurayi@gmail.com', 'profileimage-1686060763745-photo-1628563694622-5a76957fd09c.jpg', '543251380v', 'nidphoto-1686060763444-NID.PNG', 'No :42', '$2b$10$quoVeiSPnjcz7TphnKHV4uOCY6De/ebjBkIpoD7y43Y.irpLvjwSK');
+(1, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0739177233', 'sinnathurayi@gmail.com', 'profileimage-1686060763745-photo-1628563694622-5a76957fd09c.jpg', '543251380v', 'nidphoto-1686060763444-NID.PNG', 'No :42', '$2b$10$quoVeiSPnjcz7TphnKHV4uOCY6De/ebjBkIpoD7y43Y.irpLvjwSK'),
+(2, 'Owner2 Lastname2', 'Owner2', '0232323231', 'owner2@gmail.com', 'profileimage-1686577997632-contrast.jpg', '551251380v', 'nidphoto-1686577997471-NID.PNG', 'address2', '$2b$10$5SBX410XwxmUOJknOaFFWuDpkVeMxAsZYEwfGrxPjhpI46CqnToF.');
 
 -- --------------------------------------------------------
 
@@ -101,7 +108,7 @@ CREATE TABLE `student_info` (
 --
 
 INSERT INTO `student_info` (`Id`, `FullName`, `UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`, `Email`, `Faculty`, `Dept`, `Password`) VALUES
-(37, 'Saman De Silva', 'saman', '2019/csc/001', '0764972833', 'profileimage_1686059975134_fashion.jpg', 'saman@gmail.com', NULL, NULL, '$2b$10$iBYSpCfNCUoCeHPYprBVEePeYStUnWvjBpKTUMBJ5DuSwkZPKlVV6');
+(41, 'Saman De Silva', 'saman', '2019/CSC/001', '0711457233', 'profileimage_1686563231476_photo-1628563694622-5a76957fd09c.jpg', 'saman@gmail.com', 'Science', 'CS', '$2b$10$cxd.QLLYIYNOsZTQli0O4upFM4lPNeu7i7bPeenwJlgPJ5uA7wRlq');
 
 --
 -- Indexes for dumped tables
@@ -111,7 +118,8 @@ INSERT INTO `student_info` (`Id`, `FullName`, `UserName`, `UnivRegNo`, `ContactN
 -- Indexes for table `boarding_house`
 --
 ALTER TABLE `boarding_house`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `FK_OwnerId` (`OwnerId`);
 
 --
 -- Indexes for table `owner_info`
@@ -133,19 +141,29 @@ ALTER TABLE `student_info`
 -- AUTO_INCREMENT for table `boarding_house`
 --
 ALTER TABLE `boarding_house`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `boarding_house`
+--
+ALTER TABLE `boarding_house`
+  ADD CONSTRAINT `FK_OwnerId` FOREIGN KEY (`OwnerId`) REFERENCES `owner_info` (`Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
