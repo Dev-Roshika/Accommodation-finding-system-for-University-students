@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2023 at 05:09 PM
+-- Generation Time: Jun 19, 2023 at 03:39 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -50,12 +50,9 @@ CREATE TABLE `boarding_house` (
 --
 
 INSERT INTO `boarding_house` (`Id`, `OwnerId`, `Title`, `Description`, `Price`, `Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`, `OtherImages`) VALUES
-(52, 1, 'Title 01', 'Description of title one is this is 01', '40000.00', 'Yes', 'Jaffna', '450m', 10, 0, 'Air conditioner', 'No rules', '01111111111', 'coverimage_1686061806874_cover_image1.jpg', '[\"uploadImages-1686061859186-image_1.jpg\",\"uploadImages-1686061859186-image_2.jpg\",\"uploadImages-1686061859186-image_3.jpg\",\"uploadImages-1686061859187-image_5.jpg\",\"uploadImages-1686061859187-image_6.jpg\",\"uploadImages-1686061859188-image_12 - Copy.jpg\"]'),
-(54, 1, 'fefe', 'efewef', 'fwef', 'Yes', 'fefw', 'fwef', 0, 0, '', 'efef', 'fef', 'coverimage_1686566049568_cover_image3.jpg', NULL),
-(55, 1, 'fef', 'efef', 'fef', 'No', 'fefe', '', 13, 0, '', '', '', 'coverimage_1686566183160_cover_image3.jpg', NULL),
-(56, 1, 'final', 'fewf', 'fewf', 'No', '', '', 0, 0, '', '', '', 'coverimage_1686566397448_cover_image2.jpg', NULL),
-(57, 1, 'fefw', '', '', 'No', '', '', 0, 0, '', '', '', 'coverimage_1686566495764_cover_image2.jpg', '[\"uploadImages-1686566507601-image_4.jpg\",\"uploadImages-1686566507601-image_5.jpg\",\"uploadImages-1686566507602-image_6.jpg\",\"uploadImages-1686566507622-image_7.jpg\",\"uploadImages-1686566507622-image_8.jpg\",\"uploadImages-1686566507622-image_10.jpg\"]'),
-(58, 2, 'Owner2 title1', 'Owner2 description', '35000.00', 'No', 'Jaffna', '1Km', 10, 0, 'Air conditioner', 'No rules', '0222222222', 'coverimage_1686578337666_cover_image1.jpg', '[\"uploadImages-1686578354585-image_2.jpg\",\"uploadImages-1686578354585-image_3.jpg\",\"uploadImages-1686578354586-image_4.jpg\",\"uploadImages-1686578354586-image_5.jpg\",\"uploadImages-1686578354586-image_6.jpg\",\"uploadImages-1686578354587-image_7.jpg\"]');
+(70, 3, 'Title 01 S', 'Description boarding 01', '35000.00', 'Yes', '159, Manipay Road, Jaffna\r\n', '100 m', 10, 0, '1 Bathroom, 3 Bedrooms', 'No rules', '0773453266', 'coverimage_1687181423969_cover_image1.jpg', '[\"uploadImages-1687181449426-image_3.jpg\",\"uploadImages-1687181449426-image_4.jpg\",\"uploadImages-1687181449426-image_11.jpg\",\"uploadImages-1687181449426-image_12 - Copy.jpg\",\"uploadImages-1687181449426-image_17.jpg\",\"uploadImages-1687181449427-image_19.jpg\"]'),
+(71, 3, 'Title post 02', 'Description title 02', '45000.00', 'No', 'Jaffna', '1 km', 0, 11, '2 Bedrooms, 1 Bathroom', 'No alcohol', '0771063266', 'coverimage_1687181574824_cover_image2.jpg', '[\"uploadImages-1687181602162-image_2.jpg\",\"uploadImages-1687181602162-image_3.jpg\",\"uploadImages-1687181602163-image_5.jpg\",\"uploadImages-1687181602163-image_7.jpg\",\"uploadImages-1687181602163-image_13.jpg\",\"uploadImages-1687181602163-image_19.jpg\"]'),
+(72, 4, 'Title 01 P', 'Description people 01', '45000.00', 'Yes', 'Mannar', '500 m', 15, 0, '1 Separate toilot, 1 Bathroom, 2 Bedrooms', 'No', '0771063116', 'coverimage_1687181853212_cover_image3.jpg', '[\"uploadImages-1687181870261-image_6.jpg\",\"uploadImages-1687181870262-image_7.jpg\",\"uploadImages-1687181870262-image_8.jpg\",\"uploadImages-1687181870262-image_12 - Copy.jpg\",\"uploadImages-1687181870262-image_15.jpg\",\"uploadImages-1687181870262-image_17.jpg\"]');
 
 -- --------------------------------------------------------
 
@@ -81,8 +78,8 @@ CREATE TABLE `owner_info` (
 --
 
 INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES
-(1, 'Sinnathurayi Balasuntharam', 'Sinnathurayi ', '0739177233', 'sinnathurayi@gmail.com', 'profileimage-1686060763745-photo-1628563694622-5a76957fd09c.jpg', '543251380v', 'nidphoto-1686060763444-NID.PNG', 'No :42', '$2b$10$quoVeiSPnjcz7TphnKHV4uOCY6De/ebjBkIpoD7y43Y.irpLvjwSK'),
-(2, 'Owner2 Lastname2', 'Owner2', '0232323231', 'owner2@gmail.com', 'profileimage-1686577997632-contrast.jpg', '551251380v', 'nidphoto-1686577997471-NID.PNG', 'address2', '$2b$10$5SBX410XwxmUOJknOaFFWuDpkVeMxAsZYEwfGrxPjhpI46CqnToF.');
+(3, 'Sinnathurayi Balasuntharam', 'sinnathurayi ', '0764447233', 'sinnathurayi@gmail.com', 'profileimage-1687181139548-contrast.jpg', '543251380v', 'nidphoto-1687181139548-NID.PNG', '159, Manipay Road, Jaffna', '$2b$10$tyeE4LprU9fdMEv5i.qbmedzfonja0EaqwcWpZkgHQPtTmZKtbK7C'),
+(4, 'Pasindu Nayanajith ', 'pasindu', '0729736233', 'pasindu@gmail.com', 'profileimage-1687181721557-stock-photo-anonymous.jpg', '9872151380v', 'nidphoto-1687181721489-NID.PNG', 'No :42', '$2b$10$lM2vnUe74LxymMCRMmpEiu09C25l2yG1dxoH4MVKWDu/qH7Q8Y5ei');
 
 -- --------------------------------------------------------
 
@@ -108,7 +105,8 @@ CREATE TABLE `student_info` (
 --
 
 INSERT INTO `student_info` (`Id`, `FullName`, `UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`, `Email`, `Faculty`, `Dept`, `Password`) VALUES
-(41, 'Saman De Silva', 'saman', '2019/CSC/001', '0711457233', 'profileimage_1686563231476_photo-1628563694622-5a76957fd09c.jpg', 'saman@gmail.com', 'Science', 'CS', '$2b$10$cxd.QLLYIYNOsZTQli0O4upFM4lPNeu7i7bPeenwJlgPJ5uA7wRlq');
+(42, 'Saman De Silva', 'saman', '2019/CSC/001', '0124356987', 'profileimage_1687180865837_photo-1628563694622-5a76957fd09c.jpg', 'saman@gmail.com', 'Science', 'Cs', '$2b$10$SNK/o7MocpgMNkCI9HUuJuHf6S0LotJ4zR.Y0pRZHxJsonQfulxlC'),
+(43, 'Dananjan Ferendo', 'danan', '2019/CSC/002', '0768888233', 'profileimage_1687180960184_fashion.jpg', 'danan@gmail.com', 'Art', 'Law', '$2b$10$5dhZxOicNsYis7qaqnigeO9s4SfLL9mdWn7wEWjKICxuAmo/3o42O');
 
 --
 -- Indexes for dumped tables
@@ -141,19 +139,19 @@ ALTER TABLE `student_info`
 -- AUTO_INCREMENT for table `boarding_house`
 --
 ALTER TABLE `boarding_house`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- Constraints for dumped tables
