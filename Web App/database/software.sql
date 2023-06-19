@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2023 at 03:39 PM
+
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -80,7 +80,6 @@ CREATE TABLE `owner_info` (
 INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `ProfileImage`, `NidNo`, `NidPhoto`, `PrivateAddress`, `Password`) VALUES
 (3, 'Sinnathurayi Balasuntharam', 'sinnathurayi ', '0764447233', 'sinnathurayi@gmail.com', 'profileimage-1687181139548-contrast.jpg', '543251380v', 'nidphoto-1687181139548-NID.PNG', '159, Manipay Road, Jaffna', '$2b$10$tyeE4LprU9fdMEv5i.qbmedzfonja0EaqwcWpZkgHQPtTmZKtbK7C'),
 (4, 'Pasindu Nayanajith ', 'pasindu', '0729736233', 'pasindu@gmail.com', 'profileimage-1687181721557-stock-photo-anonymous.jpg', '9872151380v', 'nidphoto-1687181721489-NID.PNG', 'No :42', '$2b$10$lM2vnUe74LxymMCRMmpEiu09C25l2yG1dxoH4MVKWDu/qH7Q8Y5ei');
-
 -- --------------------------------------------------------
 
 --
