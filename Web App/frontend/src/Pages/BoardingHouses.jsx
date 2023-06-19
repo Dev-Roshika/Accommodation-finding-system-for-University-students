@@ -147,7 +147,7 @@ function BoardingHouses() {
                                 console.log(Data[0].OtherImages);
                                 return (
                                     <div className="boardingImgWrapperMain">
-                                        {
+                                        { item.OtherImages &&
                                             // eslint-disable-next-line
                                             JSON.parse(item.OtherImages).map(
                                                 (file_name, i) => {
