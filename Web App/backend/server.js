@@ -286,6 +286,9 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
     // console.log(req.body.image) //Cannot retrieve image information like this
     const img_filename = req.file.filename;
     const owner_id = req.session.Id;
+    const distance = req.body.distance + " " + req.body.distanceUnit; // Combine distance and distanceUnit
+    console.log("post-ad, ownerId: "+owner_id);
+    console.log("post-ad, distanceUnit: "+req.body.distanceUnit);
     const sql =
         "INSERT INTO `boarding_house` (`OwnerId`, `Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
     console.log(img_filename + "___" + req.body.address);
@@ -296,7 +299,7 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
         req.body.price,
         req.body.negotiable,
         req.body.address,
-        req.body.distance,
+        distance,
         req.body.boys,
         req.body.girls,
         req.body.facilities,
