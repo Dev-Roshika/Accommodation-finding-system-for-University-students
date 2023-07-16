@@ -56,23 +56,6 @@ function BoardingHouses() {
             });
         // eslint-disable-next-line
     }, []);
-    // const photos = [
-    //   {
-    //     src: "./Images/images (3).jpg",
-    //   },
-    //   {
-    //     src: "./Images/download.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (1).jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (2).jpg",
-    //   },
-    // ];
 
     const handleOpen = (i) => {
         setSlideNumber(i);
