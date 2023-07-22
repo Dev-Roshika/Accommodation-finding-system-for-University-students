@@ -12,6 +12,7 @@ import Profile from './Pages/Profile';
 import UpdateProfile from './Pages/UpdateProfile';
 import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard'
+import EditBoarding from './Owner/Crud/EditBoarding'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='/owner/login' element={<OwnerSignin />} />
           <Route path='/owner/signup' element={<OwnerSignup />} />
           <Route path='/owner/dashboard' element={<OwnerDashboard />} />
+          <Route path='/edit-boarding-house/:id' element={<EditBoarding />} />
           <Route path='/owner/post-ad' element={<PostAd />} />
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
           <Route path='/profile' element={<Profile/>} />
