@@ -407,6 +407,210 @@ app.get("/student/show", (req, res) => {
         return res.json(data);
     });
 });
+const handleProfileDelete = function(Id,Role){
+ console.log(Id); 
+};
+
+const getProfileImage = function(Id,Role,callback){
+    console.log("getProfileImage was called.");
+   
+    let sql;
+    if(Role === 'owner')
+    {  sql = "SELECT ProfileImage FROM owner_info WHERE Id=?";}
+    else{
+        sql = "SELECT ProfileImage FROM student_info WHERE Id=?";
+    }
+    db.query(sql, [Id], (err, data) => {
+        if (err) { callback("Issue in profile image.",null);}
+        else callback(null,data);
+    });
+   };
+   const getIDImage = function(Id,callback){
+    console.log("getIDImage was called.");
+    let sql;
+    sql = "SELECT NidPhoto FROM owner_info WHERE Id=?";
+    
+    db.query(sql, [Id], (err, data) => {
+        if (err) { callback("Issue in Nid.",null);}
+        else callback(null,data);
+    });
+   };
+const getCoverImage = function(Id,callback){
+    console.log("This is Cover Image function :"+ Id);
+    let sql = "SELECT CoverImage FROM boarding_house WHERE OwnerId=?" ;
+    db.query(sql, [Id], (err, data) => {
+        if (err) callback("Issue in cover image.",null);
+        else{
+            callback(null,data);
+        }
+    });
+   };
+    const getOtherImages = function(Id,callback){
+    console.log(Id);
+    let sql = "SELECT OtherImages FROM boarding_house WHERE OwnerId=?"; 
+    db.query(sql, [Id], (err, data) => {
+        if (err) {
+            callback("Issue in Boarding House.",null);
+        }
+        else{
+            callback(null,data);    
+        }
+    });
+   };
+
+app.post("/student/delete",(req,res)=>{
+   // console.log(req);
+    console.log('delete request came to backend !!!!!!!!');
+    const ID = req.session.Id;
+    const Role = req.session.role;
+   
+    let sql,sqla;
+    let CoverImage = [];
+    let OtherImages = [];
+    let ProfileImage,NidPhoto;
+
+    if(Role === 'student')
+    {
+        getProfileImage(ID,Role,(err,data)=>{
+            if(err){
+                console.log(err);
+                ProfileImage = 0;
+            }
+            else{
+                console.log("Profile Image that should delete : "+data[0].ProfileImage);
+                ProfileImage = data[0].ProfileImage;
+                if(ProfileImage !== 0){
+                    console.log("Test 2  "+ProfileImage);
+                fs.unlink(`public/images/profile_images/${req.session.role}/${ProfileImage}`, (err) => {
+                    if (err) {
+                      console.error('Error deleting profile image:', err);
+                    } else {
+                     console.log('Profile image deleted successfully.');
+                    }
+                  });}
+            }
+        });
+        sql = "DELETE FROM student_info WHERE Id = ?";
+        db.query(sql,ID,(err,data) => { 
+            if(err) return "res.json(data)"
+            return res.json(data)
+        });
+    }
+    else if(Role === 'owner'){
+        console.log("ID"+ID);
+        console.log("Role"+Role);
+        getProfileImage(ID,Role,(err,data)=>{
+            if(err){
+                console.log(err);
+                ProfileImage = 0;
+            }
+            else{
+                console.log("Profile Image that should delete : "+data[0].ProfileImage);
+                ProfileImage = data[0].ProfileImage;
+                if(ProfileImage !== 0){
+                    console.log("Test 2  "+ProfileImage);
+                fs.unlink(`public/images/profile_images/${req.session.role}/${ProfileImage}`, (err) => {
+                    if (err) {
+                      console.error('Error deleting profile image:', err);
+                    } else {
+                     console.log('Profile image deleted successfully.');
+                    }
+                  });}
+            }
+        });
+        getIDImage(ID,(err,data)=>{
+            if(err){
+                console.log(err);
+               getIDImage = 0;
+            }
+            else{
+                console.log("ID Image that should delete : "+data[0].NidPhoto);
+                NidPhoto = data[0].NidPhoto;
+                if(ProfileImage !== 0){
+                    console.log("Test 2  "+NidPhoto);
+                fs.unlink(`public/images/nidphoto/${NidPhoto}`, (err) => {
+                    if (err) {
+                      console.error('Error deleting profile image:', err);
+                    } else {
+                     console.log('Profile image deleted successfully.');
+                    }
+                  });}
+            }
+        });
+        //CoverImage = getCoverImage(ID);
+        getCoverImage(ID,(err,data)=>{
+            if(err){
+                console.log(err);
+                CoverImage = [];
+            }
+            else{
+                let covers = data.length;
+                
+                
+                for (let i = 0; i < covers; i++) {
+                      console.log(data[i].CoverImage);
+                        fs.unlink(`public/images/cover_images/${data[i].CoverImage}`, (err) => {
+                        if (err) {
+                          console.error('Error deleting a Cover image:', err);
+                        } else {
+                         console.log('A cover image image deleted successfully.');
+                        }
+                      });
+                    //CoverImage.push(data[i].CoverImage);
+                  }
+                  //console.log("Cover Images that should delete :"+CoverImage);  
+            }
+        });
+        
+        getOtherImages(ID,(err,data)=>{
+            if(err){
+                OtherImages = 0;
+            }
+            else{ 
+                
+                let covers = data.length;
+               
+                for (let i = 0; i < covers; i++) {
+                    const imagePaths = JSON.parse(data[i].OtherImages);
+                    const SomeOfOtherImages = imagePaths.map((path) => path.trim());
+                    OtherImages.push(...SomeOfOtherImages);
+                  }
+                  console.log("Other image called : ");
+                  console.log(OtherImages);
+                  for(let i of OtherImages){
+                    fs.unlink(`public/images/${OtherImages}`, (err) => {
+                        if (err) {
+                          console.error('Error deleting a optional image:', err);
+                        } else {
+                         console.log('A optional image deleted successfully.');
+                        }
+                      });
+                  }
+            }
+        });
+        console.log("Beep Beep boop !!!");
+
+        sqla = "DELETE FROM boarding_house WHERE OwnerId=?";
+        sql = "DELETE FROM owner_info WHERE Id = ?";
+        
+        Promise.all([
+            db.query(sqla, ID),
+            db.query(sql, ID)
+        ])
+        .then(([boardingHouseData, ownerData]) => {
+            console.log(" delete happend!");
+            res.json({ boardingHouseData, ownerData }); 
+        })
+        .catch((err) => {
+            console.log(" delete not happend! : "+ err);
+            res.json(err); 
+        });
+    }
+    else{
+        console.log('something went wrong.asked to delete a empty role account!');
+    }
+});
+
 app.put("/student/updateUser",(req,res)=>{
 const {ContactNo,Email,PrivateAddress} = req.body[0];
 const values = [ContactNo,Email,req.session.Id];

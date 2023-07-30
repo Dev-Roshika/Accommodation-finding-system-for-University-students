@@ -1,8 +1,42 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import Select from 'react-select';
 
 function Filter({data,onSort}){
-    
+  
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [sortby,setSortby] = useState("");
+    const [sortedValue, setSortedValue] = useState([]);
+
+    const handleOptionChange = (event) => {
+      console.log(event.target.value);
+      setSelectedOption(event.target.value);
+     
+      if(event.target.value === 'boy')
+       {   console.log("Boy");
+           
+           console.log("test");
+           let filtered = sortedValue.filter(asortedValue=>{
+            return(
+              asortedValue.Girls === 0
+            );
+          });onSort(filtered);
+      }
+      else if(event.target.value === 'girl') 
+        {   
+          console.log("Girls");     
+          console.log("test");
+          let filtered = sortedValue.filter(asortedValue=>{
+          return(
+            asortedValue.Boys === 0
+          );
+        });
+        onSort(filtered);
+        }
+          else {console.log("Anything");
+              onSort(sortedValue);     
+        }
+    };
+  
     const options = [
         {value:'name', label:'name'},
         {value:'price',label:'price'},
@@ -11,11 +45,13 @@ function Filter({data,onSort}){
     const defaultValue = options[0];
     
     const  handleChange = (selectedOption) => {
+     
     if (data.length !== 0) {
         
         if(selectedOption.value === 'price'){
           console.log('price');
-          const sortedData = data.sort((a, b) => {
+          setSortby("price");
+          let byPrice = data.sort((a, b) => {
             const PriceA = a.Price;
             const PriceB = b.Price;
           
@@ -27,11 +63,13 @@ function Filter({data,onSort}){
             }
             return 0;
           });
-          onSort(sortedData);
+          setSortedValue(byPrice);
+          onSort(byPrice);
         }
         else if(selectedOption.value === 'distance'){
           console.log('distance');
-          const sortedData = data.sort((a, b) => {
+         // setSortby("distance");
+          let sortedData = data.sort((a, b) => {
             
             let x =  a.Distance.toLowerCase();
             let y =  b.Distance.toLowerCase();
@@ -70,16 +108,19 @@ function Filter({data,onSort}){
           
             return 0;
           });
+          setSortedValue(sortedData);
           onSort(sortedData);
         }
         else if(selectedOption.value === 'name'){
             console.log('name');
+            setSortby("name");
             let byName = data.slice(0);
             byName.sort(function(a, b) {
             var x = a.Title?.toLowerCase()||'';
             var y = b.Title?.toLowerCase()||'';
             return x < y ? -1 : x > y ? 1 : 0;
             });
+            setSortedValue(byName);
             onSort(byName);
         }
         else{
@@ -97,9 +138,43 @@ return (
     
     <div className="filter">
         <p>this is a test....</p>
-
+      
         <Select options={options} onChange={handleChange} defaultValue={defaultValue}/>
+        <div>
 
+              <div>
+      <h3>by Gender:</h3>
+      <label>
+        <input
+          type="radio"
+          value="boy"
+          checked={selectedOption === "boy"}
+          onChange={handleOptionChange}
+        />
+        Boy
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          value="girl"
+          checked={selectedOption === "girl"}
+          onChange={handleOptionChange}
+        />
+        Girl
+      </label>
+      <br /><label>
+        <input
+          type="radio"
+          value="any"
+          checked={selectedOption === "any"}
+          onChange={handleOptionChange}
+        />
+        All
+      </label>
+      <p>show results for : {selectedOption}</p>
+    </div>     
+        </div>
     </div>
 );
 }

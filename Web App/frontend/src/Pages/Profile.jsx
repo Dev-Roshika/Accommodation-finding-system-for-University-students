@@ -13,8 +13,18 @@ function Profile() {
     const [role, setRole] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const navigate = useNavigate();
-
+    
     axios.defaults.withCredentials = true;
+
+    const handleLogout = async () => {
+      try {
+        await axios.get('http://localhost:8081/logout');
+        window.location.href = '/';
+        console.log("logout was called .");
+      } catch (error) {
+        console.error('Error logging out:', error);
+      }
+    };
 
     useEffect(() => {
       axios.get('http://localhost:8081')
@@ -33,6 +43,18 @@ function Profile() {
     }, [])
       const handleImageSelect = (event) => {
         setSelectedImage(event.target.files[0]);
+      };
+      const handleDelete = async() =>{
+          try {
+           
+            const resp = await axios.post('http://localhost:8081/student/delete');
+            console.log("delete : ")
+            console.log(resp)
+            handleLogout(); 
+            
+          } catch (error) {
+            console.log(error);
+          }
       };
       const handleImageUpload = async () => {
       try {
@@ -81,6 +103,9 @@ function Profile() {
      
   <div className="container">
     <div className= "square">     
+    <div className='accountfeatures'>
+        <button onClick={handleDelete}>delete account</button>
+    </div>
       <div className="profile">
             {user.map(cuser =>(
         <div key={cuser.Id}>

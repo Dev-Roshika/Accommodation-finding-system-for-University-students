@@ -7,11 +7,13 @@ import SearchItem from "../Components/SearchItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
+import Filter1 from "../Components/Filter1";
 
 function Home() {
     const [data, setData] = useState([]);
     const [role, setRole] = useState("");
     const [sortedData, setSortedData] = useState([]);
+    const [show,setShow] =useState(false);
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
     useEffect(() => {
@@ -46,6 +48,11 @@ function Home() {
         // eslint-disable-next-line
     }, []);
     const handleSort = (sortedArray) => {
+        console.log("this is returned after sort : ");
+        console.log(typeof(sortedArray));
+        console.log(sortedArray);
+        setShow(true);
+        setSortedData(null);
         setSortedData(sortedArray); // Set the sorted data to the state
       };
     return (
@@ -54,17 +61,17 @@ function Home() {
             <Header role={role} />
             <div className="listContainer">
                     <div className ="setfilter">
-                    <Filter data={data} onSort={handleSort} />
+                         <Filter data={data} onSort={handleSort} />
+                        
                     </div>
                 <div className="listWrapper">
-
-                    
-                    
+                  { show && <p className="try">try</p>}
                     <div className="listResult">
                         {
                             sortedData.length > 0 ? (
                             sortedData.map((item) => <SearchItem key={item.id} data={item} />)
                             ) : (
+                                
                         data.map((item) => <SearchItem key={item.id} data={item} />)
                             )
                         }
