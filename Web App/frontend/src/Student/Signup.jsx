@@ -149,6 +149,8 @@ function Signup() {
         formData.append("password", values.password);
         formData.append("cpassword", values.cpassword);
         console.log(errors);
+        console.log("Formdata : ");
+        console.log(formData);
         if (emailExists) {
             alert("Email already exists");
         }

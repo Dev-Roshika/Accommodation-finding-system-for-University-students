@@ -137,13 +137,12 @@ function Filter({data,onSort}){
 return (
     
     <div className="filter">
-        <p>this is a test....</p>
-      
-        <Select options={options} onChange={handleChange} defaultValue={defaultValue}/>
+        
+        <Select options={options} onChange={handleChange} />
         <div>
 
               <div>
-      <h3>by Gender:</h3>
+      
       <label>
         <input
           type="radio"

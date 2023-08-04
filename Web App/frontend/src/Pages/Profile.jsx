@@ -6,12 +6,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ChangePassword from '../Components/ChangePassword';
 
 function Profile() {
     const[user,UseUser] = useState([])
     const[selectedImage,setSelectedImage] = useState(null);
     const [role, setRole] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isDeletePopupOpen,setisDeletePopupOpen] = useState(false);
+    const [ischangePopupOpen,setisChangePopupOpen] = useState(false);
     const navigate = useNavigate();
     
     axios.defaults.withCredentials = true;
@@ -32,6 +35,7 @@ function Profile() {
           if (res.data.Valid && (res.data.Role === 'student' || res.data.Role === 'owner')) {
             console.log(res.data.Role)
             console.log(res.data.Id)
+            console.log(res.data)
             setRole(res.data.Role);
           } else{
             console.log("Check this");
@@ -50,6 +54,7 @@ function Profile() {
             const resp = await axios.post('http://localhost:8081/student/delete');
             console.log("delete : ")
             console.log(resp)
+            closeChangePopup();
             handleLogout(); 
             
           } catch (error) {
@@ -97,22 +102,40 @@ function Profile() {
       const closePopup = () => {
         setIsPopupOpen(false);
       };
+      const openDeletePopup = () =>{
+        setisDeletePopupOpen(true);
+      };
+      const closeDeletePopup = () =>{
+        setisDeletePopupOpen(false);
+      };
+      const openChangePopup = () =>{
+        setisChangePopupOpen(true);
+      };
+      const closeChangePopup = () =>{
+        setisChangePopupOpen(false);
+      };
+      
   return (
-<div>
+<div className='ProfilePage' >
      <Navbar />
      
-  <div className="container">
-    <div className= "square">     
-    <div className='accountfeatures'>
-        <button onClick={handleDelete}>delete account</button>
-    </div>
-      <div className="profile">
-            {user.map(cuser =>(
-        <div key={cuser.Id}>
+  
+  
+  
+  {user.map(cuser =>(  
+       
+        <div className="containerProfile" key={cuser.Id} style={{border:"1px solid black"}}>
+                    <div className='left'>
                     <div className='profileimage'>
                     
                         <img className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100} onClick={openPopup}/>
+                    </div>
+                    <div className='links'>
+                      <Link onClick={openDeletePopup}>Change Password</Link><br />
+                      <Link onClick={openChangePopup}>delete account</Link>
                     </div> 
+                    </div>
+                    <div className='right'>
                     <div className="rows">
                     <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
@@ -132,7 +155,8 @@ function Profile() {
                     <p className='row'><label>Email :  {cuser.Email}</label></p>
                       <p className='row'><label >Contact No :  {cuser.ContactNo} </label></p>
                       
-                      <button className='profileupdate'><Link to= "/UpdateProfile">change</Link></button>
+                      <button className='profileupdate'><Link to= "/UpdateProfile">Edit</Link></button>
+                   </div>
                    </div>
                     <Popup open={isPopupOpen} onClose={closePopup}>
                     <div className='pop'>
@@ -144,11 +168,36 @@ function Profile() {
                         
                     </div>
                     </Popup>
+                    <Popup open={isDeletePopupOpen} onClose={closeDeletePopup}>
+                    <div className='pop'>
+
+                    <button onClick={closeDeletePopup}>Cancel</button>
+                       <ChangePassword />    
+                    <button onClick={closeDeletePopup}>Cancel</button>
+                        
+                    </div>
+                    </Popup>
+                    <Popup open={ischangePopupOpen} onClose={closeChangePopup}>
+                    <div className='pop'>
+                      
+                       <div>
+                        <h2>Are you want to permanently delete your account?</h2>
+                        <p>All your data will be lost.</p>
+                        <button onClick={handleDelete}>Yes</button>
+                        </div>   
+                    <button onClick={closeChangePopup}>Cancel</button>
+                        
+                    </div>
+                    </Popup>
+                   
         </div>
-            ))}
-      </div>
-    </div>
-  </div>
+        
+           
+     
+      
+    
+     ))}
+  
   
   <ToastContainer />
 </div>

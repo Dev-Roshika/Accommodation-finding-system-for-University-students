@@ -6,8 +6,7 @@ import Filter from "../Components/Filter";
 import SearchItem from "../Components/SearchItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Footer from "../Components/Footer";
-import Filter1 from "../Components/Filter1";
+import Footer from "../Components/Footer"; 
 
 function Home() {
     const [data, setData] = useState([]);
@@ -16,6 +15,8 @@ function Home() {
     const [show,setShow] =useState(false);
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
+
+    
     useEffect(() => {
         axios
             .get("http://localhost:8081")

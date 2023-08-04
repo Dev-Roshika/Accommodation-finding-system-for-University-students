@@ -78,6 +78,8 @@ app.post(
     signup_upload.single("profileimage"),
     (req, res) => {
         const img_filename = req.file.filename;
+        console.log("this is checking signup password : ");
+        console.log(req.body.password);
         const sql =
             "INSERT INTO `student_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Password`) VALUES(?)";
         bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
@@ -865,6 +867,88 @@ app.get("/logout", (req, res) => {
         res.redirect("/"); //Inside a callback… bulletproof!
     });
 });
+//check password
+
+app.post("/checkPassword", (req, res) => {
+
+    let sql;
+
+    if (req.session.role==="student") sql = "SELECT * FROM student_info WHERE `Id` = ?";
+    else if (req.session.role==="owner") sql = "SELECT * FROM owner_info WHERE `Id` = ?";
+    else console.log("role of the account holder is unaware by session !!!!");
+
+    db.query(sql, [req.session.Id], (err, result) => {
+        if (err) return res.json({ Message: "Login error in server" });
+
+        if (result.length > 0) {
+           
+            bcrypt.compare(
+                req.body.password.toString(),
+                result[0].Password,
+                (err, response) => {
+                    if (err)
+                        return res.json({ Error: "Password compare error" });
+                    if (response) {
+                        return res.json({
+                            Status: "Success",
+                            Email: req.session.Email,
+                            Role: req.session.role,
+                        });
+                    } else {
+                        return res.json({ Error: "Password not matched" });
+                    }
+                }
+            );
+        } else {
+            return res.json({ Error: "No Id existed" });
+        }
+    });
+});
+//new password update 
+app.put("/passwordChange",(req, res) => {
+    let sql;
+    console.log("Password : ");
+        //console.log(req.body.password.toString());
+        if(req.session.role === 'owner'){
+
+            sql = "UPDATE owner_info SET Password = ? WHERE Id = ?";
+        }else if(req.session.role === 'student'){
+            sql = "UPDATE student_info SET Password = ? WHERE Id = ?";
+        }else console.log("something went terribly wrong. Role is undefined in session");
+        console.log(sql);
+        console.log(req.body);
+        bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+            if (err){
+                console.log("hashing failed. ");
+                return res.json({ Error: "Error for hashing password" });} 
+            const values = [
+                hash,
+                req.session.Id
+            ];
+            console.log("hash :");
+            console.log(hash);
+            console.log("values");
+            console.log(values)
+            db.query(sql, values, (err, result) => {
+                if (err){
+                    console.log("query failed");
+                    return res.json({ Error: "Insert data Error in server" });
+                }
+                try{req.session.destroy(function (err) {
+                    res.clearCookie("connect.sid");
+                    console.log("User logout...");
+                   
+                });}
+                   catch(err){
+                        console.log(err);
+                   } 
+                
+                return res.json({ Status: "Success" });
+            });
+        });
+    }
+);
+/* */
 
 app.listen(8081, () => {
     console.log("listening");
