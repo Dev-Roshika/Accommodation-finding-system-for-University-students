@@ -74,10 +74,7 @@ function NewPasswordChange()
     return (
         <div
             className="d-flex justify-content-center align-items-center vh-100"
-            style={{
-                marginTop: "200px",
-                marginBottom: "200px",
-            }}
+            
         >
             <div
                 className="bg-secondary bg-gradient rounded shadow-sm bg-opacity-10"

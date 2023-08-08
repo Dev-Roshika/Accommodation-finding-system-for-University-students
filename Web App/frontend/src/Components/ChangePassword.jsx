@@ -53,10 +53,10 @@ function Signin() {
         setShowPassword(!showPassword);
     };
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center ">
             <div
                 className="bg-secondary bg-gradient rounded shadow-sm bg-opacity-10"
-                style={{ width: "40%" }}
+                style={{ width: "80%" }}
             >
                 <form action="" onSubmit={handleSubmit}>
                     <div

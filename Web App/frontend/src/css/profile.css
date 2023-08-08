@@ -29,7 +29,7 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 15%;
 }
 .links{
     display:flex;
@@ -37,7 +37,7 @@
     margin-top: 15px;
 }
 .links a{
-    color: #016551;
+    color: white;
 }
 .profileimg{
     max-width: 100%;
@@ -45,19 +45,46 @@
     /* This ensures the image doesn't exceed the container's defined dimensions */
     width: auto;
     height: auto;
-    border-radius: 25%;
+    border-radius: 50%;
 }
 .pop{
     background-color: white;
-    border: 5px solid black;
+    border:1px solid black;
+    height:50%;
+    
+}
+.popDelete h2{
+    color: red;
+}
+.Dbuttons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 33%;
+}
+.Dbuttons button{
+    
+    margin:5px;
+}
+.popDelete{
+    background-color: white;
+    border:5px solid red;
+    padding-top: 10%;
+    color: #0d987d;
+    height: 254px;
+    width: 500px;
+    text-align: center;
+    
 }
 .profileInput{
-    border-color: #0d987d;
-    background-color: #0d987d;
+    background-color: white;
+    border-color: white;
+    color: #016551;
 }
 
 .profileupdate{
     background-color: white;
+    
     width: 25%;
 }
 .profileupdate a{
@@ -68,7 +95,9 @@
     width: 100%;
     height: 100%;
     margin: 3%;
+    padding:1%;
     color: #0d987d;
+    border: 1px solid #016551;
 }
 .rows{
     display: flex;
@@ -76,7 +105,13 @@
     flex-direction: column;
     align-items: center;
     margin-top:1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top:5%;
+    padding-bottom:5%;
     width:50%;
-    border: 5px solid #016551;
-    background-color: #016551;
+}
+.changePass
+{
+    height:50%;
 }

@@ -15,6 +15,7 @@ function Profile() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isDeletePopupOpen,setisDeletePopupOpen] = useState(false);
     const [ischangePopupOpen,setisChangePopupOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState(null);
     const navigate = useNavigate();
     
     axios.defaults.withCredentials = true;
@@ -46,7 +47,13 @@ function Profile() {
         // eslint-disable-next-line
     }, [])
       const handleImageSelect = (event) => {
+        
+       
         setSelectedImage(event.target.files[0]);
+        console.log( URL.createObjectURL(event.target.files[0]));
+        setPreviewImage( URL.createObjectURL(event.target.files[0]));
+
+        
       };
       const handleDelete = async() =>{
           try {
@@ -96,6 +103,7 @@ function Profile() {
         getUser();
     },[])
     const openPopup = () => {
+      setPreviewImage(null);
         setIsPopupOpen(true);
       };
     
@@ -114,6 +122,11 @@ function Profile() {
       const closeChangePopup = () =>{
         setisChangePopupOpen(false);
       };
+      const discardImageSelect = () =>{
+        
+        setPreviewImage(null);
+        setSelectedImage(null);
+      };
       
   return (
 <div className='ProfilePage' >
@@ -124,7 +137,7 @@ function Profile() {
   
   {user.map(cuser =>(  
        
-        <div className="containerProfile" key={cuser.Id} style={{border:"1px solid black"}}>
+        <div className="containerProfile" key={cuser.Id} >
                     <div className='left'>
                     <div className='profileimage'>
                     
@@ -141,7 +154,7 @@ function Profile() {
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
                     
                       {role ==='student'?(<>
-                        <p className='row'><label>Unoversity RegNo :  {cuser.UnivRegNo}</label></p>
+                        <p className='row'><label>University RegNo :  {cuser.UnivRegNo}</label></p>
                         <p className='row'><label>Faculty :  {cuser.Faculty}</label></p>
                         <p className='row'><label>Department :  {cuser.Dept}</label></p>
                       </>):role ==='owner'?(<>
@@ -162,33 +175,40 @@ function Profile() {
                     <div className='pop'>
                         <h3>Let's add a profile picture !!!.</h3>
                         <input className='profileInput' type="file" accept="image/*" onChange={handleImageSelect} />
-                        <button onClick={handleImageUpload}>Upload Image</button>
                         
+                        <button onClick={handleImageUpload}>Upload Image</button>
+                        <div className='profileimage'>
+                        {previewImage ? (
+                          <div>
+                            <img className="profileimg" src={previewImage} alt='' height={100} width={100} onClick={openPopup} />
+                           
+                          </div>
+                                                  
+                          ) : (
+                        <img className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100}/>
+                        
+                        )}
+                        {previewImage && (
+              <button onClick={discardImageSelect}>Discard</button>
+            )}
+                        </div>
                         <button onClick={closePopup}>Cancel</button>
                         
                     </div>
                     </Popup>
-                    <Popup open={isDeletePopupOpen} onClose={closeDeletePopup}>
+                    
+                    <Popup open={isDeletePopupOpen} onClose={closeDeletePopup} >
                     <div className='pop'>
 
-                    <button onClick={closeDeletePopup}>Cancel</button>
+                    <button style={{align:"right"}} onClick={closeDeletePopup}>Cancel</button>
                        <ChangePassword />    
-                    <button onClick={closeDeletePopup}>Cancel</button>
+                   
                         
                     </div>
                     </Popup>
-                    <Popup open={ischangePopupOpen} onClose={closeChangePopup}>
-                    <div className='pop'>
-                      
-                       <div>
-                        <h2>Are you want to permanently delete your account?</h2>
-                        <p>All your data will be lost.</p>
-                        <button onClick={handleDelete}>Yes</button>
-                        </div>   
-                    <button onClick={closeChangePopup}>Cancel</button>
-                        
-                    </div>
-                    </Popup>
+
+
+                    
                    
         </div>
         
@@ -197,7 +217,17 @@ function Profile() {
       
     
      ))}
-  
+  <Popup open={ischangePopupOpen} onClose={closeChangePopup}>
+                    <div className='popDelete'>
+                      
+                        <h2>Warning!!</h2>
+                        <p>All your data will be lost.</p>
+                        <div className='Dbuttons'>
+                        <button onClick={handleDelete} style={{color:"red"}}>Proceed</button> 
+                    <button onClick={closeChangePopup}style={{color:"#0d987d"}}>Cancel</button>
+                    </div>
+                    </div>
+                    </Popup>
   
   <ToastContainer />
 </div>

@@ -99,15 +99,17 @@ function UpdateProfile() {
 <div>
      <Navbar />
      
-  <div className="container">
-  <div className= "square">     
+      
       <div className="profile">
             {user.map((cuser,index) =>(
-                <div key={cuser.Id}>
+                <div className='containerProfile' key={cuser.Id}>
+                  <div className='left'>
                     <div  className='profileimage'>
                         <img  className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100} />
                     </div> 
-                    <div className="rows"> 
+                  </div>
+                  <div className='right'>
+                  <div className="rows"> 
                        <p className='row'><label>User Name :  {cuser.UserName}</label></p>
                       <p className='row'><label>Full Name :  {cuser.FullName}</label></p>
                        {role ==='student'?(<>
@@ -121,19 +123,22 @@ function UpdateProfile() {
                        </label></p>
                        </>):null}
 
-                     <p className='row'> <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
-                      {emailError && <span className="error">{emailError}</span>}</p>
-                      <p className='row'><input className='profileInput' type='tel' maxLength={10} placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
-                      {contactNoError && <span className="error">{contactNoError}</span>}</p>   
+                     <p className='row'> <label>Email : <input className='profileInput' type="text" placeholder={cuser.Email}  name="Email" value={cuser.Email||''} onChange={(e) => handleInputChange(e, index)}/>
+                      {emailError && <span className="error">{emailError}</span>}</label></p>
+                      
+                      <p className='row'><label> Contact No : <input className='profileInput' type='tel' maxLength={10} placeholder={cuser.ContactNo} value={cuser.ContactNo||''} onChange={(e) => handleInputChange(e, index)}  name = "ContactNo"/>
+                      {contactNoError && <span className="error">{contactNoError}</span>}</label></p>  
+
                       <button className='profileupdate' onClick={handleClick}>Save</button>
                     </div>
+                  </div>
+                    
                 </div>
             ))}
 
   </div>
   </div>   
-        </div>  
-</div>
+        
   )
 }
 
