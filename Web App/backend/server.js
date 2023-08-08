@@ -172,7 +172,7 @@ const O_signup_storage = multer.diskStorage({
         }
 
         cb(null, filename);
-    }, 
+    },
 });
 
 const O_signup_upload = multer({
@@ -227,7 +227,7 @@ app.post("/owner/login", (req, res) => {
             req.session.email = result[0].Email;
             req.session.role = "owner";
             req.session.Id = result[0].Id;
-
+            console.log(req.session.Id);
             console.log(req.session.email);
             console.log(req.session.role);
             bcrypt.compare(
@@ -241,6 +241,7 @@ app.post("/owner/login", (req, res) => {
                             Status: "Success",
                             Email: req.session.Email,
                             Role: req.session.role,
+                            Id: req.session.Id,
                         });
                     } else {
                         return res.json({ Error: "Password not matched" });
@@ -283,16 +284,21 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
     // console.log(req.body.title) // Can retrieve title information like this
     // console.log(req.body.image) //Cannot retrieve image information like this
     const img_filename = req.file.filename;
+    const owner_id = req.session.Id;
+    const distance = req.body.distance + " " + req.body.distanceUnit; // Combine distance and distanceUnit
+    console.log("post-ad, ownerId: " + owner_id);
+    console.log("post-ad, distanceUnit: " + req.body.distanceUnit);
     const sql =
-        "INSERT INTO `boarding_house` (`Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
+        "INSERT INTO `boarding_house` (`OwnerId`, `Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
     console.log(img_filename + "___" + req.body.address);
     const values = [
+        owner_id,
         req.body.title,
         req.body.description,
         req.body.price,
         req.body.negotiable,
         req.body.address,
-        req.body.distance,
+        distance,
         req.body.boys,
         req.body.girls,
         req.body.facilities,
@@ -504,14 +510,47 @@ app.get("/boarding-data", (req, res) => {
     });
 });
 app.get("/boarding-data/:id", (req, res) => {
-    const RowId = req.params.id;
+    const boardingId = req.params.id;
     const sql = "SELECT * FROM boarding_house WHERE `Id` = ?";
-    db.query(sql, [RowId], (err, result) => {
+    db.query(sql, [boardingId], (err, result) => {
         if (err) {
             console.error("Error executing MySQL query:", err);
             res.status(500).json({ error: "Internal server error" });
         } else {
-            //console.log(result);
+            console.log(result);
+            res.json(result);
+        }
+    });
+});
+app.put("/update/boarding-data/:id", upload.single("coverimage"), (req, res) => {
+    const boardingId = req.params.id;
+    const sql = "UPDATE boarding_house SET `Title` = ? `Description`= ? `Price` = ? `Negotiable` = ? `Address` = ? `Distance` = ? `Boys` = ? `Girls` = ? `Facilities`= ? `Rules` = ? `ContactNo` = ? `CoverImage` = ? WHERE `Id` = ?";
+    const img_filename = req.file.filename;
+    const owner_id = req.session.Id;
+    const distance = req.body.distance + " " + req.body.distanceUnit; // Combine distance and distanceUnit
+    console.log("post-ad, ownerId: " + owner_id);
+    console.log("post-ad, distanceUnit: " + req.body.distanceUnit);
+    const values = [
+        owner_id,
+        req.body.title,
+        req.body.description,
+        req.body.price,
+        req.body.negotiable,
+        req.body.address,
+        distance,
+        req.body.boys,
+        req.body.girls,
+        req.body.facilities,
+        req.body.rules,
+        req.body.contactno,
+        img_filename,
+    ];
+    db.query(sql, [...values, boardingId], (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            console.log(result);
             res.json(result);
         }
     });
@@ -584,12 +623,26 @@ app.get("/owner/check-username", (req, res) => {
         }
     });
 });
-
+app.get("/owner/boarding-data", (req, res) => {
+    const owner_id = req.session.Id;
+    console.log("OwnerId : " + owner_id);
+    const sql = "SELECT * FROM boarding_house where `OwnerId` = ?";
+    db.query(sql, [owner_id], (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            console.log("result is here");
+            res.json(result);
+        }
+    });
+});
 //Fetch data for useEffect - end
 
 app.get("/logout", (req, res) => {
     req.session.destroy(function (err) {
         res.clearCookie("connect.sid");
+        console.log("User logout...");
         res.redirect("/"); //Inside a callback… bulletproof!
     });
 });

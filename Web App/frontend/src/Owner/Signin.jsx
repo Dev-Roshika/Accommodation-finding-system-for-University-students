@@ -164,7 +164,7 @@ function Signin() {
                             <span className="px-2">Or</span>
                         </div>
                         <Link
-                            to="/student/signup"
+                            to="/owner/signup"
                             className="btn btn-default border w-100 bg-light rounded-0 mb-3"
                             style={{ color: "#0d987d" }}
                         >

@@ -56,23 +56,6 @@ function BoardingHouses() {
             });
         // eslint-disable-next-line
     }, []);
-    // const photos = [
-    //   {
-    //     src: "./Images/images (3).jpg",
-    //   },
-    //   {
-    //     src: "./Images/download.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (1).jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (2).jpg",
-    //   },
-    // ];
 
     const handleOpen = (i) => {
         setSlideNumber(i);
@@ -147,7 +130,7 @@ function BoardingHouses() {
                                 console.log(Data[0].OtherImages);
                                 return (
                                     <div className="boardingImgWrapperMain">
-                                        {
+                                        { item.OtherImages &&
                                             // eslint-disable-next-line
                                             JSON.parse(item.OtherImages).map(
                                                 (file_name, i) => {
