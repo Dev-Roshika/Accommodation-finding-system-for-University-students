@@ -16,7 +16,14 @@ function NewPasswordChange()
     const [showCPassword, setShowCPassword] = useState(false);
 
     const navigate = useNavigate();
-
+    const handleLogout = async () => {
+        try {
+          await axios.get('http://localhost:8081/logout');
+          window.location.href = '/';
+        } catch (error) {
+          console.error('Error logging out:', error);
+        }
+      };
    
     const handleInput = (event) => {
         setErrors((prev) => ({
@@ -56,7 +63,8 @@ function NewPasswordChange()
         axios.put("http://localhost:8081/passwordChange", values).then((res) => {
                     if (res.data.Status === "Success") {
                         alert("Success!");
-                        navigate("/");
+                        handleLogout();
+
                     } else {
                         console.log("error");
                         alert("Error");

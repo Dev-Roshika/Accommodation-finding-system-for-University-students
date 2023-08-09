@@ -88,7 +88,7 @@ function Signin() {
                                     name="password"
                                     type={showPassword ? "text" : "password"}
                                     className="form-control rounded-0 pr-4"
-                                    placeholder="Student Password"
+                                    placeholder="Current Password"
                                     onChange={handleInput}
                                 />
                                 <button

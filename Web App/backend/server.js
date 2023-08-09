@@ -905,6 +905,8 @@ app.post("/checkPassword", (req, res) => {
     });
 });
 //new password update 
+
+
 app.put("/passwordChange",(req, res) => {
     let sql;
     console.log("Password : ");
@@ -934,16 +936,7 @@ app.put("/passwordChange",(req, res) => {
                     console.log("query failed");
                     return res.json({ Error: "Insert data Error in server" });
                 }
-                try{req.session.destroy(function (err) {
-                    res.clearCookie("connect.sid");
-                    console.log("User logout...");
-                   
-                });}
-                   catch(err){
-                        console.log(err);
-                   } 
-                
-                return res.json({ Status: "Success" });
+                res.json({ Status: "Success" });
             });
         });
     }

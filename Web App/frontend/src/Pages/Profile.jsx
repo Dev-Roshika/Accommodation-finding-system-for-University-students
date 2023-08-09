@@ -172,35 +172,37 @@ function Profile() {
                    </div>
                    </div>
                     <Popup open={isPopupOpen} onClose={closePopup}>
-                    <div className='pop'>
+                    <div className='popImage'>
+                      <div className='addtitle'>
                         <h3>Let's add a profile picture !!!.</h3>
+                      </div>
+                      <div className="uploadImage">
                         <input className='profileInput' type="file" accept="image/*" onChange={handleImageSelect} />
-                        
-                        <button onClick={handleImageUpload}>Upload Image</button>
-                        <div className='profileimage'>
+                        <div >
                         {previewImage ? (
-                          <div>
-                            <img className="profileimg" src={previewImage} alt='' height={100} width={100} onClick={openPopup} />
+                            <img className="popprofileimage" src={previewImage} alt='' height={100} width={100} onClick={openPopup} />
                            
-                          </div>
                                                   
                           ) : (
-                        <img className="profileimg" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100}/>
+                        <img className="popprofileimage" src={`http://localhost:8081/images/profile_images/${role}/${cuser.ProfileImage}`} alt='' height={100} width={100}/>
                         
                         )}
                         {previewImage && (
               <button onClick={discardImageSelect}>Discard</button>
             )}
                         </div>
-                        <button onClick={closePopup}>Cancel</button>
+                        <button onClick={handleImageUpload} className="submitimage">Upload Image</button>
+                        <button onClick={closePopup} className="submitimage">Cancel</button>
+                      </div>
                         
+                       
                     </div>
                     </Popup>
                     
                     <Popup open={isDeletePopupOpen} onClose={closeDeletePopup} >
                     <div className='pop'>
 
-                    <button style={{align:"right"}} onClick={closeDeletePopup}>Cancel</button>
+                    <button style={{margin:"10px"}} onClick={closeDeletePopup}>Cancel</button>
                        <ChangePassword />    
                    
                         

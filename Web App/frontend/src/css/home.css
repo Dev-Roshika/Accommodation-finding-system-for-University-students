@@ -12,7 +12,9 @@
     display: flex;
     gap: 20px;
 }
-
+.radio{
+    color:#016551;
+}
 .listResult{
     
     display: flex;

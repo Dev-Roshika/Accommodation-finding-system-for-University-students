@@ -1,5 +1,6 @@
 import React,{ useState } from 'react';
 import Select from 'react-select';
+import "../css/home.css";
 
 function Filter({data,onSort}){
   
@@ -138,22 +139,23 @@ return (
     
     <div className="filter">
         
-        <Select options={options} onChange={handleChange} />
+        <Select options={options} onChange={handleChange} style={{color:"#0d987d"}}/>
         <div>
 
               <div>
       
-      <label>
+      <label  className='radio'>
         <input
           type="radio"
           value="boy"
           checked={selectedOption === "boy"}
           onChange={handleOptionChange}
+         
         />
         Boy
       </label>
       <br />
-      <label>
+      <label  className='radio'>
         <input
           type="radio"
           value="girl"
@@ -162,7 +164,7 @@ return (
         />
         Girl
       </label>
-      <br /><label>
+      <br /><label  className='radio'>
         <input
           type="radio"
           value="any"
@@ -171,7 +173,7 @@ return (
         />
         All
       </label>
-      <p>show results for : {selectedOption}</p>
+     
     </div>     
         </div>
     </div>
