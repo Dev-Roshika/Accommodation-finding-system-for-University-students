@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Validation from "../../Validation/postAdValidation";
+import Validation from "../../Validation/updateAdValidation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -92,9 +92,12 @@ function Update({ initialValues }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const validationErrors = Validation(values);
+        console.log("distance value : " + distanceValue);
         setErrors(validationErrors);
-        console.log(distanceValue);
-        var negotiable_or_not = "";
+        if (validationErrors.ContactNo !== "") {
+            return; // Stop further execution of the handleSubmit function
+        }
+        var negotiable_or_not = ""; 
         if (isChecked) {
             negotiable_or_not = "Yes";
         } else {
@@ -208,7 +211,7 @@ function Update({ initialValues }) {
                         </h5>
                     </div>
                     {open && (
-                        <> 
+                        <>
                             <div
                                 style={{
                                     position: "fixed",
@@ -239,7 +242,7 @@ function Update({ initialValues }) {
                                         height: "100%",
                                         display: "flex",
                                         justifyContent: "center",
-                                        alignItems: "center", 
+                                        alignItems: "center",
                                     }}
                                 >
                                     <img

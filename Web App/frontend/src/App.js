@@ -11,8 +11,9 @@ import CompletePostAd from './Owner/CompletePostAd';
 import Profile from './Pages/Profile';
 import UpdateProfile from './Pages/UpdateProfile';
 import NotFoundPage from './Pages/NotFoundPage';
-import OwnerDashboard from './Owner/OwnerDashboard'
-import EditBoarding from './Owner/Crud/EditBoarding'
+import OwnerDashboard from './Owner/OwnerDashboard';
+import EditBoarding from './Owner/Crud/EditBoarding';
+import NewPasswordChange from './Pages/NewPasswordChange';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path="/*" element={<NotFoundPage />} />
+          <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
+          
         </Routes>
       </BrowserRouter>
     </div>
