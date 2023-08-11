@@ -9,7 +9,7 @@ const Adprofile = () => {
 	
 	function handleEditprofile(event) {
 		event.preventDefault();
-		Navigate('/editprofile');
+		Navigate('/admin/editprofile');
 	}
 
   return (

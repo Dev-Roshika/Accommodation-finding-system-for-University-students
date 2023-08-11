@@ -9,7 +9,7 @@ const Adeditprofile = () => {
 	
 	function backProfile(event) {
 		event.preventDefault();
-		Navigate('/profile');
+		Navigate('/admin/profile');
 	}
 
   return (

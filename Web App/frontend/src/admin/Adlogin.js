@@ -7,12 +7,12 @@ const Adlogin = () => {
 	
 	function handleSubmit(event) {
 		event.preventDefault();
-		Navigate('/home');
+		Navigate('/admin/home');
 	}
 	
 	function handleSignup(event) {
 		event.preventDefault();
-		Navigate('/option');
+		Navigate('/admin/option');
 	}
 
   	return (

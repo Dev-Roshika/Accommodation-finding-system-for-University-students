@@ -7,11 +7,11 @@ const Studetails = () => {
 	
 	function backStudent(event) {
 		event.preventDefault();
-		Navigate('/home');
+		Navigate('/admin/home');
 	}
     
   return (
-    <div style={{padding:50}}>
+    <div class="col-md-10" id="tableCard" >
     <div><a role="button" class="btn btn-info"  href="" onClick={backStudent}> Back </a></div><br/>
     <header>
         <h4>Students Board</h4><br/>

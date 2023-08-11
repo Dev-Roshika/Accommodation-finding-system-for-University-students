@@ -14,6 +14,17 @@ import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard'
 import EditBoarding from './Owner/Crud/EditBoarding'
 
+import Addashboard from './admin/Addashboard.js'
+import Adlogin from './admin/Adlogin'
+import Adsignup from './admin/Adsignup'
+import Loginoption from './admin/Loginoption'
+import Studetails from "./admin/Studetails";
+import Owndetails from "./admin/Owndetails";
+import Accdetails from "./admin/Accdetails";
+import Adprofile from "./admin/Adprofile";
+import Adsetting from "./admin/Adsetting";
+import Adeditprofile from "./admin/Adeditprofile";
+
 function App() {
   return (
     <div className="App">
@@ -33,6 +44,18 @@ function App() {
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path="/*" element={<NotFoundPage />} />
+
+        <Route path="admin/login" element={<Adlogin/>}/>
+        <Route path="/admin/signup" element={<Adsignup/>}/>
+        <Route path="/admin/option" element={<Loginoption/>}/>
+        <Route path="/admin/home" element={<Addashboard/>}/>
+        <Route path="/admin/student" element={<Studetails/>}/>
+        <Route path="/admin/owner" element={<Owndetails/>}/>
+        <Route path="/admin/accom" element={<Accdetails/>}/>
+        <Route path="/admin/profile" element={<Adprofile/>}/>
+        <Route path="/admin/setting" element={<Adsetting/>}/>
+        <Route path="/admin/editprofile" element={<Adeditprofile/>}/>
+
         </Routes>
       </BrowserRouter>
     </div>

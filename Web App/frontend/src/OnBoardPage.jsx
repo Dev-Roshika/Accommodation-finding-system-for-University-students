@@ -63,6 +63,21 @@ function OnBoardPage() {
                         </Button>
                     </a>
                 </div>
+                <div className="mb-3 p-3">
+                    <a
+                        href="http://localhost:3000/admin/login"
+                        target="_self"
+                    >
+                        <Button
+                            type="submit"
+                            variant="outline-dark"
+                            size="lg"
+                            //onClick={() => setAdmin_Clicked(true)}
+                        >
+                            Admin
+                        </Button>
+                    </a>
+                </div>
             </div>
             <div className="mt-auto">
                 <Footer />

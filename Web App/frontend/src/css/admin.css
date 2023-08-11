@@ -1,0 +1,150 @@
+body{
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom,#87f7d2,#bffaf9,#40f8bb);
+}
+
+.Container{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.Header{
+  display: flex;
+  flex-direction: row;
+}
+
+#Slidebar{
+  width: 15%;
+}
+
+.Dashdis{
+    width: 70%;
+    padding: 22px;
+    background-color: #f8f9fa;
+}
+
+.Features{
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    box-shadow: 0 0 20px 2px #1f222085;
+}
+
+#Card{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    box-shadow: 0 0 16px 2px #02723185;
+    background-color: #f8f9fa;
+}
+
+#tableCard{
+  margin-top: 5%;
+  margin-left: 8%;
+  padding: 50px;
+  box-shadow: 0 0 16px 4px #000c0585;
+  background-color: #f8f9fa;
+}
+
+#Flex{
+  display: flex;
+  flex-direction: row;
+}
+
+.Cardbutton{
+    padding: 10px;
+    margin-top: 12%;
+}
+
+#Option{
+  margin-top: 15%;
+  margin-left: 32%;
+  width: 30%; 
+  padding: 5px;
+  box-shadow: 0 0 16px 2px #02723185;
+  background-color: #f8f9fa;
+}
+
+.Option{
+  height: 520px;
+}
+
+  .box-form {
+    margin-top: 8%;
+    margin-left: 32%;
+    width: 30%;
+    background: #f8f9fa;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 2px #02723185;
+  }
+
+  .box-form .login p {
+    font-size: 14px;
+    color: #B0B3B9;
+  }
+
+  .box-form .login input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 25px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #B0B3B9;
+  }
+
+#loginbutton{
+  float:right;
+}
+
+.box-signupform {
+  margin-top: 2%;
+  margin-left: 10%;
+  width: 80%;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 2px #02723185;
+}
+
+.box-signupform .signup {
+  padding: 30px;
+  overflow: hidden;
+}
+
+.box-signupform .signup p {
+  font-size: 14px;
+  color: #B0B3B9;
+}
+
+.box-signupform .signup input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 25px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #B0B3B9;
+}
+
+table{
+  border: 2px solid black;
+  width: 100%;
+}
+
+table th, table td {
+  border: 1px dotted black;
+  padding: 10px;
+  text-align: center;
+}
+
+table tr:hover {
+  color: #216a14;
+}
+
+#Slidebutton{
+  width:75%;
+}
+

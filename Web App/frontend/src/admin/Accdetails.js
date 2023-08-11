@@ -7,11 +7,11 @@ const Accdetails = () => {
 	
 	function backAccomodation(event) {
 		event.preventDefault();
-		Navigate('/home');
+		Navigate('/admin/home');
 	}
 
   return (
-    <div style={{padding:50}}>
+    <div class="col-md-10" id="tableCard">
     <div><a role="button" class="btn btn-info"  href="" onClick={backAccomodation}> Back </a></div><br/>
     <header>
         <h4>Accomodations</h4><br/>
