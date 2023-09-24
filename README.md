@@ -9,7 +9,7 @@ Welcome to our software project collaboration space! In order to maintain a stre
 
 1. **Work Assignment:** Ensure that you have completed the tasks assigned to you during our group meetings. It's essential that your work aligns with our project goals and objectives.
 
-2. **Branching Strategy:** Create a separate branch in the repository for your work. Name it appropriately, indicating the feature or task you've been working on. For example, `feature/user-authentication` or `bugfix/issue-123`. <br>
+2. **Branching Strategy:** Create a separate branch in the repository for your work. Name it appropriately, indicating the feature or task you've been working on. For example, `web-username/feature/user-authentication` or `web-username/user-authentication` or `bugfix/issue-123`. <br>
    *  **main** -  Default branch <br>
    *  **web-develop** - Working branch ( ex: When collaborators want to create a new branch they can copy this branch for their new branch and start from this.) <br>
    *  **web-username** - Each collaborator's own branch ( example: `web-john` )
