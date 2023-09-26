@@ -12,6 +12,9 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Footer from "../Components/Footer";
+import Rate from "../Components/Rate";
+import Rated from "../Components/Rated";
+
 
 function BoardingHouses() {
     const { id } = useParams();
@@ -203,6 +206,8 @@ function BoardingHouses() {
                                 assumenda dolorum maiores corporis animi ducimus
                                 ratione eos.
                             </p>
+                            <Rate id={id}/>
+                            <Rated id={id}/>
                         </div>
                         <div className="boardingDetailsPrice">
                             <h2>

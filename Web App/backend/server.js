@@ -9,6 +9,9 @@ import path from "path";
 import bcrypt from "bcrypt";
 
 const salt = 10; // for bcrypt
+const userId=1;
+//const boardingId=1;
+const port = 8081;
 
 const app = express();
 app.use(
@@ -112,6 +115,7 @@ app.post("/student/login", (req, res) => {
             req.session.email = result[0].Email;
             req.session.Id = result[0].Id;
             req.session.role = "student";
+            // userId = req.session.Id;
             console.log(req.session.email);
             console.log(req.session.role);
             console.log(req.session.Id);
@@ -420,6 +424,49 @@ app.put("/student/updateUser", (req, res) => {
         return res.json(data);
     });
 });
+app.post("/rate/rate_amount",(req,res)=>{
+    //let{Rate_amount}=req.body.updateRate;
+    const { id, value } = req.body;
+   //const id = req.params.id;
+   //const review = req.params.value;
+   //boardingId=1;
+    const values = [userId,id,value];
+    const valuess = [userId,id];
+    let sql="SELECT * from `student_boarding`  WHERE `student_id` = ? and `boarding_id` = ? ";
+    let sql1="INSERT INTO `student_boarding` (`student_id`, `boarding_id`,`review`) VALUES (?,?,?)";
+    db.query(sql, valuess, (err,result) => {
+        console.log(err);
+        if (err) return res.json("error");
+        if(result.length>0){
+            console.log(" You have alredy rated");
+        }else{
+           db.query(sql1, values, (err) =>{
+            console.log(err);
+            if (err) return res.json("error");
+           });
+        }
+       
+    });
+});  
+app.get('/boardingRated-data/:props.id', (req, res) => {
+    const itemId = req.params.props.id;
+    const sql = 'SELECT review FROM student_boarding WHERE boarding_id = ?'; 
+db.query(sql, [itemId], (err, results) => {
+    if (err) {
+      console.error('Error executing MySQL query:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      if (results.length === 0) {
+        res.json({ averageRating: 0 }); // No ratings for the item
+      } else {
+        // Calculate the average rating
+        const totalRating = results.reduce((acc, result) => acc + result.rating, 0);
+        const averageRating = totalRating / results.length;
+        res.json({ averageRating });
+      }
+    }
+  });
+});        
 //profile image upload
 const storage_profile = multer.diskStorage({
     destination: (req, file, cb) => {
