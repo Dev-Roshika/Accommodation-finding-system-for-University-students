@@ -66,7 +66,6 @@ function Home() {
                         
                     </div>
                 <div className="listWrapper">
-                  { show && <p className="try">try</p>}
                     <div className="listResult">
                         {
                             sortedData.length > 0 ? (
