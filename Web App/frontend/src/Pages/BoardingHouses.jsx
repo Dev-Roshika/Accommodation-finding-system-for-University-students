@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
+import AddMap from "./AddMap";
+import DispMap from "../Components/DispMap";
 import "../css/boardinghouses.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,7 +21,9 @@ function BoardingHouses() {
     const [open, setOpen] = useState(false);
     const [Data, setData] = useState([]);
     const navigate = useNavigate();
+    const [userData, setUserData] = useState(null);
     axios.defaults.withCredentials = true;
+
     useEffect(() => {
         axios
             .get("http://localhost:8081")
@@ -29,6 +33,7 @@ function BoardingHouses() {
                     (res.data.Role === "student" || res.data.Role === "owner")
                 ) {
                     console.log(res.data.role + "is a valid user");
+                    setUserData(res.data);
                 } else {
                     navigate("/");
                 }
@@ -192,7 +197,17 @@ function BoardingHouses() {
                                 <b>Rs. 50,000/ month</b>
                             </h2>
                             <button>Reserve or Book Now</button>
+                           
                         </div>
+                        
+                    </div>
+                    <div className="boardingMap">
+                            <h2><br></br>
+                                <b>Map</b>
+                                <DispMap data={id} />
+                               
+                            </h2>
+                        
                     </div>
                 </div>
             </div>

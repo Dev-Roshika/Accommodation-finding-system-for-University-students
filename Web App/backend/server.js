@@ -958,3 +958,62 @@ app.use((err, req, res, next) => {
     next();
   }
 });
+app.post("/submit-location/:id", (req, res) => {
+    
+    let boardingId = req.params.id;
+    console.log("boardingID : ");
+    console.log(boardingId);
+    const { lat, lng } = req.body;
+ 
+    const ownerQuery = "SELECT OwnerId FROM boarding_house WHERE Id = ?";
+    db.query(ownerQuery, [boardingId], (ownerErr, ownerResult) => {
+      if (ownerErr) {
+        console.error("Error fetching owner ID:", ownerErr);
+        return res.status(500).json({ error: "An error occurred while fetching owner data." });
+      }
+      console.log("########");
+     console.log(ownerResult[0].OwnerId);
+     console.log(req.session.Id);
+     console.log("########");
+      
+      if (ownerResult.length > 0 && ownerResult[0].OwnerId === req.session.Id) {
+        
+        const sql = `
+          INSERT INTO location_data (id, latitude, longitude)
+          VALUES (?, ?, ?)
+          ON DUPLICATE KEY UPDATE latitude = VALUES(latitude), longitude = VALUES(longitude)
+        `;
+        db.query(sql, [boardingId, lat, lng], (err, result) => {
+          if (err) {
+            console.error("Error inserting data into the database:", err);
+            return res.status(500).json({ error: "An error occurred while saving the location data." });
+          }
+  
+          return res.status(200).json({ message: "Location data saved successfully." });
+        });
+      } else {
+        
+        return res.status(403).json({ error: "You are not authorized to update this location." });
+      }
+    });
+  });
+  
+  app.get("/boarding-locations/:id", (req, res) => {
+    const sql = "SELECT * FROM location_data WHERE id = ?";
+    const boardingId = req.params.id;
+    db.query(sql, [boardingId], (err, results) => {
+      if (err) {
+        console.error("Error fetching boarding locations:", err);
+        res.status(500).json({ error: "An error occurred while fetching location data." });
+      } else {
+        if (results.length > 0) {
+          res.status(200).json(results);
+        } else {
+          res.status(200).json({ message: "No location found" });
+        }
+      }
+    });
+  });
+  
+  
+  

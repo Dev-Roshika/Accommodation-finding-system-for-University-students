@@ -10,6 +10,7 @@ import PostAd from './Owner/PostAd';
 import CompletePostAd from './Owner/CompletePostAd';
 import Profile from './Pages/Profile';
 import UpdateProfile from './Pages/UpdateProfile';
+import AddMap from './Pages/AddMap';
 import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
@@ -33,6 +34,7 @@ function App() {
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
+          <Route path='/AddMap' element={<AddMap/>} />
           <Route path="/*" element={<NotFoundPage />} />
           <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
           
