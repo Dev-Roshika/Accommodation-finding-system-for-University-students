@@ -7,17 +7,18 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
+import { error } from "console";
 
 const salt = 10; // for bcrypt
-const userId=1;
+let userId=0;
 //const boardingId=1;
 const port = 8081;
-
 const app = express();
 app.use(
     cors({
-        origin: ["http://localhost:3000"],
-        methods: ["POST", "GET", "PUT"],
+        //origin: [rs],
+        methods: ["POST", "GET", "PUT","DELETE"],
+        origin: "http://localhost:3000", // Replace with the actual origin of your React app
         credentials: true,
     })
 );
@@ -115,7 +116,7 @@ app.post("/student/login", (req, res) => {
             req.session.email = result[0].Email;
             req.session.Id = result[0].Id;
             req.session.role = "student";
-            // userId = req.session.Id;
+            userId = req.session.Id;
             console.log(req.session.email);
             console.log(req.session.role);
             console.log(req.session.Id);
@@ -447,26 +448,133 @@ app.post("/rate/rate_amount",(req,res)=>{
         }
        
     });
-});  
-app.get('/boardingRated-data/:props.id', (req, res) => {
-    const itemId = req.params.props.id;
-    const sql = 'SELECT review FROM student_boarding WHERE boarding_id = ?'; 
-db.query(sql, [itemId], (err, results) => {
+});
+app.get('/boardingRated-data/:id', (req, res) => {
+    const itemId = req.params.id;
+    const sql='SELECT COUNT(*) AS count FROM student_boarding WHERE boarding_id = ?';
+    const sql1 = 'SELECT SUM(review) AS sumOfRatings FROM student_boarding WHERE boarding_id = ?'; 
+db.query(sql, [itemId], (err, resultss) => {
     if (err) {
       console.error('Error executing MySQL query:', err);
       res.status(500).json({ error: 'Internal server error' });
     } else {
-      if (results.length === 0) {
-        res.json({ averageRating: 0 }); // No ratings for the item
-      } else {
-        // Calculate the average rating
-        const totalRating = results.reduce((acc, result) => acc + result.rating, 0);
-        const averageRating = totalRating / results.length;
-        res.json({ averageRating });
+        db.query(sql1, [itemId], (err, results) => {
+            if (err) {
+              console.error('Error executing MySQL query:', err);
+              res.status(500).json({ error: 'Internal server error' });
+            } else {
+               
+                // Calculate the average rating
+                //const totalRating = results.reduce((acc, result) => acc + result.rating, 0);
+                const sumOfRatings = results[0]['sumOfRatings'] || 0;
+                const countOfRatings = resultss[0]['count'] || 1;
+                let averageRating = sumOfRatings / countOfRatings;
+                let floatVal = sumOfRatings % countOfRatings;
+                if (floatVal >= 5) {
+                    averageRating = Math.ceil(averageRating); // Round up the average rating
+                }
+                res.json({ averageRating });
+                
+              
+            }
+          });
       }
-    }
+    })
   });
-});        
+  app.put("/updatecomments",(req,res)=>{
+    
+    const { comid, value } = req.body;
+   
+    const values = [value,comid];
+    let sql="UPDATE comments SET comment = ? WHERE id = ?";
+    db.query(sql, values, (err) => {
+        console.log(err);
+        if (err) return res.json("error");
+    });
+});
+  app.post("/comments",(req,res)=>{
+    
+    const { id, value } = req.body;
+   
+    const values = [userId,id,value];
+    let sql1="INSERT INTO `comments` (`student_id`, `boardingid`,`comment`) VALUES (?,?,?)";
+    db.query(sql1, values, (err) => {
+        console.log(err);
+        if (err) return res.json("error");
+    });
+});
+
+app.get('/getComments/:id',(req,res)=>{
+    const itemId = req.params.id;
+    const sql = "SELECT comments.id,comments.student_id,comments.comment,student_info.FullName FROM comments INNER JOIN student_info ON comments.student_id=student_info.Id WHERE boardingid =?";
+    db.query(sql, itemId, (err, result) => {
+        if(err) return res.json("error");
+        return res.json(result);
+    });
+
+});
+app.delete('/deletecomment/:id',(req,res)=>{
+    const id =req.params.id;
+    const sql ="DELETE FROM comments WHERE id=?"
+    db.query(sql,id,(err)=>{
+        if(err) return res.json("error");
+    });
+});
+app.get('/arrayvalue/:id',(req,res)=>{
+    const bId = req.params.id;
+    let cid =1;
+    let value=[bId,cid];
+    const sql='SELECT COUNT(*) AS count FROM student_boarding WHERE boarding_id = ? and review=?';
+    db.query(sql,value,(err,result)=>{
+        if(err) return res.json("error");
+        cid=2;
+        const val1=result[0]['count'] ;
+        let value=[bId,cid];
+        db.query(sql,value,(err,result1)=>{
+            if(err) return res.json("error");
+            cid=3;
+            const val2=result1[0]['count'] ;
+            let value=[bId,cid];
+            db.query(sql,value,(err,result2)=>{
+                if(err) return res.json("error");
+                cid=4;
+                const val3=result2[0]['count'] ;
+                let value=[bId,cid];
+                db.query(sql,value,(err,result3)=>{
+                    if(err) return res.json("error");
+                    cid=5;
+                    const val4=result3[0]['count'] ;
+                    let value=[bId,cid];
+                    db.query(sql,value,(err,result4)=>{
+                        if(err) return res.json("error");
+                        //const resultss=[result,result1,result2,result3,result4];
+                        const val5=result4[0]['count'] ;
+                        return res.json([{
+                            id:0,
+                            value:val1
+                        },{
+                           id:1,
+                           value:val2
+                        },{
+                            id:2,
+                            value:val3
+                        },{
+                            id:3,
+                            value:val4
+                        },{
+                            id:4,
+                            value:val5
+                        }]);
+                        
+                        
+                    });
+                    
+                });
+            });
+        });
+    });
+});
+ 
 //profile image upload
 const storage_profile = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -563,6 +671,7 @@ app.get("/boarding-data/:id", (req, res) => {
         }
     });
 });
+
 app.get("/student/check-email", (req, res) => {
     const email = req.query.email;
 

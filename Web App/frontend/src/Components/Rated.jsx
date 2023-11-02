@@ -17,12 +17,13 @@ const Rated=(props)=>{
             setRating(0);
           }
           console.log("Data is fetched successfully");
+          console.log(rating);
         })
         .catch((error) => {
           console.error("Error fetching data from backend:", error);
         });
     }, [props.id]);
-  const [rating,setRating]=useState(1);
+  const [rating,setRating]=useState(0);
   
    return(
     <div>
@@ -33,7 +34,7 @@ const Rated=(props)=>{
         
         <FaStar 
         key={i+1}
-        className="starStyle" 
+        //className="starStyle" 
         color={rateValue <= rating ? "#ffc107":"#e4e5e9"}
          
         size={40}
