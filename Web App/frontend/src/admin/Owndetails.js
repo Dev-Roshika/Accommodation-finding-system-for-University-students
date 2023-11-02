@@ -20,13 +20,13 @@ const Owndetails = () => {
         <table>
         <thead>
             <tr>
-                <th >No</th>
-                <th >Full Name</th>
-                <th >Address</th>
-                <th >Gender</th>
-                <th >E-mail</th>
-                <th >Acc.Name</th>
-                <th >Phone No</th>
+                <th >id</th>
+                <th >FullName</th>
+                <th >UserName</th>
+                <th >ContactNo</th>
+                <th >Email</th>
+                <th >NidNo</th>
+                <th >PrivateAddress</th>
                 <th >Action</th>
             </tr>
         </thead>

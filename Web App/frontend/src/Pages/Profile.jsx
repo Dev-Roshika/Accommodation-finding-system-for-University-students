@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 
-function Profile() {
+function Profile() { 
     const[user,UseUser] = useState([])
     const[selectedImage,setSelectedImage] = useState(null);
     const [role, setRole] = useState('');

@@ -20,18 +20,28 @@ const Accdetails = () => {
         <table>
         <thead>
             <tr>
-                <th >No</th>
-                <th >Name</th>
+                <th >Id</th>
+                <th >Title</th>
+                <th >Description</th>
+                <th >Price</th>
+                <th >Negotiable</th>
                 <th >Address</th>
-                <th >Owner</th>
-                <th >Rate per month</th>
-                <th >Capacity</th>
+                <th >Distance</th>
+                <th >Boys</th>
+                <th >Girls</th>
+                <th >Facilities</th>
+                <th >Rules</th>
                 <th >Contact No</th>
                 <th >Action</th>
             </tr>
         </thead>
 
         <tr>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
             <td ></td>
             <td ></td>
             <td ></td>

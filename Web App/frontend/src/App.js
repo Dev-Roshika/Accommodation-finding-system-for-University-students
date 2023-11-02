@@ -18,7 +18,7 @@ import Addashboard from './admin/Addashboard.js'
 import Adlogin from './admin/Adlogin'
 import Adsignup from './admin/Adsignup'
 import Loginoption from './admin/Loginoption'
-import Studetails from "./admin/Studetails";
+import StudentTable from "./admin/StudentTable";
 import Owndetails from "./admin/Owndetails";
 import Accdetails from "./admin/Accdetails";
 import Adprofile from "./admin/Adprofile";
@@ -49,7 +49,7 @@ function App() {
         <Route path="/admin/signup" element={<Adsignup/>}/>
         <Route path="/admin/option" element={<Loginoption/>}/>
         <Route path="/admin/home" element={<Addashboard/>}/>
-        <Route path="/admin/student" element={<Studetails/>}/>
+        <Route path="/admin/student" element={<StudentTable/>}/>
         <Route path="/admin/owner" element={<Owndetails/>}/>
         <Route path="/admin/accom" element={<Accdetails/>}/>
         <Route path="/admin/profile" element={<Adprofile/>}/>

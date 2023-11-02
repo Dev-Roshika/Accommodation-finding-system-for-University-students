@@ -178,13 +178,8 @@ const O_signup_storage = multer.diskStorage({
 const O_signup_upload = multer({
     storage: O_signup_storage,
 });
-app.post(
-    "/owner/signup",
-    O_signup_upload.fields([
-        { name: "nidphoto", maxCount: 1 },
-        { name: "profileimage", maxCount: 1 },
-    ]),
-    (req, res) => {
+
+app.post("/owner/signup",O_signup_upload.fields([{ name: "nidphoto", maxCount: 1 },{ name: "profileimage", maxCount: 1 },]),(req, res) => {
         console.log(req.files);
         const profileImgFilename = req.files["profileimage"][0].filename; // Retrieve the filename of the profile image
         const nidPhotoFilename = req.files["nidphoto"][0].filename; // Retrieve the filename of the nid photo
@@ -406,6 +401,7 @@ app.get("/student/show", (req, res) => {
         return res.json(data);
     });
 });
+
 app.put("/student/updateUser", (req, res) => {
     const { ContactNo, Email } = req.body[0];
     const values = [ContactNo, Email, req.session.Id];
@@ -451,10 +447,8 @@ const storage_profile = multer.diskStorage({
 const upload_profile = multer({
     storage: storage_profile,
 });
-app.post(
-    "/profile/upload",
-    upload_profile.single("profile_image"),
-    (req, res) => {
+
+app.post("/profile/upload",upload_profile.single("profile_image"),(req, res) => {
         // Handle the uploaded image here
 
         const values = [req.file.filename, req.session.Id];
@@ -487,6 +481,7 @@ app.post(
 // profile - end
 
 //Fetch data for useEffect - start
+
 app.get("/", (req, res) => {
     if (req.session.role) {
         return res.json({
@@ -498,6 +493,7 @@ app.get("/", (req, res) => {
         return res.json({ Valid: false });
     }
 });
+
 app.get("/boarding-data", (req, res) => {
     const sql = "SELECT * FROM boarding_house";
     db.query(sql, (err, result) => {
@@ -509,6 +505,7 @@ app.get("/boarding-data", (req, res) => {
         }
     });
 });
+
 app.get("/boarding-data/:id", (req, res) => {
     const boardingId = req.params.id;
     const sql = "SELECT * FROM boarding_house WHERE `Id` = ?";
@@ -522,6 +519,7 @@ app.get("/boarding-data/:id", (req, res) => {
         }
     });
 });
+
 app.put("/update/boarding-data/:id", upload.single("coverimage"), (req, res) => {
     const boardingId = req.params.id;
     const sql = "UPDATE boarding_house SET `Title` = ? `Description`= ? `Price` = ? `Negotiable` = ? `Address` = ? `Distance` = ? `Boys` = ? `Girls` = ? `Facilities`= ? `Rules` = ? `ContactNo` = ? `CoverImage` = ? WHERE `Id` = ?";
@@ -555,6 +553,7 @@ app.put("/update/boarding-data/:id", upload.single("coverimage"), (req, res) => 
         }
     });
 });
+
 app.get("/student/check-email", (req, res) => {
     const email = req.query.email;
 
@@ -572,6 +571,7 @@ app.get("/student/check-email", (req, res) => {
         }
     });
 });
+
 app.get("/owner/check-email", (req, res) => {
     const email = req.query.email;
 
@@ -589,6 +589,7 @@ app.get("/owner/check-email", (req, res) => {
         }
     });
 });
+
 app.get("/student/check-username", (req, res) => {
     const username = req.query.username;
 
@@ -606,6 +607,7 @@ app.get("/student/check-username", (req, res) => {
         }
     });
 });
+
 app.get("/owner/check-username", (req, res) => {
     const username = req.query.username;
 
@@ -623,6 +625,7 @@ app.get("/owner/check-username", (req, res) => {
         }
     });
 });
+
 app.get("/owner/boarding-data", (req, res) => {
     const owner_id = req.session.Id;
     console.log("OwnerId : " + owner_id);
@@ -646,6 +649,20 @@ app.get("/logout", (req, res) => {
         res.redirect("/"); //Inside a callback… bulletproof!
     });
 });
+
+// Admin part by Thanan
+app.get("/admin/student", (req, res) => {
+    const sql = "SELECT * FROM student_info";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
 
 app.listen(8081, () => {
     console.log("listening");

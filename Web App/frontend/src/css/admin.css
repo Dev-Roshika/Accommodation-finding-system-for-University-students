@@ -1,8 +1,3 @@
-body{
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to bottom,#87f7d2,#bffaf9,#40f8bb);
-}
 
 .Container{
   display: flex;
@@ -45,7 +40,7 @@ body{
   margin-top: 5%;
   margin-left: 8%;
   padding: 50px;
-  box-shadow: 0 0 16px 4px #000c0585;
+  box-shadow: 0 0 16px 4px #0f5a2e85;
   background-color: #f8f9fa;
 }
 
