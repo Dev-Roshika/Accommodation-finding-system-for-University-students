@@ -8,6 +8,7 @@ import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
 import fs from 'fs';
+import nodemailer from 'nodemailer';
 
 const salt = 10; // for bcrypt
 
@@ -1016,4 +1017,30 @@ app.post("/submit-location/:id", (req, res) => {
   });
   
   
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'isharamadushankakity@gmail.com',
+      pass: 'yzpo hinr achj qnht',
+    },
+  });
   
+  // Define an endpoint to send emails
+  app.post('/send-email', async (req, res) => {
+    const { to, subject, text } = req.body;
+     console.log("Send Gmail");
+    const mailOptions = {
+      from: 'isharamadushankakity@gmail.com',
+      to,
+      subject,
+      text,
+    };
+  
+    try {
+      await transporter.sendMail(mailOptions);
+      res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ message: 'Email could not be sent' });
+    }
+  });

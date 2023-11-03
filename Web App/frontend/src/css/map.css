@@ -1,0 +1,27 @@
+.maplink{
+    color:#016551;
+}
+.map{
+    border:5px solid #016551;
+}
+.popupmap{
+   
+    background-color: white;
+}
+.mapcontainer{
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+.buttonsub{
+    display: flex;
+  justify-content: center; 
+  align-items: center; 
+  width: 100%;
+  background-color: #0d987d;
+}
+.buttonmap{
+    background-color: white;
+    border:2px solid #016551;
+    color: #016551;
+}

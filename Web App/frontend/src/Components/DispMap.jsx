@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
 import axios from "axios";
 import Popup from 'reactjs-popup';
+import "../css/map.css";
 
 function DispMap({ data }) {
   console.log("DispMap was called.");
@@ -32,22 +33,22 @@ function DispMap({ data }) {
 
   
   return (
-    <><div>
-    <Popup trigger={<button> add location</button>} position="right center">
+    <><div className="popupmap">
+    <Popup trigger={<h5><Link className="maplink"> add location</Link></h5>} position="right center">
          {console.log("Data of Boardingid : ",data) }
          <div>Only Owner can Add location</div>
         <div><Link to={`/AddMap?data=${data}`}>Add Location</Link></div>
     </Popup>
   </div>
       {locations.length > 0 && center && (
-        <div>
+        <div className="map">
           
           <LoadScript googleMapsApiKey={googleMapsApiKey}>
             <GoogleMap
               id="example-map"
               mapContainerStyle={{
                 width: "100%",
-                height: "400px"
+                height: "500px"
               }}
               zoom={14}
               center={center}

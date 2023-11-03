@@ -97,15 +97,15 @@ function AddMap() {
     }
   };
 
-  return (<div>
-                <div> <Navbar />
-                <Header type="list" /></div>
-                <div style={{ width: "100%", height: "400px" }}>
+  return (<div className="mapcontainer">
+                <div className="navmap"> <Navbar />
+               </div>
+                <div  className="map">
                   <LoadScript googleMapsApiKey={googleMapsApiKey}>
                     <GoogleMap
                       mapContainerStyle={{
                         width: "100%",
-                        height: "400px",
+                        height: "550px",
                       }}
                       center={markerPosition}
                       zoom={14}
@@ -126,10 +126,11 @@ function AddMap() {
                   </LoadScript>
                   
                  
-                    <button onClick={handleSubmit}>Submit Location</button>
+                   
                   
-                </div>
-                <div><Footer /></div>
+                </div> 
+                <div className="buttonsub"><button className="buttonmap" onClick={handleSubmit}>Submit Location</button></div>
+                <div className="foot"><Footer /></div>
                 
     </div>
   );

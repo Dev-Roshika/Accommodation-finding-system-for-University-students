@@ -203,7 +203,7 @@ function BoardingHouses() {
                     </div>
                     <div className="boardingMap">
                             <h2><br></br>
-                                <b>Map</b>
+                              
                                 <DispMap data={id} />
                                
                             </h2>
