@@ -1,20 +1,28 @@
 .listContainer{
+   
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
     margin: 20px;
 }
 
 .listWrapper{
+   
     width: 100%;
     max-width: 1024px;
     display: flex;
     gap: 20px;
 }
-
+.radio{
+    color:#016551;
+}
 .listResult{
+    
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     margin-top:50px;
+}
+.setfilter{
+    margin: 50px 20px 0px 5px;
 }

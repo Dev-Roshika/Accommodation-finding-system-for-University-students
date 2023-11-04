@@ -4,6 +4,7 @@ import Validation from "../Validation/SignupValidation";
 import axios from "axios";
 import RequiredField from "../Components/RequiredField";
 import { useEffect } from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Signup() {
     const [values, setValues] = useState({
@@ -23,6 +24,8 @@ function Signup() {
     const [errors, setErrors] = useState({});
     const [file, setFile] = useState();
     const [profilefile, setProfilefile] = useState();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showCPassword, setShowCPassword] = useState(false);
 
     const navigate = useNavigate();
     const handleFile = (event) => {
@@ -120,12 +123,7 @@ function Signup() {
             }));
         }
     }, [usernameExists]);
-    // const clearError = (fieldName) => {
-    //     setErrors((prev) => ({
-    //         ...prev,
-    //         [fieldName]: "",
-    //     }));
-    // };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const validationErrors = Validation(values);
@@ -142,18 +140,6 @@ function Signup() {
             return; // Stop further execution of the handleSubmit function
         }
 
-        // if(emailExists) {
-        //   setErrors((prev) => ({
-        //     ...prev,
-        //     email: "Email already exists",
-        //   }));
-        // }
-        // if(usernameExists) {
-        //   setErrors((prev) => ({
-        //     ...prev,
-        //     username: "Someone already has that username. Try another?",
-        //   }));
-        // }
         const formData = new FormData();
         formData.append("fullname", values.fullname);
         formData.append("username", values.username);
@@ -203,45 +189,71 @@ function Signup() {
                 .catch((err) => console.log(err));
         }
     };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+    const toggleCPasswordVisibility = () => {
+        setShowCPassword(!showCPassword);
+    };
     return (
-        <div className="d-flex justify-content-center align-items-center mb-3 mt-3">
-        <div className="bg-light bg-gradient w-50 p-5 rounded shadow-inner">
-                    <form action="" onSubmit={handleSubmit}>
-                        <div className="d-flex flex-column justify-content-center align-items-center mb-3">
-                            <div>
-                                <h1>Sign up</h1>
-                            </div>
-                            <div className="text-muted">
-                                Fill out form to get started
-                            </div>
-                        </div>
-                        {/* FullName */}
-                        <div className="mb-3">
-                            <label htmlFor="fullname">
-                                <strong>
-                                    Full Name
-                                    <RequiredField />
-                                </strong>
-                            </label>
-                            <input
-                                name="fullname"
-                                type="text"
-                                required
-                                className="form-control rounded-0"
-                                onChange={handleInput}
-                            />
-                            {errors.fullname && (
-                                <span className="text-danger">
-                                    {errors.fullname}
-                                </span>
-                            )}
-                        </div>
+        <div
+            className="d-flex justify-content-center align-items-center vh-100"
+            style={{
+                marginTop: "200px",
+                marginBottom: "200px",
+            }}
+        >
+            <div
+                className="bg-secondary bg-gradient rounded shadow-sm bg-opacity-10"
+                style={{ width: "50%" }}
+            >
+                <form action="" onSubmit={handleSubmit}>
+                    <div
+                        className="d-flex justify-content-center flex-column bg-secondary bg-gradient p-5 bg-opacity-50"
+                        style={{
+                            borderTopLeftRadius: "0.5rem",
+                            borderTopRightRadius: "0.5rem",
+                            borderBottom: "none",
+                        }}
+                    >
+                        <h1
+                            className="text-center text-white"
+                            style={{ fontWeight: "bold" }}
+                        >
+                            Owner Signup
+                        </h1>
+                        <h5 className="text-center text-secondary">
+                            Fill out form to get started
+                        </h5>
+                    </div>
+                    <div className="p-5">
+                    {/* FullName */}
+                    <div className="mb-3">
+                        <label htmlFor="fullname">
+                            <strong style={{ color: "#0d987d" }}>
+                                Full Name
+                                <RequiredField />
+                            </strong>
+                        </label>
+                        <input
+                            name="fullname"
+                            type="text"
+                            required
+                            className="form-control rounded-0"
+                            onChange={handleInput}
+                        />
+                        {errors.fullname && (
+                            <span className="text-danger">
+                                {errors.fullname}
+                            </span>
+                        )}
+                    </div>
                         <div className="mb-3">
                             <div className="row">
                                 {/* User Name */}
                                 <div className="col-sm">
                                     <label htmlFor="username">
-                                        <strong>
+                                        <strong style={{ color: "#0d987d" }}>
                                             User Name
                                             <RequiredField />
                                         </strong>
@@ -262,7 +274,7 @@ function Signup() {
                                 {/* Contact No */}
                                 <div className="col-sm">
                                     <label htmlFor="mobile">
-                                        <strong>
+                                        <strong style={{ color: "#0d987d" }}>
                                             Contact Number
                                             <RequiredField />
                                         </strong>
@@ -286,7 +298,7 @@ function Signup() {
                         {/* Email */}
                         <div className="mb-3">
                             <label htmlFor="email">
-                                <strong>Email</strong>
+                                <strong style={{ color: "#0d987d" }}>Email</strong>
                             </label>
                             <input
                                 name="email"
@@ -304,7 +316,7 @@ function Signup() {
                         {/* Profile Image */}
                         <div className="mb-3">
                             <label htmlFor="profileimage">
-                                <strong>
+                                <strong style={{ color: "#0d987d" }}>
                                     Profile Image
                                     <RequiredField />
                                 </strong>
@@ -326,7 +338,7 @@ function Signup() {
                         {/* NID */}
                         <div className="mb-3">
                             <label htmlFor="nidno">
-                                <strong>
+                                <strong style={{ color: "#0d987d" }}>
                                     NID No
                                     <RequiredField />
                                 </strong>
@@ -347,7 +359,7 @@ function Signup() {
                         {/* NID Photo */}
                         <div className="mb-3">
                             <label htmlFor="nidphoto">
-                                <strong>
+                                <strong style={{ color: "#0d987d" }}>
                                     NID Photo
                                     <RequiredField />
                                 </strong>
@@ -366,11 +378,11 @@ function Signup() {
                                 </span>
                             )}
                         </div>
-                        <div className="mb3">
+                        <div className="mb-3">
                             {/* Private address */}
                             <div className="col-sm">
                                 <label htmlFor="paddress">
-                                    <strong>
+                                    <strong style={{ color: "#0d987d" }}>
                                         Private address
                                         <RequiredField />
                                     </strong>
@@ -389,9 +401,8 @@ function Signup() {
                                 )}
                             </div>
                         </div>
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <div className="row">
-                                {/* Password */}
                                 <div className="col-sm">
                                     <label htmlFor="password">
                                         <strong>
@@ -413,7 +424,6 @@ function Signup() {
                                         </span>
                                     )}
                                 </div>
-                                {/* Confirm password */}
                                 <div className="col-sm">
                                     <label htmlFor="cpassword">
                                         <strong>
@@ -435,28 +445,164 @@ function Signup() {
                                     )}
                                 </div>
                             </div>
-                        </div>
-
+                        </div> */}
+                        
+                            <div className="row">
+                                {/* Password */}
+                                <div className="col-sm position-relative">
+                                    <label htmlFor="password">
+                                        <strong style={{ color: "#0d987d" }}>
+                                            Password
+                                            <RequiredField />
+                                        </strong>
+                                    </label>
+                                    <div className="input-group">
+                                        <input
+                                            name="password"
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            title="password should be between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
+                                            required
+                                            className="form-control rounded-0"
+                                            onChange={handleInput}
+                                        />
+                                        <div className="input-group-append">
+                                            <button
+                                                type="button"
+                                                className="btn btn-link btn-password-toggle"
+                                                onClick={
+                                                    togglePasswordVisibility
+                                                }
+                                                style={{
+                                                    backgroundColor: "#0d987d",
+                                                    borderTopRightRadius:
+                                                        "0.2rem",
+                                                    borderBottomRightRadius:
+                                                        "0.2rem",
+                                                    borderTopLeftRadius: "0",
+                                                    borderBottomLeftRadius: "0",
+                                                    border: "none",
+                                                    paddingLeft: "10px",
+                                                    paddingRight: "10px",
+                                                }}
+                                            >
+                                                {showPassword ? (
+                                                    <FiEyeOff color="#fff" />
+                                                ) : (
+                                                    <FiEye color="#fff" />
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {errors.password && (
+                                        <span className="text-danger">
+                                            {errors.password}
+                                        </span>
+                                    )}
+                                </div>
+                                {/* Confirm password */}
+                                <div className="col-sm possion-relative">
+                                    <label htmlFor="cpassword">
+                                        <strong style={{ color: "#0d987d" }}>
+                                            Confirm password
+                                            <RequiredField />
+                                        </strong>
+                                    </label>
+                                    <div className="input-group">
+                                        <input
+                                            name="cpassword"
+                                            type={
+                                                showCPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            required
+                                            className="form-control rounded-0"
+                                            onChange={handleInput}
+                                        />
+                                        <div className="input-group-append">
+                                            <button
+                                                type="button"
+                                                className="btn btn-link btn-password-toggle"
+                                                onClick={
+                                                    toggleCPasswordVisibility
+                                                }
+                                                style={{
+                                                    backgroundColor: "#0d987d",
+                                                    borderTopRightRadius:
+                                                        "0.2rem",
+                                                    borderBottomRightRadius:
+                                                        "0.2rem",
+                                                    borderTopLeftRadius: "0",
+                                                    borderBottomLeftRadius: "0",
+                                                    border: "none",
+                                                    paddingLeft: "10px",
+                                                    paddingRight: "10px",
+                                                }}
+                                            >
+                                                {showCPassword ? (
+                                                    <FiEyeOff color="#fff" />
+                                                ) : (
+                                                    <FiEye color="#fff" />
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {errors.cpassword && (
+                                        <span className="text-danger">
+                                            {errors.cpassword}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
                         <button
                             type="submit"
-                            className="btn btn-success w-100 rounded-0"
+                            className="btn btn-success w-100 rounded-0 mt-3"
+                            style={{
+                                backgroundColor: "#0d987d",
+                                border: "none",
+                            }}
                         >
                             <strong>Signup</strong>
                         </button>
                         <div className="d-flex justify-content-center align-item-center mt-3">
                             <p className="text-secondary">
-                                Allready have an account?
+                                Already have an account?
                             </p>
                         </div>
                         <Link
                             to="/owner/login"
-                            className="btn btn-default border w-100 bg-light rounded-0"
+                            className="btn btn-default border w-100 bg-light rounded-0 mb-3"
+                            style={{ color: "#0d987d" }}
                         >
-                            Signin
+                            <strong>Signin</strong>
                         </Link>
-                    </form>
+                    </div>
+                </form>
+                <div
+                    className="d-flex justify-content-center bg-secondary bg-gradient p-2"
+                    style={{
+                        borderBottomLeftRadius: "0.5rem",
+                        borderBottomRightRadius: "0.5rem",
+                        borderTop: "none",
+                    }}
+                >
+                    <span className="text-white">© 2023 Copyright:</span>&nbsp;
+                    <span
+                        className="text-white"
+                        onClick={() => (window.location.href = "/")}
+                        style={{ cursor: "pointer", fontWeight: "bold" }}
+                        title="Go Back"
+                    >
+                        {" "}
+                        UniAccomodations{" "}
+                    </span>
                 </div>
             </div>
+        </div>
     );
 }
 

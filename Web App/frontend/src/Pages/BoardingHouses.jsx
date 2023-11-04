@@ -78,6 +78,7 @@ function BoardingHouses() {
             
         // eslint-disable-next-line
     }, []);
+
     useEffect(() => {
         
                 axios
@@ -122,6 +123,7 @@ function BoardingHouses() {
             .catch((err) => console.log(err));
         }, []);
     };*/
+
 
     const handleOpen = (i) => {
         setSlideNumber(i);
@@ -217,7 +219,7 @@ function BoardingHouses() {
                                 console.log(Data[0].OtherImages);
                                 return (
                                     <div className="boardingImgWrapperMain">
-                                        {
+                                        { item.OtherImages &&
                                             // eslint-disable-next-line
                                             JSON.parse(item.OtherImages).map(
                                                 (file_name, i) => {

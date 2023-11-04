@@ -1,0 +1,29 @@
+.custom-checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox-container label {
+  margin-right: 10px;
+}
+
+.custom-checkbox-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  /* Add additional styles as needed */
+}
+.custom-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.custom-checkbox.checked {
+  background-color: rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity))!important;
+  --bs-bg-opacity: 0.5;
+
+}

@@ -7,7 +7,10 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
+
 import { error } from "console";
+import fs from 'fs';
+
 
 const salt = 10; // for bcrypt
 let userId=0;
@@ -81,6 +84,8 @@ app.post(
     signup_upload.single("profileimage"),
     (req, res) => {
         const img_filename = req.file.filename;
+        console.log("this is checking signup password : ");
+        console.log(req.body.password);
         const sql =
             "INSERT INTO `student_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Password`) VALUES(?)";
         bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
@@ -177,7 +182,7 @@ const O_signup_storage = multer.diskStorage({
         }
 
         cb(null, filename);
-    }, 
+    },
 });
 
 const O_signup_upload = multer({
@@ -232,7 +237,7 @@ app.post("/owner/login", (req, res) => {
             req.session.email = result[0].Email;
             req.session.role = "owner";
             req.session.Id = result[0].Id;
-
+            console.log(req.session.Id);
             console.log(req.session.email);
             console.log(req.session.role);
             bcrypt.compare(
@@ -246,6 +251,7 @@ app.post("/owner/login", (req, res) => {
                             Status: "Success",
                             Email: req.session.Email,
                             Role: req.session.role,
+                            Id: req.session.Id,
                         });
                     } else {
                         return res.json({ Error: "Password not matched" });
@@ -288,16 +294,21 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
     // console.log(req.body.title) // Can retrieve title information like this
     // console.log(req.body.image) //Cannot retrieve image information like this
     const img_filename = req.file.filename;
+    const owner_id = req.session.Id;
+    const distance = req.body.distance + " " + req.body.distanceUnit; // Combine distance and distanceUnit
+    console.log("post-ad, ownerId: " + owner_id);
+    console.log("post-ad, distanceUnit: " + req.body.distanceUnit);
     const sql =
-        "INSERT INTO `boarding_house` (`Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
+        "INSERT INTO `boarding_house` (`OwnerId`, `Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
     console.log(img_filename + "___" + req.body.address);
     const values = [
+        owner_id,
         req.body.title,
         req.body.description,
         req.body.price,
         req.body.negotiable,
         req.body.address,
-        req.body.distance,
+        distance,
         req.body.boys,
         req.body.girls,
         req.body.facilities,
@@ -405,26 +416,210 @@ app.get("/student/show", (req, res) => {
         return res.json(data);
     });
 });
-app.put("/student/updateUser", (req, res) => {
-    const { ContactNo, Email } = req.body[0];
-    const values = [ContactNo, Email, req.session.Id];
-    //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
-    let sql;
-    if (req.session.role === "student") {
-        sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?";
-    } else {
-        sql = "UPDATE owner_info SET ContactNo = ?,Email = ? WHERE Id = ?";
-    }
+const handleProfileDelete = function(Id,Role){
+ console.log(Id); 
+};
 
-    console.log("profile_update");
-    //console.log(req.session.Id)
-    console.log("check");
-    db.query(sql, values, (err, data) => {
-        console.log(err);
-        if (err) return res.json(data);
-        return res.json(data);
+const getProfileImage = function(Id,Role,callback){
+    console.log("getProfileImage was called.");
+   
+    let sql;
+    if(Role === 'owner')
+    {  sql = "SELECT ProfileImage FROM owner_info WHERE Id=?";}
+    else{
+        sql = "SELECT ProfileImage FROM student_info WHERE Id=?";
+    }
+    db.query(sql, [Id], (err, data) => {
+        if (err) { callback("Issue in profile image.",null);}
+        else callback(null,data);
     });
+   };
+   const getIDImage = function(Id,callback){
+    console.log("getIDImage was called.");
+    let sql;
+    sql = "SELECT NidPhoto FROM owner_info WHERE Id=?";
+    
+    db.query(sql, [Id], (err, data) => {
+        if (err) { callback("Issue in Nid.",null);}
+        else callback(null,data);
+    });
+   };
+const getCoverImage = function(Id,callback){
+    console.log("This is Cover Image function :"+ Id);
+    let sql = "SELECT CoverImage FROM boarding_house WHERE OwnerId=?" ;
+    db.query(sql, [Id], (err, data) => {
+        if (err) callback("Issue in cover image.",null);
+        else{
+            callback(null,data);
+        }
+    });
+   };
+    const getOtherImages = function(Id,callback){
+    console.log(Id);
+    let sql = "SELECT OtherImages FROM boarding_house WHERE OwnerId=?"; 
+    db.query(sql, [Id], (err, data) => {
+        if (err) {
+            callback("Issue in Boarding House.",null);
+        }
+        else{
+            callback(null,data);    
+        }
+    });
+   };
+
+app.post("/student/delete",(req,res)=>{
+   // console.log(req);
+    console.log('delete request came to backend !!!!!!!!');
+    const ID = req.session.Id;
+    const Role = req.session.role;
+   
+    let sql,sqla;
+    let CoverImage = [];
+    let OtherImages = [];
+    let ProfileImage,NidPhoto;
+
+    if(Role === 'student')
+    {
+        getProfileImage(ID,Role,(err,data)=>{
+            if(err){
+                console.log(err);
+                ProfileImage = 0;
+            }
+            else{
+                console.log("Profile Image that should delete : "+data[0].ProfileImage);
+                ProfileImage = data[0].ProfileImage;
+                if(ProfileImage !== 0){
+                    console.log("Test 2  "+ProfileImage);
+                fs.unlink(`public/images/profile_images/${req.session.role}/${ProfileImage}`, (err) => {
+                    if (err) {
+                      console.error('Error deleting profile image:', err);
+                    } else {
+                     console.log('Profile image deleted successfully.');
+                    }
+                  });}
+            }
+        });
+        sql = "DELETE FROM student_info WHERE Id = ?";
+        db.query(sql,ID,(err,data) => { 
+            if(err) return "res.json(data)"
+            return res.json(data)
+        });
+    }
+    else if(Role === 'owner'){
+        console.log("ID"+ID);
+        console.log("Role"+Role);
+        getProfileImage(ID,Role,(err,data)=>{
+            if(err){
+                console.log(err);
+                ProfileImage = 0;
+            }
+            else{
+                console.log("Profile Image that should delete : "+data[0].ProfileImage);
+                ProfileImage = data[0].ProfileImage;
+                if(ProfileImage !== 0){
+                    console.log("Test 2  "+ProfileImage);
+                fs.unlink(`public/images/profile_images/${req.session.role}/${ProfileImage}`, (err) => {
+                    if (err) {
+                      console.error('Error deleting profile image:', err);
+                    } else {
+                     console.log('Profile image deleted successfully.');
+                    }
+                  });}
+            }
+        });
+        getIDImage(ID,(err,data)=>{
+            if(err){
+                console.log(err);
+               getIDImage = 0;
+            }
+            else{
+                console.log("ID Image that should delete : "+data[0].NidPhoto);
+                NidPhoto = data[0].NidPhoto;
+                if(ProfileImage !== 0){
+                    console.log("Test 2  "+NidPhoto);
+                fs.unlink(`public/images/nidphoto/${NidPhoto}`, (err) => {
+                    if (err) {
+                      console.error('Error deleting profile image:', err);
+                    } else {
+                     console.log('Profile image deleted successfully.');
+                    }
+                  });}
+            }
+        });
+        //CoverImage = getCoverImage(ID);
+        getCoverImage(ID,(err,data)=>{
+            if(err){
+                console.log(err);
+                CoverImage = [];
+            }
+            else{
+                let covers = data.length;
+                
+                
+                for (let i = 0; i < covers; i++) {
+                      console.log(data[i].CoverImage);
+                        fs.unlink(`public/images/cover_images/${data[i].CoverImage}`, (err) => {
+                        if (err) {
+                          console.error('Error deleting a Cover image:', err);
+                        } else {
+                         console.log('A cover image image deleted successfully.');
+                        }
+                      });
+                    //CoverImage.push(data[i].CoverImage);
+                  }
+                  //console.log("Cover Images that should delete :"+CoverImage);  
+            }
+        });
+        
+        getOtherImages(ID,(err,data)=>{
+            if(err){
+                OtherImages = 0;
+            }
+            else{ 
+                
+                let covers = data.length;
+               
+                for (let i = 0; i < covers; i++) {
+                    const imagePaths = JSON.parse(data[i].OtherImages);
+                    const SomeOfOtherImages = imagePaths.map((path) => path.trim());
+                    OtherImages.push(...SomeOfOtherImages);
+                  }
+                  console.log("Other image called : ");
+                  console.log(OtherImages);
+                  for(let i of OtherImages){
+                    fs.unlink(`public/images/${OtherImages}`, (err) => {
+                        if (err) {
+                          console.error('Error deleting a optional image:', err);
+                        } else {
+                         console.log('A optional image deleted successfully.');
+                        }
+                      });
+                  }
+            }
+        });
+        console.log("Beep Beep boop !!!");
+
+        sqla = "DELETE FROM boarding_house WHERE OwnerId=?";
+        sql = "DELETE FROM owner_info WHERE Id = ?";
+        
+        Promise.all([
+            db.query(sqla, ID),
+            db.query(sql, ID)
+        ])
+        .then(([boardingHouseData, ownerData]) => {
+            console.log(" delete happend!");
+            res.json({ boardingHouseData, ownerData }); 
+        })
+        .catch((err) => {
+            console.log(" delete not happend! : "+ err);
+            res.json(err); 
+        });
+    }
+    else{
+        console.log('something went wrong.asked to delete a empty role account!');
+    }
 });
+
 app.post("/rate/rate_amount",(req,res)=>{
     //let{Rate_amount}=req.body.updateRate;
     const { id, value } = req.body;
@@ -575,64 +770,101 @@ app.get('/arrayvalue/:id',(req,res)=>{
     });
 });
  
+
+
+app.put("/student/updateUser",(req,res)=>{
+const {ContactNo,Email,PrivateAddress} = req.body[0];
+const values = [ContactNo,Email,req.session.Id];
+//const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
+ let sql;
+ let i ;
+ console.log("updateUser has been called")
+  
+  if(req.session.role === 'student'){
+   sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?";}
+  else  { sql = "UPDATE owner_info SET ContactNo = ?,Email = ?,PrivateAddress=? WHERE Id = ?";
+  i = values.pop();
+  values.push(PrivateAddress);
+  values.push(i);
+  
+}
+
+  db.query(sql,values,(err,data) => { 
+    console.log(err)
+    if(err) return res.json(data)
+    return res.json(data)
+  });
+})
+
 //profile image upload
 const storage_profile = multer.diskStorage({
-    destination: (req, file, cb) => {
-        console.log(" role : " + req.session.role);
-        if (req.session.role === "student") {
-            cb(null, "public/images/profile_images/student");
-        } else {
-            cb(null, "public/images/profile_images/owner");
-        }
-        //cb(null, "public/images/profile_images");
-    },
-    filename: (req, file, cb) => {
-        cb(
-            null,
-            file.fieldname +
-                "_" +
-                Date.now() +
-                "_" +
-                path.extname(file.originalname)
-        );
-    },
-});
-const upload_profile = multer({
-    storage: storage_profile,
-});
-app.post(
-    "/profile/upload",
-    upload_profile.single("profile_image"),
-    (req, res) => {
-        // Handle the uploaded image here
-
-        const values = [req.file.filename, req.session.Id];
-        //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
-        let sql;
-        if (req.session.role === "student") {
-            sql = "UPDATE student_info SET ProfileImage = ? WHERE Id = ?";
-        } else {
-            sql = "UPDATE owner_info SET ProfileImage = ? WHERE Id = ?";
-        }
-        console.log("filename" + req.file.filename);
-        console.log("values" + values);
-        console.log("sql" + sql);
-        db.query(sql, values, (err, data) => {
-            if (err) return res.json(data);
-            return res.json(data);
-        });
-
-        /*
-  if (req.file) {
-    console.log(req.file.filename);
-    console.log(req.file);
-    // You can save the image details to the database or perform other actions
-  } else {
-    console.log("Image upload failed");
-  }
-  res.sendStatus(200);*/
+  destination: (req, file, cb) => {
+    console.log(" role : "+req.session.role);
+    if(req.session.role ==="student")
+    {cb(null, "public/images/profile_images/student");}
+    else{
+      cb(null, "public/images/profile_images/owner");
     }
-);
+    //cb(null, "public/images/profile_images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now()+"_" + path.extname(file.originalname)
+      
+    );
+  },
+  
+});
+const imagefileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed."), false);
+  }
+};
+const upload_profile = multer({
+  storage: storage_profile,
+  fileFilter:imagefileFilter
+});
+app.post("/profile/upload", upload_profile.single("profile_image"), (req, res) => {
+  // Handle the uploaded image here
+  
+ 
+  const values = [ req.file.filename,req.session.Id];
+  const valuessecond = [req.session.Id];
+ //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
+  let sql;
+  let sqlsecond;
+
+   if(req.session.role === 'student'){
+    sql = "UPDATE student_info SET ProfileImage = ? WHERE Id = ?";
+    sqlsecond = "SELECT ProfileImage FROM student_info WHERE Id = ?";
+  }
+   else  { sql = "UPDATE owner_info SET ProfileImage = ? WHERE Id = ?";
+   sqlsecond = "SELECT ProfileImage FROM owner_info WHERE Id = ?";
+  }
+   console.log("filename"+req.file.filename)
+  console.log("values"+values)
+  console.log("sql"+sql)
+  db.query(sqlsecond,valuessecond,(err,data) => {  
+    if(err) return res.json(data)
+    const previmage = data[0].ProfileImage;
+    console.log(previmage)
+   db.query(sql,values,(err,data) => {  
+     if(err) return res.json(data)
+     fs.unlink(`public/images/profile_images/${req.session.role}/${previmage}`, (err) => {
+      if (err) {
+        console.error('Error deleting previous image:', err);
+      } else {
+       console.log('Previous image deleted successfully.');
+      }
+    });
+  
+    return res.json(data);
+   });
+  });
+});
 // profile - end
 
 //Fetch data for useEffect - start
@@ -659,14 +891,47 @@ app.get("/boarding-data", (req, res) => {
     });
 });
 app.get("/boarding-data/:id", (req, res) => {
-    const RowId = req.params.id;
+    const boardingId = req.params.id;
     const sql = "SELECT * FROM boarding_house WHERE `Id` = ?";
-    db.query(sql, [RowId], (err, result) => {
+    db.query(sql, [boardingId], (err, result) => {
         if (err) {
             console.error("Error executing MySQL query:", err);
             res.status(500).json({ error: "Internal server error" });
         } else {
-            //console.log(result);
+            console.log(result);
+            res.json(result);
+        }
+    });
+});
+app.put("/update/boarding-data/:id", upload.single("coverimage"), (req, res) => {
+    const boardingId = req.params.id;
+    const sql = "UPDATE boarding_house SET `Title` = ? `Description`= ? `Price` = ? `Negotiable` = ? `Address` = ? `Distance` = ? `Boys` = ? `Girls` = ? `Facilities`= ? `Rules` = ? `ContactNo` = ? `CoverImage` = ? WHERE `Id` = ?";
+    const img_filename = req.file.filename;
+    const owner_id = req.session.Id;
+    const distance = req.body.distance + " " + req.body.distanceUnit; // Combine distance and distanceUnit
+    console.log("post-ad, ownerId: " + owner_id);
+    console.log("post-ad, distanceUnit: " + req.body.distanceUnit);
+    const values = [
+        owner_id,
+        req.body.title,
+        req.body.description,
+        req.body.price,
+        req.body.negotiable,
+        req.body.address,
+        distance,
+        req.body.boys,
+        req.body.girls,
+        req.body.facilities,
+        req.body.rules,
+        req.body.contactno,
+        img_filename,
+    ];
+    db.query(sql, [...values, boardingId], (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            console.log(result);
             res.json(result);
         }
     });
@@ -740,16 +1005,117 @@ app.get("/owner/check-username", (req, res) => {
         }
     });
 });
-
+app.get("/owner/boarding-data", (req, res) => {
+    const owner_id = req.session.Id;
+    console.log("OwnerId : " + owner_id);
+    const sql = "SELECT * FROM boarding_house where `OwnerId` = ?";
+    db.query(sql, [owner_id], (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            console.log("result is here");
+            res.json(result);
+        }
+    });
+});
 //Fetch data for useEffect - end
 
 app.get("/logout", (req, res) => {
     req.session.destroy(function (err) {
         res.clearCookie("connect.sid");
+        console.log("User logout...");
         res.redirect("/"); //Inside a callback… bulletproof!
     });
 });
+//check password
+
+app.post("/checkPassword", (req, res) => {
+
+    let sql;
+
+    if (req.session.role==="student") sql = "SELECT * FROM student_info WHERE `Id` = ?";
+    else if (req.session.role==="owner") sql = "SELECT * FROM owner_info WHERE `Id` = ?";
+    else console.log("role of the account holder is unaware by session !!!!");
+
+    db.query(sql, [req.session.Id], (err, result) => {
+        if (err) return res.json({ Message: "Login error in server" });
+
+        if (result.length > 0) {
+           
+            bcrypt.compare(
+                req.body.password.toString(),
+                result[0].Password,
+                (err, response) => {
+                    if (err)
+                        return res.json({ Error: "Password compare error" });
+                    if (response) {
+                        return res.json({
+                            Status: "Success",
+                            Email: req.session.Email,
+                            Role: req.session.role,
+                        });
+                    } else {
+                        return res.json({ Error: "Password not matched" });
+                    }
+                }
+            );
+        } else {
+            return res.json({ Error: "No Id existed" });
+        }
+    });
+});
+//new password update 
+
+
+app.put("/passwordChange",(req, res) => {
+    let sql;
+    console.log("Password : ");
+        //console.log(req.body.password.toString());
+        if(req.session.role === 'owner'){
+
+            sql = "UPDATE owner_info SET Password = ? WHERE Id = ?";
+        }else if(req.session.role === 'student'){
+            sql = "UPDATE student_info SET Password = ? WHERE Id = ?";
+        }else console.log("something went terribly wrong. Role is undefined in session");
+        console.log(sql);
+        console.log(req.body);
+        bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+            if (err){
+                console.log("hashing failed. ");
+                return res.json({ Error: "Error for hashing password" });} 
+            const values = [
+                hash,
+                req.session.Id
+            ];
+            console.log("hash :");
+            console.log(hash);
+            console.log("values");
+            console.log(values)
+            db.query(sql, values, (err, result) => {
+                if (err){
+                    console.log("query failed");
+                    return res.json({ Error: "Insert data Error in server" });
+                }
+                res.json({ Status: "Success" });
+            });
+        });
+    }
+);
+/* */
 
 app.listen(8081, () => {
     console.log("listening");
+});
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Multer error occurred during file upload
+    res.status(400).json({ error: "File upload error: " + err.message });
+  } else if (err) {
+    // Other error occurred
+    res.status(400).json({ error: err.message });
+  } else {
+    // Continue to the next middleware
+    next();
+  }
 });

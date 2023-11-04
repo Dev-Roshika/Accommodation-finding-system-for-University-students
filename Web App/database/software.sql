@@ -3,9 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+
 -- Generation Time: Nov 01, 2023 at 08:23 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.20
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -54,6 +56,7 @@ INSERT INTO `boarding_house` (`Id`, `OwnerId`, `Title`, `Description`, `Price`, 
 (71, 3, 'Title post 02', 'Description title 02', '45000.00', 'No', 'Jaffna', '1 km', 0, 11, '2 Bedrooms, 1 Bathroom', 'No alcohol', '0771063266', 'coverimage_1687181574824_cover_image2.jpg', '[\"uploadImages-1687181602162-image_2.jpg\",\"uploadImages-1687181602162-image_3.jpg\",\"uploadImages-1687181602163-image_5.jpg\",\"uploadImages-1687181602163-image_7.jpg\",\"uploadImages-1687181602163-image_13.jpg\",\"uploadImages-1687181602163-image_19.jpg\"]'),
 (72, 4, 'Title 01 P', 'Description people 01', '45000.00', 'Yes', 'Mannar', '500 m', 15, 0, '1 Separate toilot, 1 Bathroom, 2 Bedrooms', 'No', '0771063116', 'coverimage_1687181853212_cover_image3.jpg', '[\"uploadImages-1687181870261-image_6.jpg\",\"uploadImages-1687181870262-image_7.jpg\",\"uploadImages-1687181870262-image_8.jpg\",\"uploadImages-1687181870262-image_12 - Copy.jpg\",\"uploadImages-1687181870262-image_15.jpg\",\"uploadImages-1687181870262-image_17.jpg\"]');
 
+
 -- --------------------------------------------------------
 
 --
@@ -73,6 +76,8 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`id`, `student_id`, `boardingid`, `comment`) VALUES
 (10, 1, 70, 'ssssssssssssssssssssssxxxxxxxxxxxxxxxxkkkkkkkkkwwwwwww');
+
+
 
 -- --------------------------------------------------------
 
@@ -101,6 +106,7 @@ INSERT INTO `owner_info` (`Id`, `FullName`, `UserName`, `ContactNo`, `Email`, `P
 (3, 'Sinnathurayi Balasuntharam', 'sinnathurayi ', '0764447233', 'sinnathurayi@gmail.com', 'profileimage-1687181139548-contrast.jpg', '543251380v', 'nidphoto-1687181139548-NID.PNG', '159, Manipay Road, Jaffna', '$2b$10$tyeE4LprU9fdMEv5i.qbmedzfonja0EaqwcWpZkgHQPtTmZKtbK7C'),
 (4, 'Pasindu Nayanajith ', 'pasindu', '0729736233', 'pasindu@gmail.com', 'profileimage-1687181721557-stock-photo-anonymous.jpg', '9872151380v', 'nidphoto-1687181721489-NID.PNG', 'No :42', '$2b$10$lM2vnUe74LxymMCRMmpEiu09C25l2yG1dxoH4MVKWDu/qH7Q8Y5ei');
 
+
 -- --------------------------------------------------------
 
 --
@@ -127,6 +133,7 @@ INSERT INTO `student_boarding` (`id`, `student_id`, `boarding_id`, `review`) VAL
 (10, 48, 70, 5),
 (11, 48, 71, 4);
 
+
 -- --------------------------------------------------------
 
 --
@@ -151,10 +158,12 @@ CREATE TABLE `student_info` (
 --
 
 INSERT INTO `student_info` (`Id`, `FullName`, `UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`, `Email`, `Faculty`, `Dept`, `Password`) VALUES
+
 (1, 'Nuwani rasi', 'nuwani', '2019/CSC/024', '0745623894', 'profileimage_1698694303390_20220414_174436.jpg', 'nuwani@gmail.com', NULL, NULL, '$2b$10$Fqe7xyFCi.dN6/QCqu6wxOmSD60X.RzyS1mlMU8a2aXwfITaKLysm'),
 (42, 'Saman De Silva', 'saman', '2019/CSC/001', '0124356987', 'profileimage_1687180865837_photo-1628563694622-5a76957fd09c.jpg', 'saman@gmail.com', 'Science', 'Cs', '$2b$10$SNK/o7MocpgMNkCI9HUuJuHf6S0LotJ4zR.Y0pRZHxJsonQfulxlC'),
 (43, 'Dananjan Ferendo', 'danan', '2019/CSC/002', '0768888233', 'profileimage_1687180960184_fashion.jpg', 'danan@gmail.com', 'Art', 'Law', '$2b$10$5dhZxOicNsYis7qaqnigeO9s4SfLL9mdWn7wEWjKICxuAmo/3o42O'),
 (48, 'mani', 'maani', '2019/CSC/024', '0710654738', 'profileimage_1695248646810_pexels-pixabay-159020 (2).jpg', 'mani@gmail.com', NULL, NULL, '$2b$10$yzgzYRxb1GSBaL31rN7s2esTRzZ9THzhGIHSnc8owhLgL8etC8N2.');
+
 
 --
 -- Indexes for dumped tables
@@ -167,11 +176,13 @@ ALTER TABLE `boarding_house`
   ADD PRIMARY KEY (`Id`),
   ADD KEY `FK_OwnerId` (`OwnerId`);
 
+
 --
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
+
 
 --
 -- Indexes for table `owner_info`
@@ -201,11 +212,13 @@ ALTER TABLE `student_info`
 ALTER TABLE `boarding_house`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
+
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
 
 --
 -- AUTO_INCREMENT for table `owner_info`
@@ -213,17 +226,21 @@ ALTER TABLE `comments`
 ALTER TABLE `owner_info`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
+
 --
 -- AUTO_INCREMENT for table `student_boarding`
 --
 ALTER TABLE `student_boarding`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
+
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
+
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
 
 --
 -- Constraints for dumped tables
