@@ -1,28 +1,43 @@
-.listContainer{
-   
+.listContainer {
     display: flex;
     /*justify-content: center;*/
     margin: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
-.listWrapper{
-   
+.listWrapper {
     width: 100%;
-    max-width: 1024px;
-    display: flex;
+    /* max-width: 1024px;
+    display: flex; */
     gap: 20px;
 }
-.radio{
-    color:#016551;
+.radio {
+    color: #016551;
 }
-.listResult{
-    
+.listResult {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-top:50px;
+    margin-top: 50px;
 }
-.setfilter{
+.setfilter {
     margin: 50px 20px 0px 5px;
+}
+
+.sort_filter {
+    /* height: 50px; */
+    background-color: white;
+    border: 3px solid #febb02;
+    /* display: flex; */
+    align-items: center;
+    /* justify-content: space-around; */
+    padding: 10px 10px;
+    border-radius: 5px;
+    /* position: relative; */
+    width: 100%;
+    max-width: 1024px;
+    color: #016551;
+    margin: 30px;
 }

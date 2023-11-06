@@ -6,17 +6,16 @@ import Filter from "../Components/Filter";
 import SearchItem from "../Components/SearchItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Footer from "../Components/Footer"; 
+import Footer from "../Components/Footer";
 
 function Home() {
     const [data, setData] = useState([]);
     const [role, setRole] = useState("");
     const [sortedData, setSortedData] = useState([]);
-    const [show,setShow] =useState(false);
+    const [show, setShow] = useState(false);
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
 
-    
     useEffect(() => {
         axios
             .get("http://localhost:8081")
@@ -50,34 +49,33 @@ function Home() {
     }, []);
     const handleSort = (sortedArray) => {
         console.log("this is returned after sort : ");
-        console.log(typeof(sortedArray));
+        console.log(typeof sortedArray);
         console.log(sortedArray);
         setShow(true);
         setSortedData(null);
         setSortedData(sortedArray); // Set the sorted data to the state
-      };
+    };
     return (
         <div className="d-flex flex-column min-vh-100">
             <Navbar />
             <Header role={role} />
             <div className="listContainer">
-                    <div className ="setfilter">
-                         <Filter data={data} onSort={handleSort} />
-                        
-                    </div>
-                <div className="listWrapper">
-                  { show && <p className="try">try</p>}
-                    <div className="listResult">
-                        {
-                            sortedData.length > 0 ? (
-                            sortedData.map((item) => <SearchItem key={item.id} data={item} />)
-                            ) : (
-                                
-                        data.map((item) => <SearchItem key={item.id} data={item} />)
-                            )
-                        }
-                    </div>
-                    
+                <div className="sort_filter">
+                    Sort by
+                        <Filter data={data} onSort={handleSort} />
+                </div>
+            </div>
+            <br></br>
+            <div className="listWrapper">
+                {show && <p className="try">try</p>}
+                <div className="listResult">
+                    {sortedData.length > 0
+                        ? sortedData.map((item) => (
+                              <SearchItem key={item.id} data={item} />
+                          ))
+                        : data.map((item) => (
+                              <SearchItem key={item.id} data={item} />
+                          ))}
                 </div>
             </div>
             <div className="mt-auto">

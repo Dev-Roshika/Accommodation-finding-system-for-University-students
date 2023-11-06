@@ -169,7 +169,7 @@ const FileUpload = () => {
                                                 textAlign: "center",
                                             }}
                                         >
-                                            You can't upload more than 10
+                                            You can't upload more than 6
                                             images! <br />
                                             <span
                                                 style={{
