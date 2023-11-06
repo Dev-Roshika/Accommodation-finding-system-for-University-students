@@ -42,7 +42,7 @@ function Signin() {
                     console.log("No issue.");
                     navigate("/home");
                 } else {
-                    alert("Error : Check email and password again");
+                    alert("Error: Check email and password again");
                 }
                 console.log(res);
             })
