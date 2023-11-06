@@ -14,12 +14,9 @@ import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
-<<<<<<< HEAD
-import CompleteUpdatePostAd from './Owner/Crud/CompleteUpdatePostAd'
-=======
-import AdminSignin from  './Admin/Signin'
-import AdminSignup from  './Admin/Signup'
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
+import CompleteUpdatePostAd from './Owner/Crud/CompleteUpdatePostAd';
+import AdminSignin from  './Admin/Signin';
+import AdminSignup from  './Admin/Signup';
 
 function App() {
   return (

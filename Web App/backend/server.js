@@ -7,16 +7,12 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import bcrypt from "bcrypt";
-<<<<<<< HEAD
-import fs from "fs";
-=======
 
 import { error } from "console";
-import fs from 'fs';
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
+import fs from "fs";
 
 
-const salt = 10; // for bcrypt
+
 //admin-start
 //const admin_password = "admin123!@#"; // admin password
 /////const admin_email = "uni_admin@gmail.com"; // admin password
@@ -29,20 +25,11 @@ const port = 8081;
 
 const app = express();
 app.use(
-<<<<<<< HEAD
   cors({
     origin: ["http://localhost:3000"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
-=======
-    cors({
-        //origin: [rs],
-        methods: ["POST", "GET", "PUT","DELETE"],
-        origin: "http://localhost:3000", // Replace with the actual origin of your React app
-        credentials: true,
-    })
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
 );
 app.use(express.json());
 app.use(express.static("public")); // images folder
@@ -99,7 +86,6 @@ const signup_upload = multer({
   storage: signup_storage,
 });
 app.post(
-<<<<<<< HEAD
   "/student/signup",
   signup_upload.single("profileimage"),
   (req, res) => {
@@ -122,42 +108,12 @@ app.post(
         hash,
       ];
       db.query(sql, [values], (err, result) => {
-        if (err) return res.json({ Error: "Insert data Error in server" });
+        if (err){ return res.json({ Error: "Insert data Error in server" });
+                }
         return res.json({ Status: "Success" });
       });
     });
   }
-=======
-    "/student/signup",
-    signup_upload.single("profileimage"),
-    (req, res) => {
-        const img_filename = req.file.filename;
-        console.log("this is checking signup password : ");
-        console.log(req.body.password);
-        const sql =
-            "INSERT INTO `student_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Password`) VALUES(?)";
-        bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
-            if (err) return res.json({ Error: "Error for hashing password" });
-            const values = [
-                req.body.fullname,
-                req.body.username,
-                req.body.univregno,
-                req.body.mobile,
-                img_filename,
-                req.body.email,
-                req.body.faculty,
-                req.body.dept,
-                hash,
-            ];
-            db.query(sql, [values], (err, result) => {
-                if (err){
-                    return res.json({ Error: "Insert data Error in server" });
-                }
-                return res.json({ Status: "Success" });
-            });
-        });
-    }
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
 );
 //signup - end
 
@@ -167,11 +123,11 @@ app.post("/student/login", (req, res) => {
   db.query(sql, [req.body.email], (err, result) => {
     if (err) return res.json({ Message: "Login error in server" });
 
-<<<<<<< HEAD
     if (result.length > 0) {
       req.session.email = result[0].Email;
       req.session.Id = result[0].Id;
       req.session.role = "student";
+            userId = req.session.Id;
       console.log(req.session.email);
       console.log(req.session.role);
       console.log(req.session.Id);
@@ -189,35 +145,6 @@ app.post("/student/login", (req, res) => {
           } else {
             return res.json({ Error: "Password not matched" });
           }
-=======
-        if (result.length > 0) {
-            req.session.email = result[0].Email;
-            req.session.Id = result[0].Id;
-            req.session.role = "student";
-            userId = req.session.Id;
-            console.log(req.session.email);
-            console.log(req.session.role);
-            console.log(req.session.Id);
-            bcrypt.compare(
-                req.body.password.toString(),
-                result[0].Password,
-                (err, response) => {
-                    if (err)
-                        return res.json({ Error: "Password compare error" });
-                    if (response) {
-                        return res.json({
-                            Status: "Success",
-                            Email: req.session.Email,
-                            Role: req.session.role,
-                        });
-                    } else {
-                        return res.json({ Error: "Password not matched" });
-                    }
-                }
-            );
-        } else {
-            return res.json({ Error: "No email existed" });
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
         }
       );
     } else {
@@ -715,15 +642,6 @@ app.post("/student/delete", (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-app.put("/student/updateUser", (req, res) => {
-  const { ContactNo, Email, PrivateAddress } = req.body[0];
-  const values = [ContactNo, Email, req.session.Id];
-  //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
-  let sql;
-  let i;
-  console.log("updateUser has been called");
-=======
 app.post("/rate/rate_amount",(req,res)=>{
     //let{Rate_amount}=req.body.updateRate;
     const { id, value } = req.body;
@@ -876,23 +794,13 @@ app.get('/arrayvalue/:id',(req,res)=>{
  
 
 
-app.put("/student/updateUser",(req,res)=>{
-const {ContactNo,Email,PrivateAddress} = req.body[0];
-const values = [ContactNo,Email,req.session.Id];
-//const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
- let sql;
- let i ;
- console.log("updateUser has been called")
-  
-  if(req.session.role === 'student'){
-   sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?";}
-  else  { sql = "UPDATE owner_info SET ContactNo = ?,Email = ?,PrivateAddress=? WHERE Id = ?";
-  i = values.pop();
-  values.push(PrivateAddress);
-  values.push(i);
-  
-}
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
+app.put("/student/updateUser", (req, res) => {
+  const { ContactNo, Email, PrivateAddress } = req.body[0];
+  const values = [ContactNo, Email, req.session.Id];
+  //const sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?"
+  let sql;
+  let i;
+  console.log("updateUser has been called");
 
   if (req.session.role === "student") {
     sql = "UPDATE student_info SET ContactNo = ?,Email = ? WHERE Id = ?";
@@ -909,12 +817,8 @@ const values = [ContactNo,Email,req.session.Id];
     if (err) return res.json(data);
     return res.json(data);
   });
-<<<<<<< HEAD
 });
-=======
-})
 
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
 //profile image upload
 const storage_profile = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -1176,12 +1080,9 @@ app.put(
         });
       }
     });
-<<<<<<< HEAD
   }
 );
-=======
-});
->>>>>>> 9169a25beed317d07b7f19bc8d7283b88bc3350a
+
 
 app.get("/student/check-email", (req, res) => {
   const email = req.query.email;
