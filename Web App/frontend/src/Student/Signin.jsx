@@ -38,9 +38,11 @@ function Signin() {
         axios
             .post("http://localhost:8081/student/login", values)
             .then((res) => {
+                console.log(res.data.Status);
                 if (res.data.Status === "Success") {
                     navigate("/home");
-                } else {
+                } 
+                else {
                     alert("Error : Check email and password again");
                 }
                 console.log(res);
@@ -122,10 +124,14 @@ function Signin() {
                                         backgroundColor: "#0d987d",
                                         borderTopLeftRadius: "0.5rem",
                                         borderBottomLeftRadius: "0.5rem",
-                                        border: "none"
+                                        border: "none",
                                     }}
                                 >
-                                    {showPassword ? <FiEyeOff color="#fff"/> : <FiEye color="#fff"/>}
+                                    {showPassword ? (
+                                        <FiEyeOff color="#fff" />
+                                    ) : (
+                                        <FiEye color="#fff" />
+                                    )}
                                 </button>
                             </div>
                             {errors.password && (
