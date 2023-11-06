@@ -1,0 +1,44 @@
+.list{
+    width: 100%;
+    list-style-type:none;
+    list-style-position:inside;
+    line-break:anywhere ;
+    margin: 0;
+    padding: 0;
+    padding-block: 5px;
+    padding-right: 30%;
+    display:inline-flexbox;
+}  
+.listalign{
+    font-weight: 350;
+    height: fit-content;
+    
+    background-color: rgb(227, 236, 232);
+    display:flex;
+    flex-direction: column;
+    padding-right: 30px;
+    
+    display: inline-flexbox;
+
+}
+.namealgn{
+    font-weight: 650;
+    font-size: 12px;
+    margin-bottom: -10px;
+}
+.btnalign{
+    display:flex; 
+    padding: 5px;
+    
+    
+
+    
+}
+.btnal{
+    height:30px ;
+    outline-style:auto ;
+    border-radius: 2px;
+    background-color: rgb(188, 188, 236);
+    margin: 7px;
+    font-size: 10px;
+}
