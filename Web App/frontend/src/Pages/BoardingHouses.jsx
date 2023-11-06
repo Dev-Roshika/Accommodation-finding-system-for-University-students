@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
-import AddMap from "./AddMap";
 import DispMap from "../Components/DispMap";
 import "../css/boardinghouses.css";
 import { FaStar } from "react-icons/fa";
@@ -174,6 +173,7 @@ function BoardingHouses() {
           </div>
         )}
         <div className="boardingWrapper">
+          
           <button className="bookNow">Reserve or Book Now</button>
           <h1 className="boardingTitle">Title of the boarding</h1>
           <div className="boardingAddress">
@@ -284,10 +284,7 @@ function BoardingHouses() {
                             
                             
                             </div>
-                            
-                            
-                            
-
+               
             </div>
             <div className="boardingDetailsPrice">
               <h2>
@@ -296,7 +293,7 @@ function BoardingHouses() {
               <button>Reserve or Book Now</button>
                         </div>
                    
-                    
+                    </div>
                     <div className="App">
                     {cilck ?<div>
                                 <div className="commentbox">
@@ -309,14 +306,7 @@ function BoardingHouses() {
                               <GetComment id={id}/>
                               
                     </div>
-                    <div className="boardingMap">
-                            <h2><br></br>
-                              
-                                <DispMap data={id} />
-                               
-                            </h2>
-                        
-                    </div>
+                    
                    </div>
         </div>
                 
@@ -324,7 +314,14 @@ function BoardingHouses() {
       <div>
         <SendMeMessage />
       </div>
-      <div className="mt-auto">
+      
+    
+    <div className="boardingMap">
+        <h2><br></br>
+            <DispMap data={id} />
+        </h2>
+     </div>
+    <div className="mt-auto">
         <Footer />
       </div>
     </div>

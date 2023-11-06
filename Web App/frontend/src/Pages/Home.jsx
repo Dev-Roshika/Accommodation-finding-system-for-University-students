@@ -57,13 +57,12 @@ function Home() {
             <Header role={role} />
             <div className="listContainer">
                 <div className="sort_filter">
-                    Sort by
+                    
                         <Filter data={data} onSort={handleSort} />
                 </div>
             </div>
             <br></br>
             <div className="listWrapper">
-                {show && <p className="try">try</p>}
                 <div className="listResult">
                     {sortedData.length > 0
                         ? sortedData.map((item) => (
