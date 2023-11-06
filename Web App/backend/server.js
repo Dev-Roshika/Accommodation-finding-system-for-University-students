@@ -13,9 +13,16 @@ import fs from 'fs';
 
 
 const salt = 10; // for bcrypt
+//admin-start
+//const admin_password = "admin123!@#"; // admin password
+/////const admin_email = "uni_admin@gmail.com"; // admin password
+//admin-end
+
+const salt = 10; // for bcrypt
 let userId=0;
 //const boardingId=1;
 const port = 8081;
+
 const app = express();
 app.use(
     cors({
@@ -102,8 +109,9 @@ app.post(
                 hash,
             ];
             db.query(sql, [values], (err, result) => {
-                if (err)
+                if (err){
                     return res.json({ Error: "Insert data Error in server" });
+                }
                 return res.json({ Status: "Success" });
             });
         });
@@ -867,6 +875,10 @@ app.post("/profile/upload", upload_profile.single("profile_image"), (req, res) =
 });
 // profile - end
 
+
+
+
+
 //Fetch data for useEffect - start
 app.get("/", (req, res) => {
     if (req.session.role) {
@@ -1020,6 +1032,110 @@ app.get("/owner/boarding-data", (req, res) => {
     });
 });
 //Fetch data for useEffect - end
+
+
+
+// Admin login and Signup
+
+
+
+//signup - start
+const signup_storage_admin = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/images/profile_images/admin");
+    },
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname); // Get the file extension
+        const filenameWithoutExt = path.basename(file.originalname, ext); // Get the filename without extension
+        cb(
+            null,
+            file.fieldname +
+                "_" +
+                Date.now() +
+                "_" +
+                filenameWithoutExt +
+                path.extname(file.originalname)
+        );
+    },
+});
+
+const signup_upload_admin = multer({
+    storage: signup_storage_admin,
+});
+app.post(
+    "/admin/signup",
+    signup_upload_admin.single("profileimage"),
+    (req, res) => {
+        const img_filename = req.file.filename;
+        const sql =
+            "INSERT INTO `admin_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Position`,`Password`) VALUES(?)";
+        bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+            if (err) return res.json({ Error: "Error for hashing password" });
+            const values = [
+                req.body.fullname,
+                req.body.username,
+                req.body.univregno,
+                req.body.mobile,
+                img_filename,
+                req.body.email,
+                req.body.faculty,
+                req.body.dept,
+                req.body.position,
+                hash,
+            ];
+            db.query(sql, [values], (err, result) => {
+                if (err){
+                    return res.json({ Error: "Insert data Error in server" });
+                }
+                return res.json({ Status: "Success" });
+            });
+        });
+    }
+);
+//signup - end
+//admin - start
+app.post("/admin/login",(req,res)=>{
+    console.log("this is admin login");
+    const sql = "SELECT * FROM admin_info WHERE Email = ?";
+    try{db.query(sql, [req.body.email], (err, result) => {
+        if (err) return res.json({ Message: "Login error in server" });
+
+        if (result.length > 0) {
+            req.session.email = result[0].Email;
+            req.session.Id = result[0].Id;
+            req.session.role = "admin";
+            const admin_password = result[0].Password;
+            console.log(req.session.email);
+            console.log(req.session.role);
+            console.log(req.session.Id);
+            console.log(admin_password);
+            bcrypt.compare(
+                req.body.password.toString(),
+                result[0].Password,
+                (err, response) => {
+                    if (err)
+                        return res.json({ Error: "Password compare error" });
+                    if (response) { 
+                        return res.json({
+                            Status: "Success",
+                            Email: req.session.Email,
+                            Role: req.session.role,
+                        });
+                    } else {
+                        return res.json({ Error: "Password not matched" });
+                    }
+                }
+            );
+        } else {
+            return res.json({ Error: "No email existed" });
+        }
+    });}
+    catch(error){
+        console.log("error is occured.")
+    }
+    
+});
+
 
 app.get("/logout", (req, res) => {
     req.session.destroy(function (err) {

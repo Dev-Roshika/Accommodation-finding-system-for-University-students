@@ -14,6 +14,8 @@ import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
+import AdminSignin from  './Admin/Signin'
+import AdminSignup from  './Admin/Signup'
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
+          <Route path='/admin/login' element={<AdminSignin />} />
+          <Route path='/admin/signup' element={<AdminSignup />} />
           <Route path="/*" element={<NotFoundPage />} />
           <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
           
