@@ -54,6 +54,8 @@ function BoardingHouses() {
         console.log(res.data);
         setData(res.data);
         console.log("data is fetched successfully");
+        console.log("Data inside useEffect:", Data); // Log the Data
+
         // eslint-disable-next-line
         // JSON.parse(Datax.OtherImages).map((filename) => {
         //   setOtherImages((prev) => [...prev, filename]);
@@ -96,24 +98,7 @@ function BoardingHouses() {
             
         // eslint-disable-next-line
     }, [{id}]);
-   
-    // const photos = [
-    //   {
-    //     src: "./Images/images (3).jpg",
-    //   },
-    //   {
-    //     src: "./Images/download.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (1).jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (2).jpg",
-    //   },
-    // ];
+    
    /*const SetRating =()=>{
     useEffect(() => {
         //setRate(true);
@@ -124,7 +109,6 @@ function BoardingHouses() {
             .catch((err) => console.log(err));
         }, []);
     };*/
-
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -197,11 +181,13 @@ function BoardingHouses() {
           </div>
         )}
         <div className="boardingWrapper">
-          <button className="bookNow">Reserve or Book Now</button>
-          <h1 className="boardingTitle">Title of the boarding</h1>
+          <button className="bookNow">Send Me a Message</button>
+          {/* <h1 className="boardingTitle">Title of the boarding</h1> */}
+          <h1 className="boardingTitle">{Data[0].Title}</h1>  
           <div className="boardingAddress">
             <FontAwesomeIcon icon={faLocationDot} />
-            <span>958/35, KKS road, Jaffna</span>
+            {/* <span>958/35, KKS road, Jaffna</span> */}
+            <span>{Data[0].Address}</span>
           </div>
           <span className="boardingDistance">
             Excellent location 500m from the University of Jaffna main premises
@@ -316,7 +302,7 @@ function BoardingHouses() {
               <h2>
                 <b>Rs. 50,000/ month</b>
               </h2>
-              <button>Reserve or Book Now</button>
+              <button>Send Me a Message</button>
                         </div>
                     </div>
                     <div className="App">
