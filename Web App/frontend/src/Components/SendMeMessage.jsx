@@ -1,7 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SendMeMessage() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+  axios.defaults.withCredentials = true;
+
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8081")
+      .then((res) => {
+        if (res.data.Valid && (res.data.Role === "student" || res.data.Role === "owner")) {
+          console.log(res.data.Role + " is a valid user");
+          setUserData(res.data);
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((err) => console.log(err));
+    // eslint-disable-next-line
+  }, []);
+
+  const sendEmail = async () => {
+    try {
+      const response = await axios.post('http://localhost:8081/send-email/68', {
+        text,
+      });
+
+      if (response.status === 200) {
+        alert('Email sent successfully');
+      } else {
+        alert('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
+
   return (
     <div
       className="d-flex justify-content-center align-items-center vh-100"
@@ -14,7 +53,7 @@ function SendMeMessage() {
         className="bg-secondary bg-gradient rounded shadow-sm bg-opacity-10"
         style={{ width: "50%" }}
       >
-        <form action="" >
+        <form>
           <div
             className="d-flex justify-content-center flex-column bg-secondary bg-gradient p-5 bg-opacity-50"
             style={{
@@ -35,24 +74,27 @@ function SendMeMessage() {
           </div>
           <div className="p-5">
             <div className="mb-3">
-              {/* Send Me a message */}
               <div className="col-sm">
                 <input
-                  name="paddress"
+                  name="text"
                   type="text"
                   required
                   className="form-control rounded-0"
-                  
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
                 />
-                {/* <Link
-                  to="/owner/login"
-                  className="btn btn-default border w-100 bg-light rounded-0 mb-3"
-                  style={{ color: "#0d987d" }}
-                >
-                  <strong>Send Me a Message</strong>
-                </Link> */}
               </div>
             </div>
+          </div>
+          <div className="d-flex justify-content-center">
+            <button
+              type="button"
+              className="btn btn-default border bg-light rounded-0"
+              style={{ color: "#0d987d" }}
+              onClick={sendEmail}
+            >
+              <strong>Send Me a Message</strong>
+            </button>
           </div>
         </form>
         <div
@@ -71,7 +113,7 @@ function SendMeMessage() {
             title="Go Back"
           >
             {" "}
-            UniAccomodations{" "}
+            UniAccommodations{" "}
           </span>
         </div>
       </div>

@@ -20,6 +20,7 @@
     "express-session": "^1.17.3",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.9.7",
     "nodemon": "^2.0.22",
     "path": "^0.12.7"
   }

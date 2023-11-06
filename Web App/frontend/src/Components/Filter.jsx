@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Select from "react-select";
 import "../css/home.css";
 
-function Filter({ data, onSort }) {
+function Filter({data,onSort}){
+  
     const [selectedOption, setSelectedOption] = useState(null);
     const [sortby, setSortby] = useState("");
     const [sortedValue, setSortedValue] = useState([]);
@@ -120,43 +121,46 @@ function Filter({ data, onSort }) {
 
     return (
         <div>
-            <div style={{ width: "50%", height: "100px", float: "left" }}>
+            <div style={{ width: "50%", marginLeft: "6%"  ,float: "left" }}>
                 <Select
                     options={options}
                     onChange={handleChange}
                     style={{ color: "#0d987d" }}
                 />
             </div>
-            <div style={{ marginLeft: "50%", height: "100px" }}>
+            <div style={{ marginLeft: "70%" , margin:"10px" }}>
                 <div>
-                    <label className="radio">
+                    <label className="radio" style={{ marginLeft: "6%"  }}>
                         <input
                             type="radio"
                             value="boy"
                             checked={selectedOption === "boy"}
                             onChange={handleOptionChange}
+                            style={{display:"unset"}}
                         />
-                        Boy
+                       &nbsp; Boy&nbsp;&nbsp;
                     </label>
-                    <br />
-                    <label className="radio">
+                    
+                    <label className="radio" style={{ marginLeft: "6%"  }}>
                         <input
                             type="radio"
                             value="girl"
                             checked={selectedOption === "girl"}
                             onChange={handleOptionChange}
+                            style={{display:"unset"}}
                         />
-                        Girl
+                        &nbsp;Girl&nbsp;
                     </label>
-                    <br />
-                    <label className="radio">
+                    
+                    <label className="radio" style={{ marginLeft: "6%"  }}>
                         <input
                             type="radio"
                             value="any"
                             checked={selectedOption === "any"}
                             onChange={handleOptionChange}
+                            style={{display:"unset"}}
                         />
-                        All
+                        &nbsp;All&nbsp;&nbsp;
                     </label>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
+import DispMap from "../Components/DispMap";
 import "../css/boardinghouses.css";
 import { FaStar } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +31,9 @@ function BoardingHouses() {
     const [comcont,setComcont]=useState("");
     const [item,setItem]=useState([]);
   const navigate = useNavigate();
+    const [userData, setUserData] = useState(null);
   axios.defaults.withCredentials = true;
+
   useEffect(() => {
     axios
       .get("http://localhost:8081")
@@ -40,6 +43,7 @@ function BoardingHouses() {
           (res.data.Role === "student" || res.data.Role === "owner")
         ) {
           console.log(res.data.role + "is a valid user");
+                    setUserData(res.data);
         } else {
           navigate("/");
         }
@@ -97,35 +101,7 @@ function BoardingHouses() {
         // eslint-disable-next-line
     }, [{id}]);
    
-    // const photos = [
-    //   {
-    //     src: "./Images/images (3).jpg",
-    //   },
-    //   {
-    //     src: "./Images/download.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images.jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (1).jpg",
-    //   },
-    //   {
-    //     src: "./Images/images (2).jpg",
-    //   },
-    // ];
-   /*const SetRating =()=>{
-    useEffect(() => {
-        //setRate(true);
-		
-        axios
-            .post(`http://localhost:8081/boarding_house/rate_amount/`,Data.Id)
-            
-            .catch((err) => console.log(err));
-        }, []);
-    };*/
-
-
+    
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -197,6 +173,7 @@ function BoardingHouses() {
           </div>
         )}
         <div className="boardingWrapper">
+          
           <button className="bookNow">Reserve or Book Now</button>
           <h1 className="boardingTitle">Title of the boarding</h1>
           <div className="boardingAddress">
@@ -307,10 +284,7 @@ function BoardingHouses() {
                             
                             
                             </div>
-                            
-                            
-                            
-
+               
             </div>
             <div className="boardingDetailsPrice">
               <h2>
@@ -318,6 +292,7 @@ function BoardingHouses() {
               </h2>
               <button>Reserve or Book Now</button>
                         </div>
+                   
                     </div>
                     <div className="App">
                     {cilck ?<div>
@@ -331,6 +306,7 @@ function BoardingHouses() {
                               <GetComment id={id}/>
                               
                     </div>
+                    
                    </div>
         </div>
                 
@@ -338,7 +314,14 @@ function BoardingHouses() {
       <div>
         <SendMeMessage />
       </div>
-      <div className="mt-auto">
+      
+    
+    <div className="boardingMap">
+        <h2><br></br>
+            <DispMap data={id} />
+        </h2>
+     </div>
+    <div className="mt-auto">
         <Footer />
       </div>
     </div>
