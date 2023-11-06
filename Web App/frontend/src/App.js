@@ -16,6 +16,7 @@ import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
 import Gmail from './Pages/Gmail';
+import Test from './Pages/Test';
 
 function App() {
   return (
@@ -38,7 +39,8 @@ function App() {
           <Route path='/AddMap' element={<AddMap/>} />
           <Route path="/*" element={<NotFoundPage />} />
           <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
-          <Route path='gmail' element={<Gmail />} />
+          <Route path='/gmail' element={<Gmail />} />
+          <Route path='/test' element={<Test />} />
         </Routes>
       </BrowserRouter>
     </div>

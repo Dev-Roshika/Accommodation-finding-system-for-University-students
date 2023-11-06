@@ -715,6 +715,7 @@ app.get("/", (req, res) => {
             Valid: true,
             Id: req.session.Id,
             Role: req.session.role,
+            Gmail:req.session.email
         });
     } else {
         return res.json({ Valid: false });
@@ -944,9 +945,6 @@ app.put("/passwordChange",(req, res) => {
 );
 /* */
 
-app.listen(8081, () => {
-    console.log("listening");
-});
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     // Multer error occurred during file upload
@@ -962,8 +960,7 @@ app.use((err, req, res, next) => {
 app.post("/submit-location/:id", (req, res) => {
     
     let boardingId = req.params.id;
-    console.log("boardingID : ");
-    console.log(boardingId);
+   
     const { lat, lng } = req.body;
  
     const ownerQuery = "SELECT OwnerId FROM boarding_house WHERE Id = ?";
@@ -972,11 +969,7 @@ app.post("/submit-location/:id", (req, res) => {
         console.error("Error fetching owner ID:", ownerErr);
         return res.status(500).json({ error: "An error occurred while fetching owner data." });
       }
-      console.log("########");
-     console.log(ownerResult[0].OwnerId);
-     console.log(req.session.Id);
-     console.log("########");
-      
+    
       if (ownerResult.length > 0 && ownerResult[0].OwnerId === req.session.Id) {
         
         const sql = `
@@ -1025,22 +1018,94 @@ app.post("/submit-location/:id", (req, res) => {
     },
   });
   
-  // Define an endpoint to send emails
-  app.post('/send-email', async (req, res) => {
-    const { to, subject, text } = req.body;
-     console.log("Send Gmail");
-    const mailOptions = {
-      from: 'isharamadushankakity@gmail.com',
-      to,
-      subject,
-      text,
-    };
+  // to send emails
+  app.post('/send-email/:id', async (req, res) => {
+    const { text } = req.body;
+  
+    console.log("Send Gmail");
   
     try {
-      await transporter.sendMail(mailOptions);
-      res.status(200).json({ message: 'Email sent successfully' });
+      const sql = "SELECT OwnerId FROM boarding_house WHERE Id = ?";
+      const boardingId = req.params.id;
+      
+      
+      let email = '';
+  
+      db.query(sql, [boardingId], (err, results) => {
+        if (err) {
+          console.error("Error fetching boarding locations:", err);
+          res.status(500).json({ error: "An error occurred while fetching location data." });
+        } else {
+          console.log(results[0].OwnerId);
+          const OwnerId = results[0].OwnerId;
+          
+          try {
+            const ownerEmailSql = "SELECT Email FROM owner_info WHERE Id = ?";
+            
+            db.query(ownerEmailSql, [OwnerId], (err, result) => {
+              if (err) {
+                console.error("Error fetching owner Email:", err);
+                res.status(500).json({ error: "An error occurred while fetching Owner Email." });
+              } else {
+                console.log("Em: ");
+                console.log(result[0].Email);
+                email = result[0].Email;
+                
+                const mailOptions = {
+                  from: 'isharamadushankakity@gmail.com',
+                  to: email,
+                  subject: 'A message from a student.',
+                  text,
+                };
+  
+                transporter.sendMail(mailOptions, (sendMailError) => {
+                  if (sendMailError) {
+                    console.error('Error sending email:', sendMailError);
+                    res.status(500).json({ message: 'Email could not be sent' });
+                  } else {
+                    res.status(200).json({ message: 'Email sent successfully' });
+                  }
+                });
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
     } catch (error) {
-      console.error('Error sending email:', error);
-      res.status(500).json({ message: 'Email could not be sent' });
+      console.log(error);
     }
   });
+  
+
+  app.post('/contact_admin', (req, res) => {
+    const { email, role, text } = req.body;
+  
+    if (!text || !email || !role) {
+      
+      return res.status(400).json({ message: 'Invalid request data' });
+    }
+  
+    const messageData = {
+      email,
+      role,
+      message: text,
+    };
+  
+
+    const sql = 'INSERT INTO admin_notify (email, type, message) VALUES (?, ?, ?)';
+    db.query(sql, [messageData.email, messageData.role, messageData.message], (err, result) => {
+      if (err) {
+        console.error('Error inserting message:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+  
+      return res.status(200).json({ message: 'Message sent successfully' });
+    });
+  });
+  
+  
+app.listen(8081, () => {
+    console.log("listening");
+});

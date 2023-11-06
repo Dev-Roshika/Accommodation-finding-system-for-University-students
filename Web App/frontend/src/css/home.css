@@ -14,6 +14,8 @@
 }
 .radio{
     color:#016551;
+    padding-left: 5px;
+    font-weight: bold;
 }
 .listResult{
     
@@ -23,6 +25,28 @@
     align-items: center;
     margin-top:50px;
 }
-.setfilter{
+.setFilter{
     margin: 50px 20px 0px 5px;
+}
+.headerSearch {
+    height: 50px;
+    background-color: white;
+    border: 3px solid #febb02;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 1px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -25px;
+    width: 100%;
+    max-width: 1024px;
+    color: #016551; /*Text color in the search component*/
+}
+.selectmenu{
+    width: 30%;
+    border-color:#016551;
+    border-radius:'5px';
+    
 }

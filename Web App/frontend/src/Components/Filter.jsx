@@ -2,6 +2,7 @@ import React,{ useState } from 'react';
 import Select from 'react-select';
 import "../css/home.css";
 
+
 function Filter({data,onSort}){
   
     const [selectedOption, setSelectedOption] = useState(null);
@@ -44,7 +45,16 @@ function Filter({data,onSort}){
         {value:'distance',label:'distance'}
     ];
     const defaultValue = options[0];
-    
+
+    const colourstyles = {
+      placeholder : (defaultsyles) => {
+        return{
+          ...defaultsyles,
+          color:'#016551',
+          
+        }
+      }
+    }
     const  handleChange = (selectedOption) => {
      
     if (data.length !== 0) {
@@ -137,9 +147,9 @@ function Filter({data,onSort}){
     
 return (
     
-    <div className="filter">
+    <div className="headerSearch">
+        <div className='selectmenu'><Select options={options} onChange={handleChange} styles={colourstyles}/></div>
         
-        <Select options={options} onChange={handleChange} style={{color:"#0d987d"}}/>
         <div>
 
               <div>
@@ -152,9 +162,9 @@ return (
           onChange={handleOptionChange}
          
         />
-        Boy
+        &nbsp;Boy&nbsp;&nbsp;
       </label>
-      <br />
+      
       <label  className='radio'>
         <input
           type="radio"
@@ -162,16 +172,16 @@ return (
           checked={selectedOption === "girl"}
           onChange={handleOptionChange}
         />
-        Girl
+        &nbsp;Girl&nbsp;&nbsp;
       </label>
-      <br /><label  className='radio'>
+      <label  className='radio'>
         <input
           type="radio"
           value="any"
           checked={selectedOption === "any"}
           onChange={handleOptionChange}
         />
-        All
+        &nbsp;All&nbsp;
       </label>
      
     </div>     

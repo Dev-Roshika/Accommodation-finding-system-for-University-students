@@ -26,9 +26,7 @@ function Home() {
                     (res.data.Role === "student" || res.data.Role === "owner")
                 ) {
                     setRole(res.data.Role);
-                    console.log(res.data.Role);
                 } else {
-                    console.log("Check this");
                     navigate("/");
                 }
             })
@@ -49,9 +47,7 @@ function Home() {
         // eslint-disable-next-line
     }, []);
     const handleSort = (sortedArray) => {
-        console.log("this is returned after sort : ");
-        console.log(typeof(sortedArray));
-        console.log(sortedArray);
+        
         setShow(true);
         setSortedData(null);
         setSortedData(sortedArray); // Set the sorted data to the state
@@ -61,10 +57,10 @@ function Home() {
             <Navbar />
             <Header role={role} />
             <div className="listContainer">
-                    <div className ="setfilter">
-                         <Filter data={data} onSort={handleSort} />
-                        
-                    </div>
+                <div className ="setFilter">
+                        <Filter data={data} onSort={handleSort} />
+                    
+                </div>
                 <div className="listWrapper">
                     <div className="listResult">
                         {

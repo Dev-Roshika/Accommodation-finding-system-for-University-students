@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
 import axios from "axios";
-import Popup from 'reactjs-popup';
+
+import Swal from 'sweetalert2';
 import "../css/map.css";
 
-function DispMap({ data }) {
-  console.log("DispMap was called.");
+function DispMap({ data }) { 
   const googleMapsApiKey = "AIzaSyBqmWNhDW-VOxrjlInrTbew0mhrMGGp0tg";
   const [locations, setLocations] = useState([]);
   const [center, setCenter] = useState(null);
-
+   
   useEffect(() => {
   
     axios.get(`http://localhost:8081/boarding-locations/${data}`)
@@ -28,17 +28,26 @@ function DispMap({ data }) {
       })
       .catch((error) => {
         console.error("Error fetching boarding location data:", error);
+        
       });
   }, [data]);
-
+  
+  const handleClick = () => {
+    // Use SweetAlert2 to show a message
+    Swal.fire({
+      title: 'Only Owner Can Add Location',
+      html: 'You can add a location as an owner. <br/><a href="/AddMap?data=' + data + '">Proceed to Add Location</a>',
+      icon: 'info',
+      color: '#016551',
+      iconColor:'#016551',
+      confirmButtonColor:'#016551'
+    });
+  };
   
   return (
     <><div className="popupmap">
-    <Popup trigger={<h5><Link className="maplink"> add location</Link></h5>} position="right center">
-         {console.log("Data of Boardingid : ",data) }
-         <div>Only Owner can Add location</div>
-        <div><Link to={`/AddMap?data=${data}`}>Add Location</Link></div>
-    </Popup>
+    
+    <h5><Link onClick={handleClick}>add location</Link></h5>
   </div>
       {locations.length > 0 && center && (
         <div className="map">

@@ -6,15 +6,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
-function BoardingHouses() {
+function Test() {
      
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     axios.defaults.withCredentials = true;
-
-    const [to, setTo] = useState('');
  
   const [text, setText] = useState('');
+  const [email,setGmail] = useState('');
+  const [role,setRole] = useState('');
 
     useEffect(() => {
         axios
@@ -24,9 +24,12 @@ function BoardingHouses() {
                     res.data.Valid &&
                     (res.data.Role === "student" || res.data.Role === "owner")
                 ) {
+                    console.log(res.data);
                     console.log(res.data.Role + "is a valid user");
                     setUserData(res.data);
-                } else {
+                    setGmail(res.data.Gmail);
+                    setRole(res.data.Role); 
+               } else {
                     navigate("/");
                 }
             })
@@ -35,39 +38,38 @@ function BoardingHouses() {
     }, []);
     
 
-  const sendEmail = async () => {
+  const sendMessage = async () => {
     try {
-      const response = await fetch('http://localhost:8081/send-email/68', {
+      const response = await fetch('http://localhost:8081/contact_admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({  text }),
+        body: JSON.stringify({email,role,text }),
       });
 
       if (response.status === 200) {
-        alert('Email sent successfully');
+        alert('message sent successfully');
       } else {
-        alert('Failed to send email');
+        alert('Failed to send message');
       }
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Error sending message:', error);
     }
   };
 
   return (
     <div className="App">
-      <h1>Email Sender</h1>
-      
+      <h1>message Sender</h1>
       
       <div>
         <label>Message:</label>
         <textarea value={text} onChange={(e) => setText(e.target.value)} />
       </div>
-      <button onClick={sendEmail}>Send Email</button>
+      <button onClick={sendMessage}>Send </button>
     </div>
   );
 }
 
 
-export default BoardingHouses;
+export default Test;

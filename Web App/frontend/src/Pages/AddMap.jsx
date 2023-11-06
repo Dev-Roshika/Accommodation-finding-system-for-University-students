@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../css/profile.css';
 import Navbar from '../Components/Navbar';
-import Header from "../Components/Header";
+
 import Footer from "../Components/Footer";
 
 function AddMap() {
@@ -18,15 +18,7 @@ function AddMap() {
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
-  const handleLogout = async () => {
-    try {
-      await axios.get('http://localhost:8081/logout');
-      window.location.href = '/';
-      console.log("logout was called .");
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+ 
 
   useEffect(() => {
     axios.get('http://localhost:8081')
