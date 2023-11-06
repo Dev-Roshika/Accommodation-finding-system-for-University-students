@@ -10,6 +10,7 @@ function OnBoardPage() {
     const navigate = useNavigate();
     const [Student_Clicked, setStudent_Clicked] = useState(false);
     const [Owner_Clicked, setOwner_Clicked] = useState(false);
+    const [Admin_Clicked, setAdmin_Clicked] = useState(false);
 
     axios.defaults.withCredentials = true;
 
@@ -26,6 +27,8 @@ function OnBoardPage() {
                     navigate("/student/login");
                 } else if (Owner_Clicked) {
                     navigate("/student/owner");
+                } else if (Admin_Clicked) {
+                    navigate("/admin/login");
                 } else {
                     navigate("/");
                 }
@@ -37,10 +40,7 @@ function OnBoardPage() {
       <div className="d-flex flex-column min-vh-100">
       <div className="d-flex justify-content-center align-items-center mb-3 p-3">
                 <div className="mb-3 p-3">
-                    <a
-                        href="http://localhost:3000/student/login"
-                        target="_self"
-                    >
+                    <a href="http://localhost:3000/student/login" target="_self">
                         <Button
                             type="submit"
                             variant="outline-dark"
@@ -64,15 +64,12 @@ function OnBoardPage() {
                     </a>
                 </div>
                 <div className="mb-3 p-3">
-                    <a
-                        href="http://localhost:3000/admin/login"
-                        target="_self"
-                    >
+                    <a href="http://localhost:3000/admin/login" target="_self">
                         <Button
                             type="submit"
                             variant="outline-dark"
                             size="lg"
-                            //onClick={() => setAdmin_Clicked(true)}
+                            onClick={() => setAdmin_Clicked(true)}
                         >
                             Admin
                         </Button>

@@ -8,7 +8,7 @@ import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ChangePassword from '../Components/ChangePassword';
 
-function Profile() { 
+function Profile() {
     const[user,UseUser] = useState([])
     const[selectedImage,setSelectedImage] = useState(null);
     const [role, setRole] = useState('');

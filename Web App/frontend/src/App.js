@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Signin from './Student/Signin'
 import Signup from './Student/Signup'
 import OwnerSignin from './Owner/Signin'
@@ -14,16 +14,18 @@ import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
-import Addashboard from './admin/Addashboard.js'
-import Adlogin from './admin/Adlogin'
-import Adsignup from './admin/Adsignup'
-import Loginoption from './admin/Loginoption'
-import Studetails from "./admin/Studetails";
-import Owndetails from "./admin/Owndetails";
-import Accdetails from "./admin/Accdetails";
+
+import Addashboard from './admin/Addashboard'
+import AdSignin from './admin/AdSignin'
+import AdSignup from './admin/AdSignup'
+import StudentTable from "./admin/StudentTable";
+import OwnerTable from "./admin/OwnerTable";
+import BoardingTable from "./admin/BoardingTable";
 import Adprofile from "./admin/Adprofile";
-import Adsetting from "./admin/Adsetting";
+import Adchangepassword from "./admin/Adchangepassword";
 import Adeditprofile from "./admin/Adeditprofile";
+import Adnotify from "./admin/Adnotify";
+import AdminInfo from "./admin/AdminTable";
 
 function App() {
   return (
@@ -41,23 +43,23 @@ function App() {
           <Route path='/edit-boarding-house/:id' element={<EditBoarding />} />
           <Route path='/owner/post-ad' element={<PostAd />} />
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/UpdateProfile' element={<UpdateProfile />} />
+          <Route path='/profile' element={<Profile/>} />
+          <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path="/*" element={<NotFoundPage />} />
-          <Route path="/NewPasswordChange" element={<NewPasswordChange />} />
+          <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
 
-          <Route path="admin/login" element={<Adlogin />} />
-          <Route path="/admin/signup" element={<Adsignup />} />
-          <Route path="/admin/option" element={<Loginoption />} />
-          <Route path="/admin/home" element={<Addashboard />} />
-          <Route path="/admin/student" element={<Studetails />} />
-          <Route path="/admin/owner" element={<Owndetails />} />
-          <Route path="/admin/accom" element={<Accdetails />} />
-          <Route path="/admin/profile" element={<Adprofile />} />
-          <Route path="/admin/setting" element={<Adsetting />} />
-          <Route path="/admin/editprofile" element={<Adeditprofile />} />
-
-
+          <Route path="/admin/login" element={<AdSignin/>} />
+          <Route path="/admin/signup/:id" element={<AdSignup/>} />
+          <Route path="/admin/home/:id" element={<Addashboard/>} />
+          <Route path="/admin/students/:id" element={<StudentTable/>} />
+          <Route path="/admin/owners/:id" element={<OwnerTable/>} />
+          <Route path="/admin/boardings/:id" element={<BoardingTable/>} />
+          <Route path="/admin/profile/:id" element={<Adprofile/>} />
+          <Route path="/admin/changepassword" element={<Adchangepassword/>} />
+          <Route path="/admin/editprofile/:id" element={<Adeditprofile/>} />
+          <Route path="/admin/notify/:id" element={<Adnotify/>} />
+          <Route path="/admin/info/:id" element={<AdminInfo/>} />
+          
         </Routes>
       </BrowserRouter>
     </div>

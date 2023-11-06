@@ -73,10 +73,8 @@ const signup_storage = multer.diskStorage({
 const signup_upload = multer({
     storage: signup_storage,
 });
-app.post(
-    "/student/signup",
-    signup_upload.single("profileimage"),
-    (req, res) => {
+
+app.post("/student/signup",signup_upload.single("profileimage"),(req, res) => {
         const img_filename = req.file.filename;
         console.log("this is checking signup password : ");
         console.log(req.body.password);
@@ -181,9 +179,7 @@ const O_signup_storage = multer.diskStorage({
 const O_signup_upload = multer({
     storage: O_signup_storage,
 });
-app.post(
-    "/owner/signup",
-    O_signup_upload.fields([
+app.post("/owner/signup",O_signup_upload.fields([
         { name: "nidphoto", maxCount: 1 },
         { name: "profileimage", maxCount: 1 },
     ]),
@@ -393,7 +389,7 @@ app.post("/images/upload/:id", (req, res) => {
 ///Owner - end
 //profile start
 app.get("/student/show", (req, res) => {
-    const userId = req.session.Id;
+    const userId = req.session.id;
     console.log("show");
     console.log(userId);
     let sql;
@@ -409,6 +405,7 @@ app.get("/student/show", (req, res) => {
         return res.json(data);
     });
 });
+
 const handleProfileDelete = function(Id,Role){
  console.log(Id); 
 };
@@ -712,7 +709,7 @@ app.get("/", (req, res) => {
     if (req.session.role) {
         return res.json({
             Valid: true,
-            Id: req.session.Id,
+            Id: req.session.id,
             Role: req.session.role,
         });
     } else {
@@ -946,6 +943,7 @@ app.put("/passwordChange",(req, res) => {
 app.listen(8081, () => {
     console.log("listening");
 });
+
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     // Multer error occurred during file upload
@@ -960,14 +958,223 @@ app.use((err, req, res, next) => {
 });
 
 
+
 // Admin part by Thanan
-app.get("/admin/student", (req, res) => {
+app.get("/admin/students", (req, res) => {
     const sql = "SELECT * FROM student_info";
     db.query(sql, (err, result) => {
         if (err) {
             console.error("Error executing MySQL query:", err);
             res.status(500).json({ error: "Internal server error" });
         } else {
+            res.json(result);
+        }
+    });
+});
+
+app.get("/admin/owners", (req, res) => {
+    const sql = "SELECT * FROM owner_info";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+app.get("/admin/boardings", (req, res) => {
+    const sql = "SELECT * FROM boarding_house";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+
+app.post("/admin/login", (req, res) => {
+    const sql = "SELECT * FROM admin_info WHERE `Email` = ?";
+
+    db.query(sql, [req.body.email], (err, result) => {
+        if (err) return res.json({ Message: "Login error in server" });
+
+        if (result.length > 0) {
+            req.session.email = result[0].Email;
+            req.session.userId = result[0].Id; // Use a custom key like 'userId'
+            req.session.role = result[0].Role;
+            console.log(req.session.email);
+            console.log(req.session.role);
+            console.log(req.session.userId);
+            bcrypt.compare(
+                req.body.password.toString(),
+                result[0].Password,
+                (err, response) => {
+                    if (err)
+                        return res.json({ Error: "Password compare error" });
+                    if (response) {
+                        return res.json({
+                            Status: "Success",
+                            Email: req.session.email,
+                            Role: req.session.role,
+                            Id: req.session.userId
+                        });
+                    } else {
+                        return res.json({ Error: "Password not matched" });
+                    }
+                }
+            );
+        } else {
+            return res.json({ Error: "No email existed" });
+        }
+    });
+});
+
+
+const seedAdmin = () => {
+    const superAdminPassword = 'Thanaa#9806#N';
+    const sqlSelect = 'SELECT * FROM admin_info WHERE Email = ?';
+    const sqlInsert = 'INSERT INTO admin_info (FullName, Username, Position, Gender, Mobile, ProfileImage, Email, Password, role) VALUES ?';
+
+    db.query(sqlSelect, ['jeganthana@icloud.com'], (err, result) => {
+        if (err) throw err;
+
+        if (result.length === 0) {
+            bcrypt.hash(superAdminPassword.toString(), salt, (err, hash) => {
+                if (err) return res.json({ Error: "Error for hashing password" });
+
+                const values = [
+                    ['Jegatheeswaran Nisoothanan', 'Jegan Thanan', 'CompSoc President', 'male', '0722311572', '', 'jeganthanaa@icloud.com', hash, 'admin']
+                ];
+
+                db.query(sqlInsert, [values], (error, results, fields) => {
+                    if (error) throw error;
+                    console.log('Data seeded successfully');
+                });
+            });
+        } else {
+            console.log('Admin data already exists');
+        }
+    });
+};
+seedAdmin();
+
+app.get('/admin/show/:id', (req, res) => {
+    const adminId = req.params.id;
+    console.log('show');
+    console.log(adminId);
+    let sql = "SELECT * FROM admin_info WHERE Id = ?";
+  
+    db.query(sql, adminId, (err, data) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.json({ error: 'Database query error' });
+      }
+      return res.json(data);
+    });
+  });
+
+
+  app.get('/admin/show', (req, res) => {
+    let sql = "SELECT * FROM admin_info";
+
+    db.query(sql, (err, data) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.json({ error: 'Database query error' });
+      }
+      return res.json(data);
+    });
+  });
+
+app.put("/admin/verifyboardings/:id", (req, res) => {
+    const sql = "UPDATE boarding_house SET verfied =? WHERE Id = ?";
+    const boardingId = req.params.id;
+    db.query(sql,['yes',boardingId], (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+app.get("/admin/unverifyboardings", (req, res) => {
+    const sql = "SELECT * FROM boarding_house WHERE verfied = 'no'";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            res.json(result);
+        }
+    });
+})
+
+
+app.post("/admin/deletestudent/:id",(req,res)=>{
+    const ID = req.params.id;
+    const sql = "DELETE FROM student_info WHERE Id = ?";
+    db.query(sql, [ID], (err, data) => { 
+        if(err) return res.json({ error: "Error deleting data" });
+        return res.json(data);
+    });
+});
+
+app.post("/admin/deleteowner/:id",(req,res)=>{
+    const ID = req.params.id;
+    const sql = "DELETE FROM owner_info WHERE Id = ?";
+    db.query(sql, [ID], (err, data) => { 
+        if(err) return res.json({ error: "Error deleting data" });
+        return res.json(data);
+    });
+});
+
+app.post("/admin/deleteboarding/:id",(req,res)=>{
+    const ID = req.params.id;
+    const sql = "DELETE FROM boarding_house WHERE Id = ?";
+    db.query(sql, [ID], (err, data) => { 
+        if(err) return res.json({ error: "Error deleting data" });
+        return res.json(data);
+    });
+});
+
+
+app.post("/admin/deleteadmin/:id",(req,res)=>{
+    const ID = req.params.id;
+    const sql = "DELETE FROM admin_info WHERE Id = ?";
+    db.query(sql, [ID], (err, data) => { 
+        if(err) return res.json({ error: "Error deleting data" });
+        return res.json(data);
+    });
+});
+
+
+app.put("/admin/update/:id", (req, res) => {
+    const adminId = req.params.id;
+    const sql = "UPDATE admin_info SET `FullName` = ?, `UserName`= ?, `Position` = ?, `Gender` = ?, `Mobile` = ?, `Email` = ?  WHERE `Id` = ?";
+
+    const values = [
+        req.body.fullname,
+        req.body.username,
+        req.body.position,
+        req.body.gender,
+        req.body.mobile,
+        req.body.email,
+        adminId,
+    ];
+
+    db.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error executing MySQL query:", err);
+            res.status(500).json({ error: "Internal server error" });
+        } else {
+            console.log(result);
             res.json(result);
         }
     });

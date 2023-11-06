@@ -12,12 +12,14 @@
 
 #Slidebar{
   width: 15%;
+  height: 100vh;
 }
 
 .Dashdis{
-    width: 70%;
+    width: 66%;
     padding: 22px;
     background-color: #f8f9fa;
+    overflow-y: auto;
 }
 
 .Features{
@@ -38,8 +40,8 @@
 
 #tableCard{
   margin-top: 5%;
-  margin-left: 8%;
-  padding: 50px;
+  margin-left: 5%;
+  padding: 25px;
   box-shadow: 0 0 16px 4px #0f5a2e85;
   background-color: #f8f9fa;
 }
@@ -143,3 +145,19 @@ table tr:hover {
   width:75%;
 }
 
+#handledelete{
+  margin-left: 75px;
+}
+
+#verify{
+  margin-top: 40%;
+  margin-left: 30%;
+}
+
+h5{
+  color: #237544;
+}
+
+#bell{
+  margin-left: 75%;
+}

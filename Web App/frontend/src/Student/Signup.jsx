@@ -178,6 +178,8 @@ function Signup() {
     const toggleCPasswordVisibility = () => {
       setShowCPassword(!showCPassword);
   };
+
+  
     return (
         //<div className="d-flex justify-content-center align-items-center mb-3 mt-3">
         //<div className="bg-light bg-gradient w-50 p-5 rounded shadow-sm">

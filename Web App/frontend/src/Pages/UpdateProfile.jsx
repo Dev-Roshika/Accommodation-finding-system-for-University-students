@@ -43,6 +43,7 @@ function UpdateProfile() {
         getUser();
     },[])
     const Navigate = useNavigate();
+    
     const validateEmail = (email) => {
     // Simple email validation using regex
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
