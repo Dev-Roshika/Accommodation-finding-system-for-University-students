@@ -14,8 +14,9 @@ import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
-import AdminSignin from  './Admin/Signin'
-import AdminSignup from  './Admin/Signup'
+import CompleteUpdatePostAd from './Owner/Crud/CompleteUpdatePostAd';
+import AdminSignin from  './Admin/Signin';
+import AdminSignup from  './Admin/Signup';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path='/edit-boarding-house/:id' element={<EditBoarding />} />
           <Route path='/owner/post-ad' element={<PostAd />} />
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
+          <Route path='/owner/post-ad-update/success/:id' element={<CompleteUpdatePostAd />} />
+                        
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path='/admin/login' element={<AdminSignin />} />
