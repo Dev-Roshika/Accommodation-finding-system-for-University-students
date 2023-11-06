@@ -17,6 +17,9 @@ import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
 import Gmail from './Pages/Gmail';
 import Test from './Pages/Test';
+import CompleteUpdatePostAd from './Owner/Crud/CompleteUpdatePostAd';
+import AdminSignin from  './Admin/Signin';
+import AdminSignup from  './Admin/Signup';
 
 function App() {
   return (
@@ -34,9 +37,13 @@ function App() {
           <Route path='/edit-boarding-house/:id' element={<EditBoarding />} />
           <Route path='/owner/post-ad' element={<PostAd />} /> 
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
+          <Route path='/owner/post-ad-update/success/:id' element={<CompleteUpdatePostAd />} />
+                        
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path='/AddMap' element={<AddMap/>} />
+          <Route path='/admin/login' element={<AdminSignin />} />
+          <Route path='/admin/signup' element={<AdminSignup />} />
           <Route path="/*" element={<NotFoundPage />} />
           <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
           <Route path='/gmail' element={<Gmail />} />

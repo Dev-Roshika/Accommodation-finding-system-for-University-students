@@ -38,9 +38,11 @@ function Signin() {
         axios
             .post("http://localhost:8081/student/login", values)
             .then((res) => {
+                console.log(res.data.Status);
                 if (res.data.Status === "Success") {
                     navigate("/home");
-                } else {
+                } 
+                else {
                     alert("Error : Check email and password again");
                 }
                 console.log(res);

@@ -122,7 +122,7 @@
 .profileupdate a{
     color: #016551;
 }
-.row{
+/* .row{
     background-color: white;
     width: 100%;
     height: 100%;
@@ -130,7 +130,7 @@
     padding:1%;
     color: #0d987d;
     border: 1px solid #016551;
-}
+} */
 .rows{
     display: flex;
     justify-content: center;
