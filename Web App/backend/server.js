@@ -1048,7 +1048,7 @@ const seedAdmin = () => {
                 if (err) return res.json({ Error: "Error for hashing password" });
 
                 const values = [
-                    ['Jegatheeswaran Nisoothanan', 'Jegan Thanan', 'CompSoc President', 'male', '0722311572', '', 'jeganthanaa@icloud.com', hash, 'admin']
+                    ['Jegatheeswaran Nisoothanan', 'Jegan Thanan', 'CompSoc President', 'male', '0722311572', '', 'jeganthana@icloud.com', hash, 'superadmin']
                 ];
 
                 db.query(sqlInsert, [values], (error, results, fields) => {

@@ -11,6 +11,7 @@
 }
 
 #Slidebar{
+  flex:1;
   width: 15%;
   height: 100vh;
 }
@@ -23,6 +24,7 @@
 }
 
 .Features{
+    flex:0.5;
     padding: 64px;
     display: flex;
     flex-direction: column;
