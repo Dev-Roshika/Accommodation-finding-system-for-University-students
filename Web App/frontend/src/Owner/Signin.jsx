@@ -69,31 +69,31 @@ function Signin() {
     };
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
-        <div
-            className="bg-secondary bg-gradient rounded shadow-sm bg-opacity-10"
-            style={{ width: "40%" }}
-        >
-            <form action="" onSubmit={handleSubmit}>
-                <div
-                    className="d-flex justify-content-center flex-column bg-secondary bg-gradient p-5 bg-opacity-50"
-                    style={{
-                        borderTopLeftRadius: "0.5rem",
-                        borderTopRightRadius: "0.5rem",
-                        borderBottom: "none",
-                    }}
-                >
-                    <h1
-                        className="text-center text-white"
-                        style={{ fontWeight: "bold" }}
+            <div
+                className="bg-secondary bg-gradient rounded shadow-sm bg-opacity-10"
+                style={{ width: "40%" }}
+            >
+                <form action="" onSubmit={handleSubmit}>
+                    <div
+                        className="d-flex justify-content-center flex-column bg-secondary bg-gradient p-5 bg-opacity-50"
+                        style={{
+                            borderTopLeftRadius: "0.5rem",
+                            borderTopRightRadius: "0.5rem",
+                            borderBottom: "none",
+                        }}
                     >
-                        Owner Login
-                    </h1>
-                    <h5 className="text-center text-secondary">
-                        Hey, Enter your details to get sign in to your
-                        account
-                    </h5>
-                </div>
-                <div className="p-5">
+                        <h1
+                            className="text-center text-white"
+                            style={{ fontWeight: "bold" }}
+                        >
+                            Owner Login
+                        </h1>
+                        <h5 className="text-center text-secondary">
+                            Hey, Enter your details to get sign in to your
+                            account
+                        </h5>
+                    </div>
+                    <div className="p-5">
                         <div className="mb-3">
                             <label htmlFor="email">
                                 <strong style={{ color: "#0d987d" }}>
@@ -138,10 +138,14 @@ function Signin() {
                                         backgroundColor: "#0d987d",
                                         borderTopLeftRadius: "0.5rem",
                                         borderBottomLeftRadius: "0.5rem",
-                                        border: "none"
+                                        border: "none",
                                     }}
                                 >
-                                    {showPassword ? <FiEyeOff color="#fff"/> : <FiEye color="#fff"/>}
+                                    {showPassword ? (
+                                        <FiEyeOff color="#fff" />
+                                    ) : (
+                                        <FiEye color="#fff" />
+                                    )}
                                 </button>
                             </div>
                             {errors.password && (

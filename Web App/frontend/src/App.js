@@ -10,10 +10,16 @@ import PostAd from './Owner/PostAd';
 import CompletePostAd from './Owner/CompletePostAd';
 import Profile from './Pages/Profile';
 import UpdateProfile from './Pages/UpdateProfile';
+import AddMap from './Pages/AddMap';
 import NotFoundPage from './Pages/NotFoundPage';
 import OwnerDashboard from './Owner/OwnerDashboard';
 import EditBoarding from './Owner/Crud/EditBoarding';
 import NewPasswordChange from './Pages/NewPasswordChange';
+import Gmail from './Pages/Gmail';
+import Test from './Pages/Test';
+import CompleteUpdatePostAd from './Owner/Crud/CompleteUpdatePostAd';
+import AdminSignin from  './Admin/Signin';
+import AdminSignup from  './Admin/Signup';
 
 import Addashboard from './admin/Addashboard'
 import AdSignin from './admin/AdSignin'
@@ -41,10 +47,15 @@ function App() {
           <Route path='/owner/signup' element={<OwnerSignup />} />
           <Route path='/owner/dashboard' element={<OwnerDashboard />} />
           <Route path='/edit-boarding-house/:id' element={<EditBoarding />} />
-          <Route path='/owner/post-ad' element={<PostAd />} />
+          <Route path='/owner/post-ad' element={<PostAd />} /> 
           <Route path='/owner/post-ad/success/:id' element={<CompletePostAd />} />
+          <Route path='/owner/post-ad-update/success/:id' element={<CompleteUpdatePostAd />} />
+                        
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
+          <Route path='/AddMap' element={<AddMap/>} />
+          <Route path='/admin/login' element={<AdminSignin />} />
+          <Route path='/admin/signup' element={<AdminSignup />} />
           <Route path="/*" element={<NotFoundPage />} />
           <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
 
@@ -59,7 +70,8 @@ function App() {
           <Route path="/admin/editprofile/:id" element={<Adeditprofile/>} />
           <Route path="/admin/notify/:id" element={<Adnotify/>} />
           <Route path="/admin/info/:id" element={<AdminInfo/>} />
-          
+          <Route path='/gmail' element={<Gmail />} />
+          <Route path='/test' element={<Test />} />
         </Routes>
       </BrowserRouter>
     </div>
