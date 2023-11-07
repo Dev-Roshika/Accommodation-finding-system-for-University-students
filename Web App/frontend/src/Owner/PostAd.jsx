@@ -17,6 +17,7 @@ function PostAd() {
         facilities: "",
         rules: "",
         contactno: "",
+        verified:"no",
     });
     const [errors, setErrors] = useState({});
     const [isChecked, setIsChecked] = useState("");
@@ -109,6 +110,7 @@ function PostAd() {
         formData.append("facilities", values.facilities);
         formData.append("rules", values.rules);
         formData.append("contactno", values.contactno);
+        formData.append("verified", values.verified);
         axios
             .post("http://localhost:8081/owner/post-ad", formData)
             .then((res) => {

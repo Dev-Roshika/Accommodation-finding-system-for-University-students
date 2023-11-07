@@ -294,7 +294,7 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
   console.log("post-ad, ownerId: " + owner_id);
   console.log("post-ad, distanceUnit: " + req.body.distanceUnit);
   const sql =
-    "INSERT INTO `boarding_house` (`OwnerId`, `Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`) VALUES(?)";
+    "INSERT INTO `boarding_house` (`OwnerId`, `Title`, `Description`, `Price`,`Negotiable`, `Address`, `Distance`, `Boys`, `Girls`, `Facilities`, `Rules`, `ContactNo`, `CoverImage`, `Verified`) VALUES(?)";
   console.log(img_filename + "___" + req.body.address);
   const values = [
     owner_id,
@@ -310,6 +310,7 @@ app.post("/owner/post-ad", upload.single("coverimage"), (req, res) => {
     req.body.rules,
     req.body.contactno,
     img_filename,
+    req.body.verified,
   ];
   db.query(sql, [values], (err, data) => {
     if (err) return res.json({ Error: "Insert data Error in server" });
@@ -1657,7 +1658,7 @@ app.get('/admin/show/:id', (req, res) => {
   });
 
 app.put("/admin/verifyboardings/:id", (req, res) => {
-    const sql = "UPDATE boarding_house SET verfied =? WHERE Id = ?";
+    const sql = "UPDATE boarding_house SET Verified =? WHERE Id = ?";
     const boardingId = req.params.id;
     db.query(sql,['yes',boardingId], (err, result) => {
         if (err) {
@@ -1670,7 +1671,7 @@ app.put("/admin/verifyboardings/:id", (req, res) => {
 });
 
 app.get("/admin/unverifyboardings", (req, res) => {
-    const sql = "SELECT * FROM boarding_house WHERE verfied = 'no'";
+    const sql = "SELECT * FROM boarding_house WHERE Verified = 'no'";
     db.query(sql, (err, result) => {
         if (err) {
             console.error("Error executing MySQL query:", err);

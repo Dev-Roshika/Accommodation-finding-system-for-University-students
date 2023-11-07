@@ -54,8 +54,8 @@ function App() {
           <Route path='/profile' element={<Profile/>} />
           <Route path='/UpdateProfile' element={<UpdateProfile/>} />
           <Route path='/AddMap' element={<AddMap/>} />
-          <Route path='/admin/login' element={<AdminSignin />} />
-          <Route path='/admin/signup' element={<AdminSignup />} />
+          {/* <Route path='/admin/login' element={<AdminSignin />} /> */}
+          {/* <Route path='/admin/signup' element={<AdminSignup />} /> */}
           <Route path="/*" element={<NotFoundPage />} />
           <Route path="/NewPasswordChange" element={<NewPasswordChange/>} />
 
@@ -70,6 +70,7 @@ function App() {
           <Route path="/admin/editprofile/:id" element={<Adeditprofile/>} />
           <Route path="/admin/notify/:id" element={<Adnotify/>} />
           <Route path="/admin/info/:id" element={<AdminInfo/>} />
+          
           <Route path='/gmail' element={<Gmail />} />
           <Route path='/test' element={<Test />} />
         </Routes>
