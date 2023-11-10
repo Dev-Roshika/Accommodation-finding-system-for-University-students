@@ -18,8 +18,8 @@ import NewPasswordChange from './Pages/NewPasswordChange';
 import Gmail from './Pages/Gmail';
 import Test from './Pages/Test';
 import CompleteUpdatePostAd from './Owner/Crud/CompleteUpdatePostAd';
-import AdminSignin from  './Admin/Signin';
-import AdminSignup from  './Admin/Signup';
+// import AdminSignin from  './Admin/Signin';
+// import AdminSignup from  './Admin/Signup';
 
 import Addashboard from './admin/Addashboard'
 import AdSignin from './admin/AdSignin'

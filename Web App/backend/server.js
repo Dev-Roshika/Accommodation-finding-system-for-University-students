@@ -1201,79 +1201,80 @@ const signup_storage_admin = multer.diskStorage({
 const signup_upload_admin = multer({
     storage: signup_storage_admin,
 });
-app.post(
-    "/admin/signup",
-    signup_upload_admin.single("profileimage"),
-    (req, res) => {
-        const img_filename = req.file.filename;
-        const sql =
-            "INSERT INTO `admin_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Position`,`Password`) VALUES(?)";
-        bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
-            if (err) return res.json({ Error: "Error for hashing password" });
-            const values = [
-                req.body.fullname,
-                req.body.username,
-                req.body.univregno,
-                req.body.mobile,
-                img_filename,
-                req.body.email,
-                req.body.faculty,
-                req.body.dept,
-                req.body.position,
-                hash,
-            ];
-            db.query(sql, [values], (err, result) => {
-                if (err){
-                    return res.json({ Error: "Insert data Error in server" });
-                }
-                return res.json({ Status: "Success" });
-            });
-        });
-    }
-);
-//signup - end
-//admin - start
-app.post("/admin/login",(req,res)=>{
-    console.log("this is admin login");
-    const sql = "SELECT * FROM admin_info WHERE Email = ?";
-    try{db.query(sql, [req.body.email], (err, result) => {
-        if (err) return res.json({ Message: "Login error in server" });
 
-        if (result.length > 0) {
-            req.session.email = result[0].Email;
-            req.session.Id = result[0].Id;
-            req.session.role = "admin";
-            const admin_password = result[0].Password;
-            console.log(req.session.email);
-            console.log(req.session.role);
-            console.log(req.session.Id);
-            console.log(admin_password);
-            bcrypt.compare(
-                req.body.password.toString(),
-                result[0].Password,
-                (err, response) => {
-                    if (err)
-                        return res.json({ Error: "Password compare error" });
-                    if (response) { 
-                        return res.json({
-                            Status: "Success",
-                            Email: req.session.Email,
-                            Role: req.session.role,
-                        });
-                    } else {
-                        return res.json({ Error: "Password not matched" });
-                    }
-                }
-            );
-        } else {
-            return res.json({ Error: "No email existed" });
-        }
-    });}
-    catch(error){
-        console.log("error is occured.")
-    }
+// app.post(
+//     "/admin/signup",
+//     signup_upload_admin.single("profileimage"),
+//     (req, res) => {
+//         const img_filename = req.file.filename;
+//         const sql =
+//             "INSERT INTO `admin_info` (`FullName`,`UserName`, `UnivRegNo`, `ContactNo`, `ProfileImage`,`Email`,`Faculty`,`Dept`,`Position`,`Password`) VALUES(?)";
+//         bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+//             if (err) return res.json({ Error: "Error for hashing password" });
+//             const values = [
+//                 req.body.fullname,
+//                 req.body.username,
+//                 req.body.univregno,
+//                 req.body.mobile,
+//                 img_filename,
+//                 req.body.email,
+//                 req.body.faculty,
+//                 req.body.dept,
+//                 req.body.position,
+//                 hash,
+//             ];
+//             db.query(sql, [values], (err, result) => {
+//                 if (err){
+//                     return res.json({ Error: "Insert data Error in server" });
+//                 }
+//                 return res.json({ Status: "Success" });
+//             });
+//         });
+//     }
+// );
+// //signup - end
+// //admin - start
+// app.post("/admin/login",(req,res)=>{
+//     console.log("this is admin login");
+//     const sql = "SELECT * FROM admin_info WHERE Email = ?";
+//     try{db.query(sql, [req.body.email], (err, result) => {
+//         if (err) return res.json({ Message: "Login error in server" });
+
+//         if (result.length > 0) {
+//             req.session.email = result[0].Email;
+//             req.session.Id = result[0].Id;
+//             req.session.role = "admin";
+//             const admin_password = result[0].Password;
+//             console.log(req.session.email);
+//             console.log(req.session.role);
+//             console.log(req.session.Id);
+//             console.log(admin_password);
+//             bcrypt.compare(
+//                 req.body.password.toString(),
+//                 result[0].Password,
+//                 (err, response) => {
+//                     if (err)
+//                         return res.json({ Error: "Password compare error" });
+//                     if (response) { 
+//                         return res.json({
+//                             Status: "Success",
+//                             Email: req.session.Email,
+//                             Role: req.session.role,
+//                         });
+//                     } else {
+//                         return res.json({ Error: "Password not matched" });
+//                     }
+//                 }
+//             );
+//         } else {
+//             return res.json({ Error: "No email existed" });
+//         }
+//     });}
+//     catch(error){
+//         console.log("error is occured.")
+//     }
     
-});
+// });
 
 
 app.get("/logout", (req, res) => {
@@ -1354,7 +1355,7 @@ app.put("/passwordChange", (req, res) => {
 });
 /* */
 
-app.listen(8081, () => {
+app.listen(8082, () => {
     console.log("listening");
 });
 
@@ -1562,6 +1563,20 @@ app.get("/admin/boardings", (req, res) => {
     });
 });
 
+app.get("/admin/boardings/:id", (req, res) => {
+  const boardingId = req.params.id;
+  const sql = "SELECT * FROM boarding_house WHERE Id = ?";
+
+  db.query(sql, [boardingId], (err, result) => {
+      if (err) {
+          console.error("Error executing MySQL query:", err);
+          res.status(500).json({ error: "Internal server error" });
+      } else {
+          res.json(result);
+      }
+  });
+});
+
 
 app.post("/admin/login", (req, res) => {
     const sql = "SELECT * FROM admin_info WHERE `Email` = ?";
@@ -1599,7 +1614,6 @@ app.post("/admin/login", (req, res) => {
         }
     });
 });
-
 
 const seedAdmin = () => {
     const superAdminPassword = 'Thanaa#9806#N';
@@ -1720,6 +1734,15 @@ app.post("/admin/deleteadmin/:id",(req,res)=>{
     });
 });
 
+app.post("/admin/deletecomment/:id",(req,res)=>{
+  const ID = req.params.id;
+  const sql = "DELETE FROM comments WHERE id = ?";
+  db.query(sql, [ID], (err, data) => { 
+      if(err) return res.json({ error: "Error deleting data" });
+      return res.json(data);
+  });
+});
+
 
 app.put("/admin/update/:id", (req, res) => {
     const adminId = req.params.id;
@@ -1744,4 +1767,16 @@ app.put("/admin/update/:id", (req, res) => {
             res.json(result);
         }
     });
+});
+
+app.get('/admin/feedbacks', (req, res) => {
+  let sql = "SELECT * FROM comments";
+
+  db.query(sql, (err, data) => {
+    if (err) {
+      console.error('Database query error:', err);
+      return res.json({ error: 'Database query error' });
+    }
+    return res.json(data);
+  });
 });

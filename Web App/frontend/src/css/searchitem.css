@@ -1,12 +1,11 @@
 .searchItem{
-    border: 1px solid rgb(17, 15, 15);
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
     margin-bottom: 20px;
-    box-shadow: 1px 2px 9px rgb(186, 184, 184);
+    box-shadow: 10px 10px 10px rgb(205, 213, 205);
     width: 960px; /*modified this line*/
 }
 
@@ -35,11 +34,13 @@
 
 .siTaxi{
     font-size: 15px;
-    background-color: #0071c2;
-    color: white;
+    background-color: #79c1f4;
+    color: rgb(5, 5, 5);
     width: max-content;
     padding: 3px;
     border-radius: 5px;
+    margin-left: 70%;
+    font-weight: bold;
 }
 
 .siFeatures{

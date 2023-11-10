@@ -123,7 +123,7 @@ function Slidebar() {
       <hr />
       {user.map(cuser => (
         <div className="dropdown" key={cuser.Id}>
-          <h6>{cuser.UserName}</h6>
+          <h6 style={{color:'#76BF78'}}>{cuser.UserName}</h6>
         </div>
       ))}
     </div>

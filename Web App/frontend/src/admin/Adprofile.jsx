@@ -42,9 +42,9 @@ const Adprofile = () => {
                             </div>
                             <div class="col-md-6">
                                 <div class="profile-head">
-                                            <h4>{cuser.UserName}</h4>
-                                            <h6>{cuser.Position}</h6><br/><br/><br/>
-                                            <h4> Profile </h4>
+                                            <h5>{cuser.UserName}</h5>
+                                            <h7>{cuser.Position}</h7><br/><br/><br/>
+                                            <h5> Profile </h5>
                                             <hr/>
                                 </div>
                             </div>

@@ -20,7 +20,7 @@ function Modal2({ setOpenModal, confirmAction }) {
           </button>
         </div>
         <div className="title">
-          <h5>Are You Sure, Did you check properly?</h5>
+          <h5>Are You Sure, Did you verify all these details?</h5>
         </div>
         <div className="footer">
           <button

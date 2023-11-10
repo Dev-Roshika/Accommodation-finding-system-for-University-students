@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import "../css/searchitem.css";
-import { Link, useNavigate } from "react-router-dom";
 import Modal2 from './Newmodal'; // Adjust the path based on your file structure
 import '../css/modal.css';
 
 function Dashdis () {
 
-  const navigate = useNavigate();
   const[data,UseBoardings] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [BoardingId, setSelectedBoardingId] = useState(null);
 
   const handleVerification = (event) => {
-    const id = event.target.value;
+    const id = event.currentTarget.getAttribute('data-id');
     setSelectedBoardingId(id);
     setShowModal(true);
   };
@@ -61,19 +59,21 @@ const getunverifyBoardings = () => {
                 {data[i].Girls !== 0 && <>{data[i].Girls} girls </>}only
             </span>
             <span className="siFeatures">{data[i].Facilities}</span>
-            <span className="siTaxi">{data[i].ContactNo}</span>
             <span className="siSubtitle">Address : {data[i].Address}</span>
         </div>
         <div className="siDetails">
             <div className="siDetailsTexts">
-                {data[i].Negotiable === "Yes" && (
-                    <span className="siPriceText">Negotiable</span>
-                )}
-                <span className="siPrice">Rs {data[i].Price} /month</span>
+            <span className="siPrice">Rs {data[i].Price} /month</span>
+                <span className="siPriceText">Negotiable : {data[i].Negotiable}</span>
+                <span className="siTaxi">{data[i].ContactNo}</span>
 
-                    <button className="btn btn-success" style={{ width: '200px' }} id="verify" value={data[i].Id} onClick={handleVerification}>
-                        Verify
-                    </button>
+
+                <a role="button"  id="verify" data-id={data[i].Id} onClick={handleVerification}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-bookmark-check" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                      <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                    </svg>
+                    </a>
 
             </div>
         </div>
@@ -89,8 +89,8 @@ const getunverifyBoardings = () => {
           <header>
             <div class="Header">
               <h5>New Accomodations </h5>&emsp;
-              <div id="bell">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#237544"  class="bi bi-app-indicator" viewBox="0 0 16 16">
+              <div >
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" fill="#237544"  class="bi bi-app-indicator" viewBox="0 0 16 16">
                 <path d="M5.5 2A3.5 3.5 0 0 0 2 5.5v5A3.5 3.5 0 0 0 5.5 14h5a3.5 3.5 0 0 0 3.5-3.5V8a.5.5 0 0 1 1 0v2.5a4.5 4.5 0 0 1-4.5 4.5h-5A4.5 4.5 0 0 1 1 10.5v-5A4.5 4.5 0 0 1 5.5 1H8a.5.5 0 0 1 0 1H5.5z"/>
                 <path d="M16 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                 <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="red" font-size="8">{data.length}</text>
